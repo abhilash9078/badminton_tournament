@@ -18,8 +18,8 @@ const About: React.FC = () => {
               <div className="md:flex-shrink-0 md:w-1/3">
                 <img 
                   className="h-full w-full object-cover" 
-                  src="https://images.pexels.com/photos/3979126/pexels-photo-3979126.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" 
-                  alt="Badminton players" 
+                  src="Image_2.jpeg" 
+                  alt="Badminton playerssss" 
                 />
               </div>
               <div className="p-8">

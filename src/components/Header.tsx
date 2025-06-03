@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, BanIcon as BadmintonIcon } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { Link } from './Navigation';
 
 const Header: React.FC = () => {
@@ -27,8 +27,8 @@ const Header: React.FC = () => {
     >
       <div className="container mx-auto px-4 flex justify-between items-center">
         <div className="flex items-center space-x-2">
-          <BadmintonIcon className="w-8 h-8 text-blue-600" />
-          <span className="font-bold text-xl md:text-2xl text-blue-600">Shuttle Showdown</span>
+        <img src="Image_2.jpeg" alt="Badminton Logo" className="w-8 h-8 object-contain" />
+          <span className="font-bold text-xl md:text-2xl text-white-600">Shuttle Showdown</span>
         </div>
 
         {/* Desktop Navigation */}
