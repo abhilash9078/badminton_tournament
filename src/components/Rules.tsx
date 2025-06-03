@@ -1,5 +1,8 @@
 import React from "react";
 import SectionTitle from "./SectionTitle";
+import winnerImage from "../../images/image_3.jpeg";
+import allFinalistsImage from "../../images/image_4.jpeg";
+import tournamentOfficialsImage from "../../images/image_rf.jpeg";
 
 const Rules: React.FC = () => {
   return (
@@ -135,7 +138,7 @@ const Rules: React.FC = () => {
                       Last Tournament Winners
                     </h4>
                     <img
-                      src="/images/image_3.jpeg"
+                      src={winnerImage}
                       alt="Last winners - Himanshu and Surya"
                       className="max-w-full h-auto rounded-lg shadow-md mb-4"
                     />
@@ -195,7 +198,7 @@ const Rules: React.FC = () => {
                     Tournament Podium - All Finalists
                   </h4>
                   <img
-                    src="/images/image_4.jpeg"
+                    src={allFinalistsImage}
                     alt="All tournament finalists"
                     className="max-w-full h-auto rounded-lg shadow-md mx-auto"
                   />
@@ -250,7 +253,7 @@ const Rules: React.FC = () => {
 
                   <div className="mt-6 text-center">
                     <img
-                      src="/images/image_rf.jpeg"
+                      src={tournamentOfficialsImage}
                       alt="Tournament officials and organizers"
                       className="max-w-full h-auto rounded-lg shadow-md mx-auto"
                     />
