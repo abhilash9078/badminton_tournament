@@ -132,15 +132,150 @@ const Rules: React.FC = () => {
                 <div className="mt-8 flex justify-center items-center">
                   <div className="text-center">
                     <h4 className="font-semibold text-gray-800 mb-4">
-                      Knockout Stage
+                      Last Tournament Winners
                     </h4>
                     <img
-                      src="https://images.pexels.com/photos/3660204/pexels-photo-3660204.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-                      alt="Badminton match"
+                      src="/images/image_3.jpeg"
+                      alt="Last winners - Himanshu and Surya"
                       className="max-w-full h-auto rounded-lg shadow-md mb-4"
                     />
-                    <p className="text-sm text-gray-600">
-                      Top teams from each pool advance to quarter-finals
+                    <p className="text-sm text-gray-600 italic">
+                      "Success in doubles is about trust and communication. We
+                      won because we played as one." - Himanshu & Surya
+                    </p>
+                  </div>
+                </div>
+
+                <div className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div className="bg-gradient-to-br from-yellow-50 to-yellow-100 p-5 rounded-xl shadow-sm">
+                    <h4 className="font-semibold text-yellow-700 mb-3 text-center">
+                      Champions
+                    </h4>
+                    <div className="bg-white p-3 rounded-lg text-center">
+                      <p className="font-medium">Himanshu & Surya</p>
+                      <p className="text-sm text-gray-600 mt-1">
+                        Gold Trophy Winners
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="bg-gradient-to-br from-gray-50 to-gray-100 p-5 rounded-xl shadow-sm">
+                    <h4 className="font-semibold text-gray-700 mb-3 text-center">
+                      Runners-up
+                    </h4>
+                    <div className="bg-white p-3 rounded-lg text-center">
+                      <p className="font-medium">Abhi & Soumya</p>
+                      <p className="text-sm text-gray-600 mt-1">
+                        Silver Trophy Winners
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="bg-gradient-to-br from-amber-50 to-amber-100 p-5 rounded-xl shadow-sm">
+                    <h4 className="font-semibold text-amber-700 mb-3 text-center">
+                      Semifinalists
+                    </h4>
+                    <div className="bg-white p-3 rounded-lg text-center">
+                      <p className="font-medium">Mahendran & Shivam</p>
+                      <p className="text-sm text-gray-600 mt-1">
+                        Bronze Medal Winners
+                      </p>
+                    </div>
+                    <div className="bg-white p-3 rounded-lg text-center mt-3">
+                      <p className="font-medium">Ankit & Anurag</p>
+                      <p className="text-sm text-gray-600 mt-1">
+                        Bronze Medal Winners
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-8 text-center">
+                  <h4 className="font-semibold text-gray-800 mb-4">
+                    Tournament Podium - All Finalists
+                  </h4>
+                  <img
+                    src="/images/image_4.jpeg"
+                    alt="All tournament finalists"
+                    className="max-w-full h-auto rounded-lg shadow-md mx-auto"
+                  />
+                  <p className="text-sm text-gray-600 mt-3">
+                    Winners, Runners-up, and Semifinalists celebrating their
+                    achievements
+                  </p>
+                </div>
+
+                <div className="mt-12 bg-blue-50 p-6 rounded-xl">
+                  <h3 className="text-xl font-semibold text-blue-800 mb-4 text-center">
+                    Tournament Officials
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <h4 className="font-medium text-blue-700 mb-3">
+                        Referees
+                      </h4>
+                      <ul className="space-y-2">
+                        <li className="bg-white p-3 rounded-lg flex items-center">
+                          <div className="w-3 h-3 bg-blue-500 rounded-full mr-3"></div>
+                          <p>Abhilash Meher (Chief Referee)</p>
+                        </li>
+                        <li className="bg-white p-3 rounded-lg flex items-center">
+                          <div className="w-3 h-3 bg-blue-500 rounded-full mr-3"></div>
+                          <p>Amol Srivastava</p>
+                        </li>
+                        <li className="bg-white p-3 rounded-lg flex items-center">
+                          <div className="w-3 h-3 bg-blue-500 rounded-full mr-3"></div>
+                          <p>DK</p>
+                        </li>
+                        <li className="bg-white p-3 rounded-lg flex items-center">
+                          <div className="w-3 h-3 bg-blue-500 rounded-full mr-3"></div>
+                          <p>Arijit</p>
+                        </li>
+                      </ul>
+                    </div>
+                    <div>
+                      <h4 className="font-medium text-blue-700 mb-3">
+                        Tournament Host
+                      </h4>
+                      <div className="bg-white p-4 rounded-lg">
+                        <p className="font-medium">Organized by:</p>
+                        <p className="mt-1">Anup Badminton Academy</p>
+                        <p className="text-sm text-gray-600 mt-3">
+                          Led by Tournament Director:
+                        </p>
+                        <p className="font-medium">Anup Kumar</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mt-6 text-center">
+                    <img
+                      src="/images/image_rf.jpeg"
+                      alt="Tournament officials and organizers"
+                      className="max-w-full h-auto rounded-lg shadow-md mx-auto"
+                    />
+                    <p className="text-sm text-gray-600 mt-3">
+                      Our dedicated team of referees and organizers
+                    </p>
+                  </div>
+
+                  <div className="mt-8 text-center">
+                    <blockquote className="italic text-gray-700 px-8 relative">
+                      <span className="text-4xl text-blue-300 absolute left-0 top-0">
+                        "
+                      </span>
+                      A heartfelt thank you to our incredible hosts for creating
+                      this amazing tournament. Your dedication to bringing
+                      players together and fostering the spirit of competition
+                      has made this event truly special. The smooth organization
+                      and warm hospitality have set a new standard for badminton
+                      tournaments.
+                      <span className="text-4xl text-blue-300 absolute right-0 bottom-0">
+                        "
+                      </span>
+                    </blockquote>
+                    <p className="mt-4 font-medium">
+                      - On behalf of all participants
                     </p>
                   </div>
                 </div>
