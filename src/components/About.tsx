@@ -1,5 +1,6 @@
 import React from 'react';
 import SectionTitle from './SectionTitle';
+import BadmintonLogo from '../../images/Image_2.jpeg'
 
 const About: React.FC = () => {
   return (
@@ -18,8 +19,8 @@ const About: React.FC = () => {
               <div className="md:flex-shrink-0 md:w-1/3">
                 <img 
                   className="h-full w-full object-cover" 
-                  src="Image_2.jpeg" 
-                  alt="Badminton playerssss" 
+                  src={BadmintonLogo} 
+                  alt="Badminton players" 
                 />
               </div>
               <div className="p-8">

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import { Link } from './Navigation';
+import BadmintonLogo from '../../images/Image_2.jpeg'
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -27,7 +28,7 @@ const Header: React.FC = () => {
     >
       <div className="container mx-auto px-4 flex justify-between items-center">
         <div className="flex items-center space-x-2">
-        <img src="Image_2.jpeg" alt="Badminton Logo" className="w-8 h-8 object-contain" />
+        <img src={BadmintonLogo} alt="Badminton Logo" className="w-8 h-8 object-contain" />
           <span className="font-bold text-xl md:text-2xl text-white-600">Shuttle Showdown</span>
         </div>
 
