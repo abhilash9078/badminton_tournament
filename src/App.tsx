@@ -14,9 +14,9 @@ function App() {
       <Hero />
       <About />
       <Rules />
+      <PoolsAndPoints />
       <Location />
       <Contact />
-      <PoolsAndPoints />
       <Footer />
     </div>
   );

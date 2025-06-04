@@ -52,7 +52,7 @@ const Contact: React.FC = () => {
               </div>
             </div>
             
-            <div className="bg-gray-50 rounded-xl p-8 shadow-sm">
+            {/* <div className="bg-gray-50 rounded-xl p-8 shadow-sm">
               <h3 className="text-xl font-semibold text-gray-800 mb-6">Send a Message</h3>
               
               <form className="space-y-4">
@@ -93,7 +93,7 @@ const Contact: React.FC = () => {
                   Send Message
                 </button>
               </form>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

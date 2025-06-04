@@ -88,12 +88,12 @@ const Rules: React.FC = () => {
 
         <div className="mt-12 max-w-4xl mx-auto">
           <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
-            <h3 className="text-xl font-semibold text-gray-800 mb-4">
+            {/* <h3 className="text-xl font-semibold text-gray-800 mb-4">
               Tournament Structure
-            </h3>
+            </h3> */}
             <div className="overflow-x-auto">
               <div className="w-full">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                {/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
                   <div className="bg-blue-100 p-4 rounded-lg text-center">
                     <h4 className="font-semibold text-blue-800 mb-2">Pool A</h4>
                     <div className="space-y-2 text-sm">
@@ -130,7 +130,7 @@ const Rules: React.FC = () => {
                       <div className="bg-white p-2 rounded">Team 16</div>
                     </div>
                   </div>
-                </div>
+                </div> */}
 
                 <div className="mt-8 flex justify-center items-center">
                   <div className="text-center">
