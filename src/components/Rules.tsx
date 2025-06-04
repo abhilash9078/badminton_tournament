@@ -220,19 +220,19 @@ const Rules: React.FC = () => {
                       <ul className="space-y-2">
                         <li className="bg-white p-3 rounded-lg flex items-center">
                           <div className="w-3 h-3 bg-blue-500 rounded-full mr-3"></div>
-                          <p>Abhilash Meher (Chief Referee)</p>
+                          <p>Amol (co-host)</p>
                         </li>
                         <li className="bg-white p-3 rounded-lg flex items-center">
                           <div className="w-3 h-3 bg-blue-500 rounded-full mr-3"></div>
-                          <p>Amol Srivastava</p>
+                          <p>Abhilash (Chief Referee)</p>
                         </li>
                         <li className="bg-white p-3 rounded-lg flex items-center">
                           <div className="w-3 h-3 bg-blue-500 rounded-full mr-3"></div>
-                          <p>DK</p>
+                          <p>DK (co-referee)</p>
                         </li>
                         <li className="bg-white p-3 rounded-lg flex items-center">
                           <div className="w-3 h-3 bg-blue-500 rounded-full mr-3"></div>
-                          <p>Arijit</p>
+                          <p>Arijit (co-referee)</p>
                         </li>
                       </ul>
                     </div>
