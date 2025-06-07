@@ -62,7 +62,8 @@ export default async function handler(req, res) {
           played = ${team.played},
           won = ${team.won},
           lost = ${team.lost},
-          points = ${team.points}
+          points = ${team.points},
+          qualified = ${team.qualified || false}
         WHERE id = ${teamId}
       `;
       

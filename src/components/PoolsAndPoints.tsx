@@ -9,11 +9,12 @@ interface TeamData {
   won: string;
   lost: string;
   points: string;
+  qualified?: boolean;
 }
 
 // Admin credentials
-const ADMIN_USERNAME = "admin";
-const ADMIN_PASSWORD = "password123";
+const ADMIN_USERNAME = "anupbhai";
+const ADMIN_PASSWORD = "nahibataunga";
 
 const PoolsAndPoints: React.FC = () => {
   // Authentication state
@@ -62,31 +63,31 @@ const PoolsAndPoints: React.FC = () => {
   // Load default data as fallback
   const loadDefaultData = () => {
     setPoolATeams([
-      { name: "Team 1", players: ["Aditya", "Prathap"], played: "-", won: "-", lost: "-", points: "-" },
-      { name: "Team 2", players: ["Shivam G", "Tanmay"], played: "-", won: "-", lost: "-", points: "-" },
-      { name: "Team 3", players: ["Hemanth", "Sanjay"], played: "-", won: "-", lost: "-", points: "-" },
-      { name: "Team 4", players: ["Rishav", "Mano"], played: "-", won: "-", lost: "-", points: "-" },
+      { name: "Team 1", players: ["Aditya", "Prathap"], played: "-", won: "-", lost: "-", points: "-", qualified: false },
+      { name: "Team 2", players: ["Shivam G", "Tanmay"], played: "-", won: "-", lost: "-", points: "-", qualified: false },
+      { name: "Team 3", players: ["Hemanth", "Sanjay"], played: "-", won: "-", lost: "-", points: "-", qualified: false },
+      { name: "Team 4", players: ["Rishav", "Mano"], played: "-", won: "-", lost: "-", points: "-", qualified: false },
     ]);
     
     setPoolBTeams([
-      { name: "Team 1", players: ["Mohit", "Anurag"], played: "-", won: "-", lost: "-", points: "-" },
-      { name: "Team 2", players: ["Piyush", "R Raju"], played: "-", won: "-", lost: "-", points: "-" },
-      { name: "Team 3", players: ["Sushant", "Amit"], played: "-", won: "-", lost: "-", points: "-" },
-      { name: "Team 4", players: ["Rahul", "Tushar"], played: "-", won: "-", lost: "-", points: "-" },
+      { name: "Team 1", players: ["Mohit", "Anurag"], played: "-", won: "-", lost: "-", points: "-", qualified: false },
+      { name: "Team 2", players: ["Piyush", "R Raju"], played: "-", won: "-", lost: "-", points: "-", qualified: false },
+      { name: "Team 3", players: ["Sushant", "Amit"], played: "-", won: "-", lost: "-", points: "-", qualified: false },
+      { name: "Team 4", players: ["Rahul", "Tushar"], played: "-", won: "-", lost: "-", points: "-", qualified: false },
     ]);
     
     setPoolCTeams([
-      { name: "Team 1", players: ["Abhi", "Sumit"], played: "-", won: "-", lost: "-", points: "-" },
-      { name: "Team 2", players: ["Dinesh", "Purushottam"], played: "-", won: "-", lost: "-", points: "-" },
-      { name: "Team 3", players: ["Akash", "Nikhil"], played: "-", won: "-", lost: "-", points: "-" },
-      { name: "Team 4", players: ["Ankit", "Vasudeva"], played: "-", won: "-", lost: "-", points: "-" },
+      { name: "Team 1", players: ["Abhi", "Sumit"], played: "-", won: "-", lost: "-", points: "-", qualified: false },
+      { name: "Team 2", players: ["Dinesh", "Purushottam"], played: "-", won: "-", lost: "-", points: "-", qualified: false },
+      { name: "Team 3", players: ["Akash", "Nikhil"], played: "-", won: "-", lost: "-", points: "-", qualified: false },
+      { name: "Team 4", players: ["Ankit", "Vasudeva"], played: "-", won: "-", lost: "-", points: "-", qualified: false },
     ]);
     
     setPoolDTeams([
-      { name: "Team 1", players: ["Shivam S", "Jay"], played: "-", won: "-", lost: "-", points: "-" },
-      { name: "Team 2", players: ["Sarthak", "Mahendran"], played: "-", won: "-", lost: "-", points: "-" },
-      { name: "Team 3", players: ["Bharath", "Shubham"], played: "-", won: "-", lost: "-", points: "-" },
-      { name: "Team 4", players: ["Goutham", "Rinda"], played: "-", won: "-", lost: "-", points: "-" },
+      { name: "Team 1", players: ["Shivam S", "Jay"], played: "-", won: "-", lost: "-", points: "-", qualified: false },
+      { name: "Team 2", players: ["Sarthak", "Mahendran"], played: "-", won: "-", lost: "-", points: "-", qualified: false },
+      { name: "Team 3", players: ["Bharath", "Shubham"], played: "-", won: "-", lost: "-", points: "-", qualified: false },
+      { name: "Team 4", players: ["Goutham", "Rinda"], played: "-", won: "-", lost: "-", points: "-", qualified: false },
     ]);
   };
 
@@ -114,7 +115,7 @@ const PoolsAndPoints: React.FC = () => {
     poolKey: string, 
     teamIndex: number, 
     field: keyof TeamData, 
-    value: string
+    value: string | boolean
   ) => {
     // Update local state first for immediate UI feedback
     let updatedTeam: TeamData | null = null;
@@ -190,103 +191,134 @@ const PoolsAndPoints: React.FC = () => {
     }
   };
 
+  // Toggle team qualification status
+  const toggleQualified = (poolKey: string, teamIndex: number, currentValue: boolean = false) => {
+    handleUpdateTeam(poolKey, teamIndex, 'qualified', !currentValue);
+  };
+
   // Function to render a pool table (read-only mode)
-  const renderPoolTable = (poolName: string, bgColor: string, teams: TeamData[], poolKey: string) => (
-    <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-      <div className={`${bgColor} text-white py-3 px-4 font-semibold`}>
-        {poolName}
-      </div>
-      <table className="w-full">
+  // Update the renderPoolTable function for better mobile responsiveness
+const renderPoolTable = (poolName: string, bgColor: string, teams: TeamData[], poolKey: string) => (
+  <div className="bg-white rounded-xl shadow-sm overflow-hidden mb-4">
+    <div className={`${bgColor} text-white py-3 px-4 font-semibold`}>
+      {poolName}
+    </div>
+    <div className="overflow-x-auto">
+      <table className="w-full min-w-full">
         <thead className="bg-gray-50">
           <tr>
-            <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Team</th>
-            <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Players</th>
-            <th className="py-3 px-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">P</th>
-            <th className="py-3 px-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">W</th>
-            <th className="py-3 px-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">L</th>
-            <th className="py-3 px-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Pts</th>
+            <th className="py-3 px-2 sm:px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Team</th>
+            <th className="py-3 px-2 sm:px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Players</th>
+            <th className="py-3 px-2 sm:px-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">P</th>
+            <th className="py-3 px-2 sm:px-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">W</th>
+            <th className="py-3 px-2 sm:px-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">L</th>
+            <th className="py-3 px-2 sm:px-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Pts</th>
+            <th className="py-3 px-2 sm:px-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-200">
           {teams.map((team, index) => (
-            <tr key={`${poolKey}-${index + 1}`} className="hover:bg-gray-50">
-              <td className="py-3 px-4 text-sm text-gray-900">{team.name}</td>
-              <td className="py-3 px-4 text-sm text-gray-600">
+            <tr key={`${poolKey}-${index + 1}`} className={`hover:bg-gray-50 ${team.qualified ? 'bg-green-50' : ''}`}>
+              <td className="py-3 px-2 sm:px-4 text-sm text-gray-900">{team.name}</td>
+              <td className="py-3 px-2 sm:px-4 text-sm text-gray-600">
                 {team.players.join(" & ")}
               </td>
-              <td className="py-3 px-4 text-sm text-gray-500 text-center">{team.played}</td>
-              <td className="py-3 px-4 text-sm text-gray-500 text-center">{team.won}</td>
-              <td className="py-3 px-4 text-sm text-gray-500 text-center">{team.lost}</td>
-              <td className="py-3 px-4 text-sm text-gray-500 text-center">{team.points}</td>
+              <td className="py-3 px-2 sm:px-4 text-sm text-gray-500 text-center">{team.played}</td>
+              <td className="py-3 px-2 sm:px-4 text-sm text-gray-500 text-center">{team.won}</td>
+              <td className="py-3 px-2 sm:px-4 text-sm text-gray-500 text-center">{team.lost}</td>
+              <td className="py-3 px-2 sm:px-4 text-sm text-gray-500 text-center">{team.points}</td>
+              <td className="py-3 px-2 sm:px-4 text-sm text-center">
+                {team.qualified ? (
+                  <span className="inline-flex items-center px-1.5 sm:px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                    Qualified
+                  </span>
+                ) : null}
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
     </div>
-  );
+  </div>
+);
 
-  // Function to render an editable pool table (admin mode)
-  const renderEditablePoolTable = (poolName: string, bgColor: string, teams: TeamData[], poolKey: string) => (
-    <div className="bg-white rounded-xl shadow-sm overflow-hidden mb-6">
-      <div className={`${bgColor} text-white py-3 px-4 font-semibold`}>
-        {poolName}
-      </div>
-      <table className="w-full">
+// Update the renderEditablePoolTable function for better mobile responsiveness
+const renderEditablePoolTable = (poolName: string, bgColor: string, teams: TeamData[], poolKey: string) => (
+  <div className="bg-white rounded-xl shadow-sm overflow-hidden mb-6">
+    <div className={`${bgColor} text-white py-3 px-4 font-semibold`}>
+      {poolName}
+    </div>
+    <div className="overflow-x-auto">
+      <table className="w-full min-w-full">
         <thead className="bg-gray-50">
           <tr>
-            <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Team</th>
-            <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Players</th>
-            <th className="py-3 px-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">P</th>
-            <th className="py-3 px-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">W</th>
-            <th className="py-3 px-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">L</th>
-            <th className="py-3 px-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Pts</th>
+            <th className="py-3 px-2 sm:px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Team</th>
+            <th className="py-3 px-2 sm:px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Players</th>
+            <th className="py-3 px-2 sm:px-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">P</th>
+            <th className="py-3 px-2 sm:px-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">W</th>
+            <th className="py-3 px-2 sm:px-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">L</th>
+            <th className="py-3 px-2 sm:px-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Pts</th>
+            <th className="py-3 px-2 sm:px-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Qualified</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-200">
           {teams.map((team, index) => (
-            <tr key={`${poolKey}-${index + 1}`} className="hover:bg-gray-50">
-              <td className="py-3 px-4 text-sm text-gray-900">{team.name}</td>
-              <td className="py-3 px-4 text-sm text-gray-600">
+            <tr key={`${poolKey}-${index + 1}`} className={`hover:bg-gray-50 ${team.qualified ? 'bg-green-50' : ''}`}>
+              <td className="py-3 px-2 sm:px-4 text-sm text-gray-900">{team.name}</td>
+              <td className="py-3 px-2 sm:px-4 text-sm text-gray-600">
                 {team.players.join(" & ")}
               </td>
-              <td className="py-3 px-4 text-sm text-gray-500 text-center">
+              <td className="py-3 px-2 sm:px-4 text-sm text-gray-500 text-center">
                 <input
                   type="text"
-                  className="w-12 text-center border rounded p-1"
+                  className="w-10 sm:w-12 text-center border rounded p-1"
                   value={team.played}
                   onChange={(e) => handleUpdateTeam(poolKey, index, 'played', e.target.value)}
                 />
               </td>
-              <td className="py-3 px-4 text-sm text-gray-500 text-center">
+              <td className="py-3 px-2 sm:px-4 text-sm text-gray-500 text-center">
                 <input
                   type="text"
-                  className="w-12 text-center border rounded p-1"
+                  className="w-10 sm:w-12 text-center border rounded p-1"
                   value={team.won}
                   onChange={(e) => handleUpdateTeam(poolKey, index, 'won', e.target.value)}
                 />
               </td>
-              <td className="py-3 px-4 text-sm text-gray-500 text-center">
+              <td className="py-3 px-2 sm:px-4 text-sm text-gray-500 text-center">
                 <input
                   type="text"
-                  className="w-12 text-center border rounded p-1"
+                  className="w-10 sm:w-12 text-center border rounded p-1"
                   value={team.lost}
                   onChange={(e) => handleUpdateTeam(poolKey, index, 'lost', e.target.value)}
                 />
               </td>
-              <td className="py-3 px-4 text-sm text-gray-500 text-center">
+              <td className="py-3 px-2 sm:px-4 text-sm text-gray-500 text-center">
                 <input
                   type="text"
-                  className="w-12 text-center border rounded p-1"
+                  className="w-10 sm:w-12 text-center border rounded p-1"
                   value={team.points}
                   onChange={(e) => handleUpdateTeam(poolKey, index, 'points', e.target.value)}
                 />
+              </td>
+              <td className="py-3 px-2 sm:px-4 text-sm text-center">
+                <button
+                  onClick={() => toggleQualified(poolKey, index, team.qualified)}
+                  className={`px-2 sm:px-3 py-1 rounded text-white text-xs sm:text-sm font-medium ${
+                    team.qualified 
+                      ? 'bg-red-500 hover:bg-red-600' 
+                      : 'bg-green-500 hover:bg-green-600'
+                  }`}
+                >
+                  {team.qualified ? 'Unqualify' : 'Qualify'}
+                </button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
     </div>
-  );
+  </div>
+);
 
   // Loading state
   if (isLoading) {
