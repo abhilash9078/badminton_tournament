@@ -1,136 +1,102 @@
 import React from "react";
 import SectionTitle from "./SectionTitle";
 
+// Define the team data structure with player names
+interface TeamData {
+  name: string;
+  players: string[];
+  played: string;
+  won: string;
+  lost: string;
+  points: string;
+}
+
+// Sample data for each pool - you'll need to replace with actual player names
+const poolATeams: TeamData[] = [
+  { name: "Team 1", players: ["Aditya", "Prathap"], played: "-", won: "-", lost: "-", points: "-" },
+  { name: "Team 2", players: ["Shivam G", "Tanmay"], played: "-", won: "-", lost: "-", points: "-" },
+  { name: "Team 3", players: ["Hemanth", "Sanjay"], played: "-", won: "-", lost: "-", points: "-" },
+  { name: "Team 4", players: ["Rishav", "Mano"], played: "-", won: "-", lost: "-", points: "-" },
+];
+
+const poolBTeams: TeamData[] = [
+  { name: "Team 1", players: ["Mohit", "Anurag"], played: "-", won: "-", lost: "-", points: "-" },
+  { name: "Team 2", players: ["Piyush", "R Raju"], played: "-", won: "-", lost: "-", points: "-" },
+  { name: "Team 3", players: ["Sushant", "Amit"], played: "-", won: "-", lost: "-", points: "-" },
+  { name: "Team 4", players: ["Rahul", "Tushar"], played: "-", won: "-", lost: "-", points: "-" },
+];
+
+const poolCTeams: TeamData[] = [
+  { name: "Team 1", players: ["Abhi", "Sumit"], played: "-", won: "-", lost: "-", points: "-" },
+  { name: "Team 2", players: ["Dinesh", "Purushottam"], played: "-", won: "-", lost: "-", points: "-" },
+  { name: "Team 3", players: ["Akash", "Nikhil"], played: "-", won: "-", lost: "-", points: "-" },
+  { name: "Team 4", players: ["Ankit", "Vasudeva"], played: "-", won: "-", lost: "-", points: "-" },
+];
+
+const poolDTeams: TeamData[] = [
+  { name: "Team 1", players: ["Shivam S", "Jay"], played: "-", won: "-", lost: "-", points: "-" },
+  { name: "Team 2", players: ["Sarthak", "Mahendran"], played: "-", won: "-", lost: "-", points: "-" },
+  { name: "Team 3", players: ["Bharath", "Shubham"], played: "-", won: "-", lost: "-", points: "-" },
+  { name: "Team 4", players: ["Goutham", "Rinda"], played: "-", won: "-", lost: "-", points: "-" },
+];
+
 const PoolsAndPoints: React.FC = () => {
+  // Function to render a pool table
+  const renderPoolTable = (poolName: string, bgColor: string, teams: TeamData[], poolKey: string) => (
+    <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+      <div className={`${bgColor} text-white py-3 px-4 font-semibold`}>
+        {poolName}
+      </div>
+      <table className="w-full">
+        <thead className="bg-gray-50">
+          <tr>
+            <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Team</th>
+            <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Players</th>
+            <th className="py-3 px-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">P</th>
+            <th className="py-3 px-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">W</th>
+            <th className="py-3 px-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">L</th>
+            <th className="py-3 px-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Pts</th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-gray-200">
+          {teams.map((team, index) => (
+            <tr key={`${poolKey}-${index + 1}`} className="hover:bg-gray-50">
+              <td className="py-3 px-4 text-sm text-gray-900">{team.name}</td>
+              <td className="py-3 px-4 text-sm text-gray-600">
+                {team.players.join(" & ")}
+              </td>
+              <td className="py-3 px-4 text-sm text-gray-500 text-center">{team.played}</td>
+              <td className="py-3 px-4 text-sm text-gray-500 text-center">{team.won}</td>
+              <td className="py-3 px-4 text-sm text-gray-500 text-center">{team.lost}</td>
+              <td className="py-3 px-4 text-sm text-gray-500 text-center">{team.points}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+
   return (
     <section id="pools-points" className="py-20 bg-gray-50">
       <div className="container mx-auto px-4">
         <SectionTitle>Pools & Points</SectionTitle>
         
-        {/* Pool standings table - empty for now */}
+        {/* Pool standings table with player names */}
         <div className="max-w-5xl mx-auto mb-16">
           <h3 className="text-xl font-semibold text-gray-800 mb-6 text-center">Pool Standings</h3>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Pool A */}
-            <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-              <div className="bg-blue-600 text-white py-3 px-4 font-semibold">
-                Pool A
-              </div>
-              <table className="w-full">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Team</th>
-                    <th className="py-3 px-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">P</th>
-                    <th className="py-3 px-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">W</th>
-                    <th className="py-3 px-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">L</th>
-                    <th className="py-3 px-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Pts</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-200">
-                  {/* Empty rows for now */}
-                  {[1, 2, 3, 4].map((team) => (
-                    <tr key={`poolA-${team}`} className="hover:bg-gray-50">
-                      <td className="py-3 px-4 text-sm text-gray-900">Team {team}</td>
-                      <td className="py-3 px-4 text-sm text-gray-500 text-center">-</td>
-                      <td className="py-3 px-4 text-sm text-gray-500 text-center">-</td>
-                      <td className="py-3 px-4 text-sm text-gray-500 text-center">-</td>
-                      <td className="py-3 px-4 text-sm text-gray-500 text-center">-</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+            {renderPoolTable("Pool A", "bg-blue-600", poolATeams, "poolA")}
             
             {/* Pool B */}
-            <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-              <div className="bg-green-600 text-white py-3 px-4 font-semibold">
-                Pool B
-              </div>
-              <table className="w-full">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Team</th>
-                    <th className="py-3 px-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">P</th>
-                    <th className="py-3 px-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">W</th>
-                    <th className="py-3 px-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">L</th>
-                    <th className="py-3 px-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Pts</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-200">
-                  {/* Empty rows for now */}
-                  {[1, 2, 3, 4].map((team) => (
-                    <tr key={`poolB-${team}`} className="hover:bg-gray-50">
-                      <td className="py-3 px-4 text-sm text-gray-900">Team {team}</td>
-                      <td className="py-3 px-4 text-sm text-gray-500 text-center">-</td>
-                      <td className="py-3 px-4 text-sm text-gray-500 text-center">-</td>
-                      <td className="py-3 px-4 text-sm text-gray-500 text-center">-</td>
-                      <td className="py-3 px-4 text-sm text-gray-500 text-center">-</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+            {renderPoolTable("Pool B", "bg-green-600", poolBTeams, "poolB")}
             
             {/* Pool C */}
-            <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-              <div className="bg-purple-600 text-white py-3 px-4 font-semibold">
-                Pool C
-              </div>
-              <table className="w-full">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Team</th>
-                    <th className="py-3 px-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">P</th>
-                    <th className="py-3 px-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">W</th>
-                    <th className="py-3 px-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">L</th>
-                    <th className="py-3 px-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Pts</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-200">
-                  {/* Empty rows for now */}
-                  {[1, 2, 3, 4].map((team) => (
-                    <tr key={`poolC-${team}`} className="hover:bg-gray-50">
-                      <td className="py-3 px-4 text-sm text-gray-900">Team {team}</td>
-                      <td className="py-3 px-4 text-sm text-gray-500 text-center">-</td>
-                      <td className="py-3 px-4 text-sm text-gray-500 text-center">-</td>
-                      <td className="py-3 px-4 text-sm text-gray-500 text-center">-</td>
-                      <td className="py-3 px-4 text-sm text-gray-500 text-center">-</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+            {renderPoolTable("Pool C", "bg-purple-600", poolCTeams, "poolC")}
             
             {/* Pool D */}
-            <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-              <div className="bg-orange-600 text-white py-3 px-4 font-semibold">
-                Pool D
-              </div>
-              <table className="w-full">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Team</th>
-                    <th className="py-3 px-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">P</th>
-                    <th className="py-3 px-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">W</th>
-                    <th className="py-3 px-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">L</th>
-                    <th className="py-3 px-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Pts</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-200">
-                  {/* Empty rows for now */}
-                  {[1, 2, 3, 4].map((team) => (
-                    <tr key={`poolD-${team}`} className="hover:bg-gray-50">
-                      <td className="py-3 px-4 text-sm text-gray-900">Team {team}</td>
-                      <td className="py-3 px-4 text-sm text-gray-500 text-center">-</td>
-                      <td className="py-3 px-4 text-sm text-gray-500 text-center">-</td>
-                      <td className="py-3 px-4 text-sm text-gray-500 text-center">-</td>
-                      <td className="py-3 px-4 text-sm text-gray-500 text-center">-</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+            {renderPoolTable("Pool D", "bg-orange-600", poolDTeams, "poolD")}
           </div>
         </div>
         
