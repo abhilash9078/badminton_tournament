@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import SectionTitle from "./SectionTitle";
 
 // Define the team data structure with player names
@@ -11,37 +11,186 @@ interface TeamData {
   points: string;
 }
 
-// Sample data for each pool - you'll need to replace with actual player names
-const poolATeams: TeamData[] = [
-  { name: "Team 1", players: ["Aditya", "Prathap"], played: "-", won: "-", lost: "-", points: "-" },
-  { name: "Team 2", players: ["Shivam G", "Tanmay"], played: "-", won: "-", lost: "-", points: "-" },
-  { name: "Team 3", players: ["Hemanth", "Sanjay"], played: "-", won: "-", lost: "-", points: "-" },
-  { name: "Team 4", players: ["Rishav", "Mano"], played: "-", won: "-", lost: "-", points: "-" },
-];
-
-const poolBTeams: TeamData[] = [
-  { name: "Team 1", players: ["Mohit", "Anurag"], played: "-", won: "-", lost: "-", points: "-" },
-  { name: "Team 2", players: ["Piyush", "R Raju"], played: "-", won: "-", lost: "-", points: "-" },
-  { name: "Team 3", players: ["Sushant", "Amit"], played: "-", won: "-", lost: "-", points: "-" },
-  { name: "Team 4", players: ["Rahul", "Tushar"], played: "-", won: "-", lost: "-", points: "-" },
-];
-
-const poolCTeams: TeamData[] = [
-  { name: "Team 1", players: ["Abhi", "Sumit"], played: "-", won: "-", lost: "-", points: "-" },
-  { name: "Team 2", players: ["Dinesh", "Purushottam"], played: "-", won: "-", lost: "-", points: "-" },
-  { name: "Team 3", players: ["Akash", "Nikhil"], played: "-", won: "-", lost: "-", points: "-" },
-  { name: "Team 4", players: ["Ankit", "Vasudeva"], played: "-", won: "-", lost: "-", points: "-" },
-];
-
-const poolDTeams: TeamData[] = [
-  { name: "Team 1", players: ["Shivam S", "Jay"], played: "-", won: "-", lost: "-", points: "-" },
-  { name: "Team 2", players: ["Sarthak", "Mahendran"], played: "-", won: "-", lost: "-", points: "-" },
-  { name: "Team 3", players: ["Bharath", "Shubham"], played: "-", won: "-", lost: "-", points: "-" },
-  { name: "Team 4", players: ["Goutham", "Rinda"], played: "-", won: "-", lost: "-", points: "-" },
-];
+// Admin credentials
+const ADMIN_USERNAME = "admin";
+const ADMIN_PASSWORD = "password123";
 
 const PoolsAndPoints: React.FC = () => {
-  // Function to render a pool table
+  // Authentication state
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [loginError, setLoginError] = useState("");
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Team data state
+  const [poolATeams, setPoolATeams] = useState<TeamData[]>([]);
+  const [poolBTeams, setPoolBTeams] = useState<TeamData[]>([]);
+  const [poolCTeams, setPoolCTeams] = useState<TeamData[]>([]);
+  const [poolDTeams, setPoolDTeams] = useState<TeamData[]>([]);
+
+  // Fetch team data from Neon database
+  useEffect(() => {
+    const fetchTeamData = async () => {
+      try {
+        setIsLoading(true);
+        const response = await fetch('/api/teams');
+        if (response.ok) {
+          const data = await response.json();
+          setPoolATeams(data.poolATeams);
+          setPoolBTeams(data.poolBTeams);
+          setPoolCTeams(data.poolCTeams);
+          setPoolDTeams(data.poolDTeams);
+        } else {
+          console.error('Failed to fetch team data');
+          // Load default data if API fails
+          loadDefaultData();
+        }
+      } catch (error) {
+        console.error('Error fetching team data:', error);
+        // Load default data if API fails
+        loadDefaultData();
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchTeamData();
+  }, []);
+
+  // Load default data as fallback
+  const loadDefaultData = () => {
+    setPoolATeams([
+      { name: "Team 1", players: ["Aditya", "Prathap"], played: "-", won: "-", lost: "-", points: "-" },
+      { name: "Team 2", players: ["Shivam G", "Tanmay"], played: "-", won: "-", lost: "-", points: "-" },
+      { name: "Team 3", players: ["Hemanth", "Sanjay"], played: "-", won: "-", lost: "-", points: "-" },
+      { name: "Team 4", players: ["Rishav", "Mano"], played: "-", won: "-", lost: "-", points: "-" },
+    ]);
+    
+    setPoolBTeams([
+      { name: "Team 1", players: ["Mohit", "Anurag"], played: "-", won: "-", lost: "-", points: "-" },
+      { name: "Team 2", players: ["Piyush", "R Raju"], played: "-", won: "-", lost: "-", points: "-" },
+      { name: "Team 3", players: ["Sushant", "Amit"], played: "-", won: "-", lost: "-", points: "-" },
+      { name: "Team 4", players: ["Rahul", "Tushar"], played: "-", won: "-", lost: "-", points: "-" },
+    ]);
+    
+    setPoolCTeams([
+      { name: "Team 1", players: ["Abhi", "Sumit"], played: "-", won: "-", lost: "-", points: "-" },
+      { name: "Team 2", players: ["Dinesh", "Purushottam"], played: "-", won: "-", lost: "-", points: "-" },
+      { name: "Team 3", players: ["Akash", "Nikhil"], played: "-", won: "-", lost: "-", points: "-" },
+      { name: "Team 4", players: ["Ankit", "Vasudeva"], played: "-", won: "-", lost: "-", points: "-" },
+    ]);
+    
+    setPoolDTeams([
+      { name: "Team 1", players: ["Shivam S", "Jay"], played: "-", won: "-", lost: "-", points: "-" },
+      { name: "Team 2", players: ["Sarthak", "Mahendran"], played: "-", won: "-", lost: "-", points: "-" },
+      { name: "Team 3", players: ["Bharath", "Shubham"], played: "-", won: "-", lost: "-", points: "-" },
+      { name: "Team 4", players: ["Goutham", "Rinda"], played: "-", won: "-", lost: "-", points: "-" },
+    ]);
+  };
+
+  // Handle login
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
+      setIsAuthenticated(true);
+      setLoginError("");
+      setShowLoginModal(false);
+    } else {
+      setLoginError("Invalid username or password");
+    }
+  };
+
+  // Handle logout
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+    setUsername("");
+    setPassword("");
+  };
+
+  // Handle team data update
+  const handleUpdateTeam = async (
+    poolKey: string, 
+    teamIndex: number, 
+    field: keyof TeamData, 
+    value: string
+  ) => {
+    // Update local state first for immediate UI feedback
+    let updatedTeam: TeamData | null = null;
+    
+    switch(poolKey) {
+      case 'poolA':
+        setPoolATeams(teams => 
+          teams.map((team, index) => {
+            if (index === teamIndex) {
+              updatedTeam = { ...team, [field]: value };
+              return updatedTeam;
+            }
+            return team;
+          })
+        );
+        break;
+      case 'poolB':
+        setPoolBTeams(teams => 
+          teams.map((team, index) => {
+            if (index === teamIndex) {
+              updatedTeam = { ...team, [field]: value };
+              return updatedTeam;
+            }
+            return team;
+          })
+        );
+        break;
+      case 'poolC':
+        setPoolCTeams(teams => 
+          teams.map((team, index) => {
+            if (index === teamIndex) {
+              updatedTeam = { ...team, [field]: value };
+              return updatedTeam;
+            }
+            return team;
+          })
+        );
+        break;
+      case 'poolD':
+        setPoolDTeams(teams => 
+          teams.map((team, index) => {
+            if (index === teamIndex) {
+              updatedTeam = { ...team, [field]: value };
+              return updatedTeam;
+            }
+            return team;
+          })
+        );
+        break;
+    }
+
+    // Send update to the API
+    if (updatedTeam) {
+      try {
+        const response = await fetch('/api/teams/update', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            poolKey,
+            teamIndex,
+            team: updatedTeam
+          }),
+        });
+        
+        if (!response.ok) {
+          console.error('Failed to update team data');
+        }
+      } catch (error) {
+        console.error('Error updating team data:', error);
+      }
+    }
+  };
+
+  // Function to render a pool table (read-only mode)
   const renderPoolTable = (poolName: string, bgColor: string, teams: TeamData[], poolKey: string) => (
     <div className="bg-white rounded-xl shadow-sm overflow-hidden">
       <div className={`${bgColor} text-white py-3 px-4 font-semibold`}>
@@ -76,10 +225,128 @@ const PoolsAndPoints: React.FC = () => {
     </div>
   );
 
+  // Function to render an editable pool table (admin mode)
+  const renderEditablePoolTable = (poolName: string, bgColor: string, teams: TeamData[], poolKey: string) => (
+    <div className="bg-white rounded-xl shadow-sm overflow-hidden mb-6">
+      <div className={`${bgColor} text-white py-3 px-4 font-semibold`}>
+        {poolName}
+      </div>
+      <table className="w-full">
+        <thead className="bg-gray-50">
+          <tr>
+            <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Team</th>
+            <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Players</th>
+            <th className="py-3 px-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">P</th>
+            <th className="py-3 px-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">W</th>
+            <th className="py-3 px-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">L</th>
+            <th className="py-3 px-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Pts</th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-gray-200">
+          {teams.map((team, index) => (
+            <tr key={`${poolKey}-${index + 1}`} className="hover:bg-gray-50">
+              <td className="py-3 px-4 text-sm text-gray-900">{team.name}</td>
+              <td className="py-3 px-4 text-sm text-gray-600">
+                {team.players.join(" & ")}
+              </td>
+              <td className="py-3 px-4 text-sm text-gray-500 text-center">
+                <input
+                  type="text"
+                  className="w-12 text-center border rounded p-1"
+                  value={team.played}
+                  onChange={(e) => handleUpdateTeam(poolKey, index, 'played', e.target.value)}
+                />
+              </td>
+              <td className="py-3 px-4 text-sm text-gray-500 text-center">
+                <input
+                  type="text"
+                  className="w-12 text-center border rounded p-1"
+                  value={team.won}
+                  onChange={(e) => handleUpdateTeam(poolKey, index, 'won', e.target.value)}
+                />
+              </td>
+              <td className="py-3 px-4 text-sm text-gray-500 text-center">
+                <input
+                  type="text"
+                  className="w-12 text-center border rounded p-1"
+                  value={team.lost}
+                  onChange={(e) => handleUpdateTeam(poolKey, index, 'lost', e.target.value)}
+                />
+              </td>
+              <td className="py-3 px-4 text-sm text-gray-500 text-center">
+                <input
+                  type="text"
+                  className="w-12 text-center border rounded p-1"
+                  value={team.points}
+                  onChange={(e) => handleUpdateTeam(poolKey, index, 'points', e.target.value)}
+                />
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+
+  // Loading state
+  if (isLoading) {
+    return (
+      <section id="pools-points" className="py-20 bg-gray-50">
+        <div className="container mx-auto px-4 text-center">
+          <SectionTitle>Pools & Points</SectionTitle>
+          <div className="flex justify-center items-center h-40">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // Render admin panel if authenticated
+  if (isAuthenticated) {
+    return (
+      <section id="pools-points" className="py-20 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <div className="max-w-5xl mx-auto">
+            <div className="flex justify-between items-center mb-8">
+              <h2 className="text-2xl font-bold text-gray-800">Admin Panel</h2>
+              <button 
+                onClick={handleLogout}
+                className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+              >
+                Logout
+              </button>
+            </div>
+            
+            <div className="mb-8">
+              <h3 className="text-xl font-semibold text-gray-800 mb-4">Update Pool Standings</h3>
+              
+              {renderEditablePoolTable("Pool A", "bg-blue-600", poolATeams, "poolA")}
+              {renderEditablePoolTable("Pool B", "bg-green-600", poolBTeams, "poolB")}
+              {renderEditablePoolTable("Pool C", "bg-purple-600", poolCTeams, "poolC")}
+              {renderEditablePoolTable("Pool D", "bg-orange-600", poolDTeams, "poolD")}
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // Regular view with login modal
   return (
     <section id="pools-points" className="py-20 bg-gray-50">
       <div className="container mx-auto px-4">
         <SectionTitle>Pools & Points</SectionTitle>
+        
+        {/* Admin Login Button */}
+        <div className="max-w-5xl mx-auto mb-8 flex justify-end">
+          <button 
+            className="bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium py-1 px-3 rounded text-sm"
+            onClick={() => setShowLoginModal(true)}
+          >
+            Admin Login
+          </button>
+        </div>
         
         {/* Pool standings table with player names */}
         <div className="max-w-5xl mx-auto mb-16">
@@ -239,6 +506,69 @@ const PoolsAndPoints: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Login Modal */}
+      {showLoginModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-8 rounded-xl shadow-md max-w-md mx-auto relative">
+            <button 
+              className="absolute top-3 right-3 text-gray-400 hover:text-gray-600"
+              onClick={() => setShowLoginModal(false)}
+            >
+              <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+            
+            <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">Admin Login</h2>
+            
+            {loginError && (
+              <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4" role="alert">
+                <span className="block sm:inline">{loginError}</span>
+              </div>
+            )}
+            
+            <form onSubmit={handleLogin}>
+              <div className="mb-4">
+                <label htmlFor="username" className="block text-gray-700 text-sm font-bold mb-2">
+                  Username
+                </label>
+                <input
+                  type="text"
+                  id="username"
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  required
+                />
+              </div>
+              
+              <div className="mb-6">
+                <label htmlFor="password" className="block text-gray-700 text-sm font-bold mb-2">
+                  Password
+                </label>
+                <input
+                  type="password"
+                  id="password"
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+              </div>
+              
+              <div className="flex items-center justify-center">
+                <button
+                  type="submit"
+                  className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                >
+                  Sign In
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </section>
   );
 };
