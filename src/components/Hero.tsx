@@ -94,7 +94,7 @@ const Hero: React.FC = () => {
         
         <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 tracking-tight">
           <span className="bg-gradient-to-r from-white to-blue-200 text-transparent bg-clip-text animate-flash-text">
-            Shuttle Showdown 2.0
+            Shuttle Showdown 3.0
           </span>
         </h1>
         <h2 className="text-2xl md:text-3xl font-medium text-cyan-300 mb-8">
