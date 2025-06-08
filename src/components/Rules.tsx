@@ -94,66 +94,10 @@ const Rules: React.FC = () => {
           <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
             <div className="overflow-x-auto">
               <div className="w-full">
-                {/* First Tournament Section */}
-                <div className="mb-16">
-                  <h3 className="text-2xl font-bold text-blue-800 mb-6 text-center">
-                    First Tournament Results
-                  </h3>
-                  
-                  <div className="mt-8 text-center">
-                    <img
-                      src={allFinalistsImage}
-                      alt="All tournament finalists"
-                      className="max-w-full h-auto rounded-lg shadow-md mx-auto"
-                    />
-                    <p className="text-sm text-gray-600 mt-3">
-                      First Tournament Finalists
-                    </p>
-                  </div>
-
-                  <div className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div className="bg-gradient-to-br from-yellow-50 to-yellow-100 p-5 rounded-xl shadow-sm">
-                      <h4 className="font-semibold text-yellow-700 mb-3 text-center">
-                        Champions
-                      </h4>
-                      <div className="bg-white p-3 rounded-lg text-center">
-                        <p className="font-medium">Himanshu & Surya</p>
-                        <p className="text-sm text-gray-600 mt-1">
-                          Gold Trophy Winners
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="bg-gradient-to-br from-gray-50 to-gray-100 p-5 rounded-xl shadow-sm">
-                      <h4 className="font-semibold text-gray-700 mb-3 text-center">
-                        Runners-up
-                      </h4>
-                      <div className="bg-white p-3 rounded-lg text-center">
-                        <p className="font-medium">Abhi & Soumya</p>
-                        <p className="text-sm text-gray-600 mt-1">
-                          Silver Trophy Winners
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="bg-gradient-to-br from-amber-50 to-amber-100 p-5 rounded-xl shadow-sm">
-                      <h4 className="font-semibold text-amber-700 mb-3 text-center">
-                        Semifinalists
-                      </h4>
-                      <div className="bg-white p-3 rounded-lg text-center">
-                        <p className="font-medium">Mahendran & Shivam</p>
-                      </div>
-                      <div className="bg-white p-3 rounded-lg text-center mt-3">
-                        <p className="font-medium">Ankit & Anurag</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
                 {/* Second Tournament Section */}
                 <div className="mt-16 pt-12 border-t-2 border-blue-100">
                   <h3 className="text-2xl font-bold text-blue-800 mb-6 text-center">
-                    Second Tournament Results
+                    Latest Tournament Results (2nd Edition)
                   </h3>
                   
                   <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -220,6 +164,62 @@ const Rules: React.FC = () => {
                         />
                         <h5 className="font-semibold text-center mb-1">Shivam & Tanmay</h5>
                         <p className="text-sm text-gray-600 text-center">Bronze Medal Winners</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* First Tournament Section */}
+                <div className="mb-16">
+                  <h3 className="text-2xl font-bold text-blue-800 mb-6 text-center">
+                    First Tournament Results
+                  </h3>
+                  
+                  <div className="mt-8 text-center">
+                    <img
+                      src={allFinalistsImage}
+                      alt="All tournament finalists"
+                      className="max-w-full h-auto rounded-lg shadow-md mx-auto"
+                    />
+                    <p className="text-sm text-gray-600 mt-3">
+                      First Tournament Finalists
+                    </p>
+                  </div>
+
+                  <div className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="bg-gradient-to-br from-yellow-50 to-yellow-100 p-5 rounded-xl shadow-sm">
+                      <h4 className="font-semibold text-yellow-700 mb-3 text-center">
+                        Champions
+                      </h4>
+                      <div className="bg-white p-3 rounded-lg text-center">
+                        <p className="font-medium">Himanshu & Surya</p>
+                        <p className="text-sm text-gray-600 mt-1">
+                          Gold Trophy Winners
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="bg-gradient-to-br from-gray-50 to-gray-100 p-5 rounded-xl shadow-sm">
+                      <h4 className="font-semibold text-gray-700 mb-3 text-center">
+                        Runners-up
+                      </h4>
+                      <div className="bg-white p-3 rounded-lg text-center">
+                        <p className="font-medium">Abhi & Soumya</p>
+                        <p className="text-sm text-gray-600 mt-1">
+                          Silver Trophy Winners
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="bg-gradient-to-br from-amber-50 to-amber-100 p-5 rounded-xl shadow-sm">
+                      <h4 className="font-semibold text-amber-700 mb-3 text-center">
+                        Semifinalists
+                      </h4>
+                      <div className="bg-white p-3 rounded-lg text-center">
+                        <p className="font-medium">Mahendran & Shivam</p>
+                      </div>
+                      <div className="bg-white p-3 rounded-lg text-center mt-3">
+                        <p className="font-medium">Ankit & Anurag</p>
                       </div>
                     </div>
                   </div>
