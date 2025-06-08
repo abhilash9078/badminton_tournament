@@ -125,10 +125,10 @@ const Rules: React.FC = () => {
                       <div className="p-5">
                         <img 
                           src={runner2Image} 
-                          alt="Tournament Runners-up - Sarthak and Mehendran"
+                          alt="Tournament Runners-up - Sarthak and Mahendran"
                           className="w-full h-64 object-cover rounded-lg shadow-md mb-4"
                         />
-                        <h5 className="text-lg font-semibold text-center mb-2">Sarthak & Mehendran</h5>
+                        <h5 className="text-lg font-semibold text-center mb-2">Sarthak & Mahendran</h5>
                         <p className="text-sm text-gray-600 text-center">Silver Trophy Winners</p>
                       </div>
                     </div>
@@ -170,7 +170,7 @@ const Rules: React.FC = () => {
                 </div>
 
                 {/* First Tournament Section */}
-                <div className="mb-16">
+                <div className="mb-16 pt-12 border-t-2 border-blue-100">
                   <h3 className="text-2xl font-bold text-blue-800 mb-6 text-center">
                     First Tournament Results
                   </h3>
