@@ -5,7 +5,7 @@ import Rules from './components/Rules';
 import Location from './components/Location';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
-import PoolsAndPoints from './components/PoolsAndPoints';
+// import PoolsAndPoints from './components/PoolsAndPoints';
 
 function App() {
   return (
@@ -14,7 +14,7 @@ function App() {
       <Hero />
       <About />
       <Rules />
-      <PoolsAndPoints />
+      {/* <PoolsAndPoints /> */}
       <Location />
       <Contact />
       <Footer />

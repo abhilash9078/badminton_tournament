@@ -1,8 +1,12 @@
 import React from "react";
 import SectionTitle from "./SectionTitle";
-import winnerImage from "../../images/image_3.jpeg";
 import allFinalistsImage from "../../images/image_4.jpeg";
-import tournamentOfficialsImage from "../../images/image_rf.jpeg";
+import tournamentOfficialsImage from "../../images/hostandref.jpeg";
+// Import new images for the second tournament
+import winner2Image from "../../images/winner2.jpeg";
+import runner2Image from "../../images/runner2.jpeg";
+import semis1Image from "../../images/semis1.jpeg";
+import semis2Image from "../../images/semis2.jpeg";
 
 const Rules: React.FC = () => {
   return (
@@ -88,124 +92,137 @@ const Rules: React.FC = () => {
 
         <div className="mt-12 max-w-4xl mx-auto">
           <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
-            {/* <h3 className="text-xl font-semibold text-gray-800 mb-4">
-              Tournament Structure
-            </h3> */}
             <div className="overflow-x-auto">
               <div className="w-full">
-                {/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-                  <div className="bg-blue-100 p-4 rounded-lg text-center">
-                    <h4 className="font-semibold text-blue-800 mb-2">Pool A</h4>
-                    <div className="space-y-2 text-sm">
-                      <div className="bg-white p-2 rounded">Team 1</div>
-                      <div className="bg-white p-2 rounded">Team 2</div>
-                      <div className="bg-white p-2 rounded">Team 3</div>
-                      <div className="bg-white p-2 rounded">Team 4</div>
-                    </div>
-                  </div>
-                  <div className="bg-blue-100 p-4 rounded-lg text-center">
-                    <h4 className="font-semibold text-blue-800 mb-2">Pool B</h4>
-                    <div className="space-y-2 text-sm">
-                      <div className="bg-white p-2 rounded">Team 5</div>
-                      <div className="bg-white p-2 rounded">Team 6</div>
-                      <div className="bg-white p-2 rounded">Team 7</div>
-                      <div className="bg-white p-2 rounded">Team 8</div>
-                    </div>
-                  </div>
-                  <div className="bg-blue-100 p-4 rounded-lg text-center">
-                    <h4 className="font-semibold text-blue-800 mb-2">Pool C</h4>
-                    <div className="space-y-2 text-sm">
-                      <div className="bg-white p-2 rounded">Team 9</div>
-                      <div className="bg-white p-2 rounded">Team 10</div>
-                      <div className="bg-white p-2 rounded">Team 11</div>
-                      <div className="bg-white p-2 rounded">Team 12</div>
-                    </div>
-                  </div>
-                  <div className="bg-blue-100 p-4 rounded-lg text-center">
-                    <h4 className="font-semibold text-blue-800 mb-2">Pool D</h4>
-                    <div className="space-y-2 text-sm">
-                      <div className="bg-white p-2 rounded">Team 13</div>
-                      <div className="bg-white p-2 rounded">Team 14</div>
-                      <div className="bg-white p-2 rounded">Team 15</div>
-                      <div className="bg-white p-2 rounded">Team 16</div>
-                    </div>
-                  </div>
-                </div> */}
-
-                <div className="mt-8 flex justify-center items-center">
-                  <div className="text-center">
-                    <h4 className="font-semibold text-gray-800 mb-4">
-                      Last Tournament Winners
-                    </h4>
+                {/* First Tournament Section */}
+                <div className="mb-16">
+                  <h3 className="text-2xl font-bold text-blue-800 mb-6 text-center">
+                    First Tournament Results
+                  </h3>
+                  
+                  <div className="mt-8 text-center">
                     <img
-                      src={winnerImage}
-                      alt="Last winners - Himanshu and Surya"
-                      className="max-w-full h-auto rounded-lg shadow-md mb-4"
+                      src={allFinalistsImage}
+                      alt="All tournament finalists"
+                      className="max-w-full h-auto rounded-lg shadow-md mx-auto"
                     />
-                    <p className="text-sm text-gray-600 italic">
-                      "Success in doubles is about trust and communication. We
-                      won because we played as one." - Himanshu & Surya
+                    <p className="text-sm text-gray-600 mt-3">
+                      First Tournament Finalists
                     </p>
                   </div>
-                </div>
 
-                <div className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <div className="bg-gradient-to-br from-yellow-50 to-yellow-100 p-5 rounded-xl shadow-sm">
-                    <h4 className="font-semibold text-yellow-700 mb-3 text-center">
-                      Champions
-                    </h4>
-                    <div className="bg-white p-3 rounded-lg text-center">
-                      <p className="font-medium">Himanshu & Surya</p>
-                      <p className="text-sm text-gray-600 mt-1">
-                        Gold Trophy Winners
-                      </p>
+                  <div className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="bg-gradient-to-br from-yellow-50 to-yellow-100 p-5 rounded-xl shadow-sm">
+                      <h4 className="font-semibold text-yellow-700 mb-3 text-center">
+                        Champions
+                      </h4>
+                      <div className="bg-white p-3 rounded-lg text-center">
+                        <p className="font-medium">Himanshu & Surya</p>
+                        <p className="text-sm text-gray-600 mt-1">
+                          Gold Trophy Winners
+                        </p>
+                      </div>
                     </div>
-                  </div>
 
-                  <div className="bg-gradient-to-br from-gray-50 to-gray-100 p-5 rounded-xl shadow-sm">
-                    <h4 className="font-semibold text-gray-700 mb-3 text-center">
-                      Runners-up
-                    </h4>
-                    <div className="bg-white p-3 rounded-lg text-center">
-                      <p className="font-medium">Abhi & Soumya</p>
-                      <p className="text-sm text-gray-600 mt-1">
-                        Silver Trophy Winners
-                      </p>
+                    <div className="bg-gradient-to-br from-gray-50 to-gray-100 p-5 rounded-xl shadow-sm">
+                      <h4 className="font-semibold text-gray-700 mb-3 text-center">
+                        Runners-up
+                      </h4>
+                      <div className="bg-white p-3 rounded-lg text-center">
+                        <p className="font-medium">Abhi & Soumya</p>
+                        <p className="text-sm text-gray-600 mt-1">
+                          Silver Trophy Winners
+                        </p>
+                      </div>
                     </div>
-                  </div>
 
-                  <div className="bg-gradient-to-br from-amber-50 to-amber-100 p-5 rounded-xl shadow-sm">
-                    <h4 className="font-semibold text-amber-700 mb-3 text-center">
-                      Semifinalists
-                    </h4>
-                    <div className="bg-white p-3 rounded-lg text-center">
-                      <p className="font-medium">Mahendran & Shivam</p>
-                      <p className="text-sm text-gray-600 mt-1">
-                        Bronze Medal Winners
-                      </p>
-                    </div>
-                    <div className="bg-white p-3 rounded-lg text-center mt-3">
-                      <p className="font-medium">Ankit & Anurag</p>
-                      <p className="text-sm text-gray-600 mt-1">
-                        Bronze Medal Winners
-                      </p>
+                    <div className="bg-gradient-to-br from-amber-50 to-amber-100 p-5 rounded-xl shadow-sm">
+                      <h4 className="font-semibold text-amber-700 mb-3 text-center">
+                        Semifinalists
+                      </h4>
+                      <div className="bg-white p-3 rounded-lg text-center">
+                        <p className="font-medium">Mahendran & Shivam</p>
+                      </div>
+                      <div className="bg-white p-3 rounded-lg text-center mt-3">
+                        <p className="font-medium">Ankit & Anurag</p>
+                      </div>
                     </div>
                   </div>
                 </div>
 
-                <div className="mt-8 text-center">
-                  <h4 className="font-semibold text-gray-800 mb-4">
-                    Tournament Podium - All Finalists
-                  </h4>
-                  <img
-                    src={allFinalistsImage}
-                    alt="All tournament finalists"
-                    className="max-w-full h-auto rounded-lg shadow-md mx-auto"
-                  />
-                  <p className="text-sm text-gray-600 mt-3">
-                    Winners, Runners-up, and Semifinalists celebrating their
-                    achievements
-                  </p>
+                {/* Second Tournament Section */}
+                <div className="mt-16 pt-12 border-t-2 border-blue-100">
+                  <h3 className="text-2xl font-bold text-blue-800 mb-6 text-center">
+                    Second Tournament Results
+                  </h3>
+                  
+                  <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+                    {/* Winners */}
+                    <div className="bg-gradient-to-br from-yellow-100 to-yellow-200 rounded-xl overflow-hidden shadow-lg">
+                      <div className="p-4 bg-yellow-500 text-white">
+                        <h4 className="text-xl font-bold text-center">Champions</h4>
+                      </div>
+                      <div className="p-5">
+                        <img 
+                          src={winner2Image} 
+                          alt="Tournament Winners - Shivam and Jay"
+                          className="w-full h-64 object-cover rounded-lg shadow-md mb-4"
+                        />
+                        <h5 className="text-lg font-semibold text-center mb-2">Shivam & Jay</h5>
+                        <p className="text-sm text-gray-600 text-center">Gold Trophy Winners</p>
+                      </div>
+                    </div>
+                    
+                    {/* Runners-up */}
+                    <div className="bg-gradient-to-br from-gray-100 to-gray-200 rounded-xl overflow-hidden shadow-lg">
+                      <div className="p-4 bg-gray-500 text-white">
+                        <h4 className="text-xl font-bold text-center">Runners-up</h4>
+                      </div>
+                      <div className="p-5">
+                        <img 
+                          src={runner2Image} 
+                          alt="Tournament Runners-up - Sarthak and Mehendran"
+                          className="w-full h-64 object-cover rounded-lg shadow-md mb-4"
+                        />
+                        <h5 className="text-lg font-semibold text-center mb-2">Sarthak & Mehendran</h5>
+                        <p className="text-sm text-gray-600 text-center">Silver Trophy Winners</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+                    {/* Semifinalists 1 */}
+                    <div className="bg-gradient-to-br from-amber-50 to-amber-100 rounded-xl overflow-hidden shadow-lg">
+                      <div className="p-3 bg-amber-400 text-white">
+                        <h4 className="font-bold text-center">Semifinalists</h4>
+                      </div>
+                      <div className="p-4">
+                        <img 
+                          src={semis1Image} 
+                          alt="Semifinalists - Rishav and Mano"
+                          className="w-full h-48 object-cover rounded-lg shadow-md mb-3"
+                        />
+                        <h5 className="font-semibold text-center mb-1">Rishav & Mano</h5>
+                        <p className="text-sm text-gray-600 text-center">Bronze Medal Winners</p>
+                      </div>
+                    </div>
+                    
+                    {/* Semifinalists 2 */}
+                    <div className="bg-gradient-to-br from-amber-50 to-amber-100 rounded-xl overflow-hidden shadow-lg">
+                      <div className="p-3 bg-amber-400 text-white">
+                        <h4 className="font-bold text-center">Semifinalists</h4>
+                      </div>
+                      <div className="p-4">
+                        <img 
+                          src={semis2Image} 
+                          alt="Semifinalists - Shivam and Tanmay"
+                          className="w-full h-48 object-cover rounded-lg shadow-md mb-3"
+                        />
+                        <h5 className="font-semibold text-center mb-1">Shivam & Tanmay</h5>
+                        <p className="text-sm text-gray-600 text-center">Bronze Medal Winners</p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
                 <div className="mt-12 bg-blue-50 p-6 rounded-xl">
