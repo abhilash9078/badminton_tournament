@@ -1,5 +1,5 @@
-import React from 'react';
-// import CountdownTimer from './CountdownTimer';
+import React from "react";
+import CountdownTimer from "./CountdownTimer";
 
 // Define new animations to be used in the component
 const customAnimations = `
@@ -26,6 +26,11 @@ const customAnimations = `
     100% { transform: translateX(0) translateY(0) rotate(360deg); }
   }
 
+  @keyframes countdown-pulse {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 20px rgba(34, 211, 238, 0.3); }
+    50% { transform: scale(1.05); box-shadow: 0 0 40px rgba(34, 211, 238, 0.6); }
+  }
+
   .animate-pulse-glow {
     animation: pulse-glow 2s ease-in-out infinite;
   }
@@ -41,14 +46,24 @@ const customAnimations = `
   .animate-orbit {
     animation: orbit 10s linear infinite;
   }
+
+  .animate-countdown-pulse {
+    animation: countdown-pulse 3s ease-in-out infinite;
+  }
 `;
 
 const Hero: React.FC = () => {
+  // Tournament date: July 20, 2025 at 9:00 AM
+  const tournamentDate = "2025-07-20T09:00:00";
+
   return (
-    <section id="home" className="relative min-h-screen flex items-center justify-center pt-16 overflow-hidden">
+    <section
+      id="home"
+      className="relative min-h-screen flex items-center justify-center pt-16 overflow-hidden"
+    >
       {/* Inject custom animations */}
       <style dangerouslySetInnerHTML={{ __html: customAnimations }} />
-      
+
       {/* Background with pattern overlay */}
       <div className="absolute inset-0 bg-gradient-to-br from-indigo-900/95 to-purple-800/95 z-0">
         {/* Pattern background */}
@@ -65,53 +80,83 @@ const Hero: React.FC = () => {
             <path d="M12,7a1,1,0,0,0-1,1v4a1,1,0,0,0,2,0V8A1,1,0,0,0,12,7Zm0-3a1.5,1.5,0,1,0,1.5,1.5A1.5,1.5,0,0,0,12,4ZM5,12a7,7,0,0,1,14,0,1,1,0,0,0,2,0A9,9,0,0,0,3,12a1,1,0,0,0,2,0Z" />
           </svg>
         </div>
-        
+
         {/* Floating shuttlecocks */}
         <div className="absolute bottom-1/3 right-1/6 w-16 h-16 opacity-25 animate-float1">
-          <svg viewBox="0 0 24 24" fill="white" className="w-full h-full transform rotate-45">
+          <svg
+            viewBox="0 0 24 24"
+            fill="white"
+            className="w-full h-full transform rotate-45"
+          >
             <path d="M12,7a1,1,0,0,0-1,1v4a1,1,0,0,0,2,0V8A1,1,0,0,0,12,7Zm0-3a1.5,1.5,0,1,0,1.5,1.5A1.5,1.5,0,0,0,12,4ZM5,12a7,7,0,0,1,14,0,1,1,0,0,0,2,0A9,9,0,0,0,3,12a1,1,0,0,0,2,0Z" />
           </svg>
         </div>
-        
+
         <div className="absolute top-1/5 right-1/5 w-20 h-20 opacity-25 animate-float2">
-          <svg viewBox="0 0 24 24" fill="white" className="w-full h-full transform -rotate-12">
+          <svg
+            viewBox="0 0 24 24"
+            fill="white"
+            className="w-full h-full transform -rotate-12"
+          >
             <path d="M12,7a1,1,0,0,0-1,1v4a1,1,0,0,0,2,0V8A1,1,0,0,0,12,7Zm0-3a1.5,1.5,0,1,0,1.5,1.5A1.5,1.5,0,0,0,12,4ZM5,12a7,7,0,0,1,14,0,1,1,0,0,0,2,0A9,9,0,0,0,3,12a1,1,0,0,0,2,0Z" />
           </svg>
         </div>
-        
+
         {/* Pulsing circles */}
         <div className="absolute top-1/2 left-1/6 w-32 h-32 rounded-full bg-cyan-500/5 animate-pulse-glow"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-40 h-40 rounded-full bg-blue-500/5 animate-pulse-glow" style={{ animationDelay: '1s' }}></div>
+        <div
+          className="absolute bottom-1/4 right-1/4 w-40 h-40 rounded-full bg-blue-500/5 animate-pulse-glow"
+          style={{ animationDelay: "1s" }}
+        ></div>
       </div>
 
       {/* Content */}
       <div className="container mx-auto px-4 z-10 text-center">
         <div className="mb-6 inline-block animate-zoom">
-          <span className="bg-gradient-to-r from-cyan-400 to-blue-500 text-transparent bg-clip-text text-lg font-semibold px-4 py-1 rounded-full border border-cyan-400/30 animate-pulse">
-            Coming Soon
+          <span className="bg-gradient-to-r from-cyan-400 to-blue-500 text-transparent bg-clip-text text-lg font-semibold px-4 py-2 rounded-full border border-cyan-400/30 animate-pulse">
+            Tournament Announced
           </span>
         </div>
-        
+
         <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 tracking-tight">
           <span className="bg-gradient-to-r from-white to-blue-200 text-transparent bg-clip-text animate-flash-text">
             Shuttle Showdown 3.0
           </span>
         </h1>
+
+        {/* Tournament Date */}
+        <div className="mb-8">
+          <div className="inline-block bg-gradient-to-r from-yellow-400 to-orange-500 text-black px-6 py-3 rounded-lg font-bold text-lg md:text-xl animate-pulse-glow">
+            📅 July 20, 2025 | 9:00 AM Onwards
+          </div>
+        </div>
+
         <h2 className="text-2xl md:text-3xl font-medium text-cyan-300 mb-8">
-          Bigger. Better. Faster.
+          The Ultimate Badminton Championship
         </h2>
-        <p className="text-xl text-white mb-14 max-w-2xl mx-auto leading-relaxed">
-          Stay tuned for our exciting new tournament format with incredible prizes, elite competition, and unforgettable moments!
+
+        <p className="text-xl text-white mb-12 max-w-2xl mx-auto leading-relaxed">
+          Get ready for the most exciting tournament yet! Elite competition,
+          amazing prizes, and unforgettable moments await!
         </p>
-        
+
+        {/* Countdown Timer */}
+        <div className="mb-12">
+          <h3 className="text-2xl font-semibold text-white mb-6 animate-flash-text">
+            Tournament Starts In:
+          </h3>
+          <div className="animate-countdown-pulse">
+            <CountdownTimer targetDate={tournamentDate} />
+          </div>
+        </div>
+
         {/* Enhanced past tournaments section */}
         <div className="mt-10 max-w-xl mx-auto bg-white/5 backdrop-blur-sm rounded-lg p-5 border border-white/10 animate-pulse-glow">
           <div className="flex flex-col items-center">
-            <p className="text-white/90 text-lg mb-3">Want to see our champions?</p>
-            <a 
-              href="#about" 
-              className="group flex flex-col items-center"
-            >
+            <p className="text-white/90 text-lg mb-3">
+              Want to see our champions?
+            </p>
+            <a href="#rules" className="group flex flex-col items-center">
               <span className="text-cyan-300 text-xl font-semibold group-hover:text-white transition-all duration-300 group-hover:scale-110 mb-2">
                 View Past Tournaments Gallery
               </span>
