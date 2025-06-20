@@ -99,41 +99,53 @@ const Rules: React.FC = () => {
                   <h3 className="text-2xl font-bold text-blue-800 mb-6 text-center">
                     Latest Tournament Results (2nd Edition)
                   </h3>
-                  
+
                   <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8">
                     {/* Winners */}
                     <div className="bg-gradient-to-br from-yellow-100 to-yellow-200 rounded-xl overflow-hidden shadow-lg">
                       <div className="p-4 bg-yellow-500 text-white">
-                        <h4 className="text-xl font-bold text-center">Champions</h4>
+                        <h4 className="text-xl font-bold text-center">
+                          Champions
+                        </h4>
                       </div>
                       <div className="p-5">
-                        <img 
-                          src={winner2Image} 
+                        <img
+                          src={winner2Image}
                           alt="Tournament Winners - Shivam and Jay"
                           className="w-full h-64 object-cover rounded-lg shadow-md mb-4"
                         />
-                        <h5 className="text-lg font-semibold text-center mb-2">Shivam & Jay</h5>
-                        <p className="text-sm text-gray-600 text-center">Gold Trophy Winners</p>
+                        <h5 className="text-lg font-semibold text-center mb-2">
+                          Shivam & Jay
+                        </h5>
+                        <p className="text-sm text-gray-600 text-center">
+                          Gold Trophy Winners
+                        </p>
                       </div>
                     </div>
-                    
+
                     {/* Runners-up */}
                     <div className="bg-gradient-to-br from-gray-100 to-gray-200 rounded-xl overflow-hidden shadow-lg">
                       <div className="p-4 bg-gray-500 text-white">
-                        <h4 className="text-xl font-bold text-center">Runners-up</h4>
+                        <h4 className="text-xl font-bold text-center">
+                          Runners-up
+                        </h4>
                       </div>
                       <div className="p-5">
-                        <img 
-                          src={runner2Image} 
+                        <img
+                          src={runner2Image}
                           alt="Tournament Runners-up - Sarthak and Mahendran"
                           className="w-full h-64 object-cover rounded-lg shadow-md mb-4"
                         />
-                        <h5 className="text-lg font-semibold text-center mb-2">Sarthak & Mahendran</h5>
-                        <p className="text-sm text-gray-600 text-center">Silver Trophy Winners</p>
+                        <h5 className="text-lg font-semibold text-center mb-2">
+                          Sarthak & Mahendran
+                        </h5>
+                        <p className="text-sm text-gray-600 text-center">
+                          Silver Trophy Winners
+                        </p>
                       </div>
                     </div>
                   </div>
-                  
+
                   <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8">
                     {/* Semifinalists 1 */}
                     <div className="bg-gradient-to-br from-amber-50 to-amber-100 rounded-xl overflow-hidden shadow-lg">
@@ -141,29 +153,37 @@ const Rules: React.FC = () => {
                         <h4 className="font-bold text-center">Semifinalists</h4>
                       </div>
                       <div className="p-4">
-                        <img 
-                          src={semis1Image} 
+                        <img
+                          src={semis1Image}
                           alt="Semifinalists - Rishav and Mano"
                           className="w-full h-48 object-cover rounded-lg shadow-md mb-3"
                         />
-                        <h5 className="font-semibold text-center mb-1">Rishav & Mano</h5>
-                        <p className="text-sm text-gray-600 text-center">Bronze Medal Winners</p>
+                        <h5 className="font-semibold text-center mb-1">
+                          Rishav & Mano
+                        </h5>
+                        <p className="text-sm text-gray-600 text-center">
+                          Bronze Medal Winners
+                        </p>
                       </div>
                     </div>
-                    
+
                     {/* Semifinalists 2 */}
                     <div className="bg-gradient-to-br from-amber-50 to-amber-100 rounded-xl overflow-hidden shadow-lg">
                       <div className="p-3 bg-amber-400 text-white">
                         <h4 className="font-bold text-center">Semifinalists</h4>
                       </div>
                       <div className="p-4">
-                        <img 
-                          src={semis2Image} 
+                        <img
+                          src={semis2Image}
                           alt="Semifinalists - Shivam and Tanmay"
                           className="w-full h-48 object-cover rounded-lg shadow-md mb-3"
                         />
-                        <h5 className="font-semibold text-center mb-1">Shivam & Tanmay</h5>
-                        <p className="text-sm text-gray-600 text-center">Bronze Medal Winners</p>
+                        <h5 className="font-semibold text-center mb-1">
+                          Shivam & Tanmay
+                        </h5>
+                        <p className="text-sm text-gray-600 text-center">
+                          Bronze Medal Winners
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -174,7 +194,7 @@ const Rules: React.FC = () => {
                   <h3 className="text-2xl font-bold text-blue-800 mb-6 text-center">
                     First Tournament Results
                   </h3>
-                  
+
                   <div className="mt-8 text-center">
                     <img
                       src={allFinalistsImage}
@@ -241,15 +261,15 @@ const Rules: React.FC = () => {
                         </li>
                         <li className="bg-white p-3 rounded-lg flex items-center">
                           <div className="w-3 h-3 bg-blue-500 rounded-full mr-3"></div>
-                          <p>Abhilash (Chief Referee)</p>
+                          <p>DK (referee)</p>
                         </li>
                         <li className="bg-white p-3 rounded-lg flex items-center">
                           <div className="w-3 h-3 bg-blue-500 rounded-full mr-3"></div>
-                          <p>DK (co-referee)</p>
+                          <p>Arijit (referee)</p>
                         </li>
                         <li className="bg-white p-3 rounded-lg flex items-center">
                           <div className="w-3 h-3 bg-blue-500 rounded-full mr-3"></div>
-                          <p>Arijit (co-referee)</p>
+                          <p>Abhilash (website-handler)</p>
                         </li>
                       </ul>
                     </div>

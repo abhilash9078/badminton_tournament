@@ -29,7 +29,7 @@ const Location: React.FC = () => {
                       <Calendar className="w-5 h-5 text-blue-600 mt-1 flex-shrink-0" />
                       <div className="ml-3">
                         <div className="font-medium">Date</div>
-                        <div className="text-gray-600">8th June 2025, Sunday</div>
+                        <div className="text-gray-600">20th July 2025, Sunday</div>
                       </div>
                     </div>
                     
@@ -37,7 +37,7 @@ const Location: React.FC = () => {
                       <Clock className="w-5 h-5 text-blue-600 mt-1 flex-shrink-0" />
                       <div className="ml-3">
                         <div className="font-medium">Time</div>
-                        <div className="text-gray-600">8:00 AM - 12:00 PM</div>
+                        <div className="text-gray-600">9:00 AM - 01:00 PM</div>
                       </div>
                     </div>
                   </div>
