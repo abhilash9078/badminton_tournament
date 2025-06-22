@@ -2,7 +2,7 @@ import React from "react";
 import CountdownTimer from "./CountdownTimer";
 import { Trophy, Calendar, Users } from "lucide-react";
 
-// Define enhanced animations
+// Define enhanced animations with click effects
 const customAnimations = `
   @keyframes pulse-glow {
     0%, 100% { box-shadow: 0 0 15px 0 rgba(34, 211, 238, 0.4); }
@@ -42,6 +42,44 @@ const customAnimations = `
     50% { transform: translateY(-5px) scale(1.05); }
   }
 
+  /* New Click Animations */
+  @keyframes click-ripple {
+    0% { transform: scale(0); opacity: 1; }
+    100% { transform: scale(4); opacity: 0; }
+  }
+
+  @keyframes click-scale {
+    0% { transform: scale(1); }
+    50% { transform: scale(0.95); }
+    100% { transform: scale(1); }
+  }
+
+  @keyframes click-glow {
+    0% { box-shadow: 0 0 10px rgba(34, 211, 238, 0.5); }
+    50% { box-shadow: 0 0 30px rgba(34, 211, 238, 0.8), 0 0 60px rgba(34, 211, 238, 0.4); }
+    100% { box-shadow: 0 0 10px rgba(34, 211, 238, 0.5); }
+  }
+
+  @keyframes click-bounce {
+    0%, 100% { transform: translateY(0) scale(1); }
+    25% { transform: translateY(-8px) scale(1.02); }
+    50% { transform: translateY(-4px) scale(1.01); }
+    75% { transform: translateY(-2px) scale(1.005); }
+  }
+
+  @keyframes click-shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-2px) rotate(-1deg); }
+    75% { transform: translateX(2px) rotate(1deg); }
+  }
+
+  @keyframes click-pulse-card {
+    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(34, 211, 238, 0.7); }
+    50% { transform: scale(1.02); box-shadow: 0 0 0 10px rgba(34, 211, 238, 0.3); }
+    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(34, 211, 238, 0); }
+  }
+
+  /* Animation Classes */
   .animate-pulse-glow {
     animation: pulse-glow 2s ease-in-out infinite;
   }
@@ -70,6 +108,89 @@ const customAnimations = `
     animation: badge-bounce 2s ease-in-out infinite;
   }
 
+  /* Click Animation Classes */
+  .click-ripple {
+    animation: click-ripple 0.6s ease-out;
+  }
+
+  .click-scale {
+    animation: click-scale 0.15s ease-in-out;
+  }
+
+  .click-glow {
+    animation: click-glow 0.5s ease-in-out;
+  }
+
+  .click-bounce {
+    animation: click-bounce 0.6s ease-out;
+  }
+
+  .click-shake {
+    animation: click-shake 0.5s ease-in-out;
+  }
+
+  .click-pulse-card {
+    animation: click-pulse-card 0.4s ease-out;
+  }
+
+  /* Interactive Elements */
+  .btn-primary {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+  }
+
+  .btn-primary:active::before {
+    width: 300px;
+    height: 300px;
+  }
+
+  .btn-secondary {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .btn-secondary::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(34, 211, 238, 0.1);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+  }
+
+  .btn-secondary:active::before {
+    width: 300px;
+    height: 300px;
+  }
+
+  .card-clickable {
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .card-clickable:active {
+    transform: translateY(2px);
+  }
+
   /* Mobile optimizations */
   @media (max-width: 768px) {
     .animate-orbit {
@@ -78,11 +199,42 @@ const customAnimations = `
     .animate-countdown-pulse {
       animation: countdown-pulse 3s ease-in-out infinite;
     }
+    
+    .btn-primary:active::before,
+    .btn-secondary:active::before {
+      width: 200px;
+      height: 200px;
+    }
   }
 `;
 
 const Hero: React.FC = () => {
   const tournamentDate = "2025-07-20T09:00:00";
+
+  // Click handlers for animations
+  const handleButtonClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    const button = e.currentTarget;
+    button.classList.add("click-scale");
+    setTimeout(() => button.classList.remove("click-scale"), 150);
+  };
+
+  const handleCardClick = (
+    e: React.MouseEvent<HTMLDivElement>,
+    cardType: string
+  ) => {
+    const card = e.currentTarget;
+    card.classList.add("click-pulse-card");
+    setTimeout(() => card.classList.remove("click-pulse-card"), 400);
+
+    // Optional: Add different actions based on card type
+    console.log(`${cardType} card clicked!`);
+  };
+
+  const handleGalleryClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    const gallery = e.currentTarget;
+    gallery.classList.add("click-bounce");
+    setTimeout(() => gallery.classList.remove("click-bounce"), 600);
+  };
 
   return (
     <section
@@ -155,7 +307,10 @@ const Hero: React.FC = () => {
           style={{ animationDelay: "0.2s" }}
         >
           {/* Date Card */}
-          <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 hover:bg-white/15 transition-all duration-300">
+          <div
+            className="card-clickable bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 hover:bg-white/15 transition-all duration-300"
+            onClick={(e) => handleCardClick(e, "Date")}
+          >
             <div className="flex items-center justify-center space-x-2 mb-2">
               <Calendar className="w-5 h-5 text-yellow-400" />
               <span className="text-yellow-400 font-semibold text-sm">
@@ -169,7 +324,10 @@ const Hero: React.FC = () => {
           </div>
 
           {/* Teams Card */}
-          <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 hover:bg-white/15 transition-all duration-300">
+          <div
+            className="card-clickable bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 hover:bg-white/15 transition-all duration-300"
+            onClick={(e) => handleCardClick(e, "Teams")}
+          >
             <div className="flex items-center justify-center space-x-2 mb-2">
               <Users className="w-5 h-5 text-cyan-400" />
               <span className="text-cyan-400 font-semibold text-sm">Teams</span>
@@ -182,7 +340,10 @@ const Hero: React.FC = () => {
           </div>
 
           {/* Format Card */}
-          <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 hover:bg-white/15 transition-all duration-300 sm:col-span-1 col-span-1">
+          <div
+            className="card-clickable bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 hover:bg-white/15 transition-all duration-300 sm:col-span-1 col-span-1"
+            onClick={(e) => handleCardClick(e, "Format")}
+          >
             <div className="flex items-center justify-center space-x-2 mb-2">
               <Trophy className="w-5 h-5 text-purple-400" />
               <span className="text-purple-400 font-semibold text-sm">
@@ -233,13 +394,15 @@ const Hero: React.FC = () => {
         >
           <a
             href="#rules"
-            className="group bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl min-w-[200px]"
+            className="btn-primary group bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl min-w-[200px]"
+            onClick={handleButtonClick}
           >
             View Tournament Rules
           </a>
           <a
             href="#about"
-            className="group border-2 border-white/30 hover:border-white/50 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 transform hover:scale-105 backdrop-blur-sm hover:bg-white/10 min-w-[200px]"
+            className="btn-secondary group border-2 border-white/30 hover:border-white/50 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 transform hover:scale-105 backdrop-blur-sm hover:bg-white/10 min-w-[200px]"
+            onClick={handleButtonClick}
           >
             Learn More
           </a>
@@ -257,6 +420,7 @@ const Hero: React.FC = () => {
             <a
               href="#rules"
               className="group flex flex-col items-center min-h-[44px] justify-center"
+              onClick={handleGalleryClick}
             >
               <span className="text-cyan-300 text-lg font-semibold group-hover:text-white transition-all duration-300 group-hover:scale-110 mb-2 text-center">
                 View Past Tournaments Gallery
