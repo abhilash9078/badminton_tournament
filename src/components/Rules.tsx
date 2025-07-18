@@ -35,13 +35,19 @@ const Rules: React.FC = () => {
               <li className="flex items-start">
                 <div className="flex-shrink-0 w-5 h-5 rounded-full bg-blue-500 mt-1"></div>
                 <p className="ml-3 text-gray-700">
+                  QF and SF: One set of 21 points with deuce till 30
+                </p>
+              </li>
+              <li className="flex items-start">
+                <div className="flex-shrink-0 w-5 h-5 rounded-full bg-blue-500 mt-1"></div>
+                <p className="ml-3 text-gray-700">
                   Final: Best of 3 sets (21 points with deuce till 30)
                 </p>
               </li>
               <li className="flex items-start">
                 <div className="flex-shrink-0 w-5 h-5 rounded-full bg-blue-500 mt-1"></div>
                 <p className="ml-3 text-gray-700">
-                  Official tournament shuttlecocks will be provided
+                  Official tournament shuttlecocks will be provided (mavis 350)
                 </p>
               </li>
               <li className="flex items-start">
@@ -49,6 +55,40 @@ const Rules: React.FC = () => {
                 <p className="ml-3 text-gray-700">
                   Match officials' decisions are final
                 </p>
+              </li>
+
+              {/* Enhanced Tie-Breaking Rule */}
+              <li className="flex items-start">
+                <div className="flex-shrink-0 w-5 h-5 rounded-full bg-gradient-to-br from-blue-600 to-blue-800 mt-1 shadow-sm"></div>
+                <div className="ml-3">
+                  <div className="bg-gradient-to-r from-blue-100 to-indigo-100 border-l-4 border-blue-600 rounded-lg p-4 shadow-sm">
+                    <p className="text-gray-800 font-semibold mb-2">
+                      🏆 League Stage Tie-Breaking Rule
+                    </p>
+                    <p className="text-gray-700 text-sm sm:text-base leading-relaxed">
+                      <span className="font-bold text-blue-800">
+                        If teams have equal wins
+                      </span>{" "}
+                      in the league stage, qualification to Quarter-Finals will
+                      be determined by
+                      <span className="font-bold text-blue-800">
+                        {" "}
+                        total points accumulated
+                      </span>{" "}
+                      throughout all league matches. The team with the{" "}
+                      <span className="font-bold text-indigo-700">
+                        highest cumulative score
+                      </span>{" "}
+                      advances to the knockout stage.
+                    </p>
+                    <div className="mt-2 flex items-center text-xs text-blue-600">
+                      <div className="w-2 h-2 bg-blue-500 rounded-full mr-2"></div>
+                      <span className="font-medium">
+                        Ensures fair progression based on overall performance
+                      </span>
+                    </div>
+                  </div>
+                </div>
               </li>
             </ul>
           </div>
