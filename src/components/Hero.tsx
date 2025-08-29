@@ -251,7 +251,7 @@ const Hero: React.FC = () => {
   return (
     <section
       id="home"
-      className="relative min-h-screen flex items-center justify-center pt-16 pb-8 overflow-hidden"
+      className="mt-5 relative min-h-screen flex items-center justify-center pt-16 pb-8 overflow-hidden"
     >
       <style dangerouslySetInnerHTML={{ __html: customAnimations }} />
 
