@@ -1,5 +1,4 @@
 import React from "react";
-import CountdownTimer from "./CountdownTimer";
 import { Trophy, Calendar, Users } from "lucide-react";
 
 // Define enhanced animations with click effects
@@ -40,6 +39,17 @@ const customAnimations = `
   @keyframes badge-bounce {
     0%, 100% { transform: translateY(0) scale(1); }
     50% { transform: translateY(-5px) scale(1.05); }
+  }
+
+  @keyframes coming-soon-glow {
+    0%, 100% { 
+      text-shadow: 0 0 20px rgba(34, 211, 238, 0.5), 0 0 40px rgba(34, 211, 238, 0.3); 
+      transform: scale(1);
+    }
+    50% { 
+      text-shadow: 0 0 30px rgba(34, 211, 238, 0.8), 0 0 60px rgba(34, 211, 238, 0.5); 
+      transform: scale(1.02);
+    }
   }
 
   /* New Click Animations */
@@ -106,6 +116,10 @@ const customAnimations = `
 
   .animate-badge-bounce {
     animation: badge-bounce 2s ease-in-out infinite;
+  }
+
+  .animate-coming-soon {
+    animation: coming-soon-glow 3s ease-in-out infinite;
   }
 
   /* Click Animation Classes */
@@ -209,8 +223,6 @@ const customAnimations = `
 `;
 
 const Hero: React.FC = () => {
-  const tournamentDate = "2025-07-20T09:00:00";
-
   // Click handlers for animations
   const handleButtonClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     const button = e.currentTarget;
@@ -284,7 +296,7 @@ const Hero: React.FC = () => {
             <div className="flex items-center justify-center space-x-2">
               <Trophy className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-400" />
               <span className="bg-gradient-to-r from-cyan-400 to-blue-400 text-transparent bg-clip-text text-sm sm:text-base font-semibold">
-                Tournament Announced
+                Season 4 Coming Soon
               </span>
             </div>
           </div>
@@ -297,7 +309,7 @@ const Hero: React.FC = () => {
           </span>
           <br />
           <span className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl bg-gradient-to-r from-yellow-400 to-orange-500 text-transparent bg-clip-text font-extrabold">
-            3.0
+            4.0
           </span>
         </h1>
 
@@ -317,10 +329,8 @@ const Hero: React.FC = () => {
                 Date
               </span>
             </div>
-            <p className="text-white text-sm sm:text-base font-medium">
-              July 20, 2025
-            </p>
-            <p className="text-white/70 text-xs sm:text-sm">9:00 AM Onwards</p>
+            <p className="text-white text-sm sm:text-base font-medium">TBA</p>
+            <p className="text-white/70 text-xs sm:text-sm">Stay Tuned</p>
           </div>
 
           {/* Teams Card */}
@@ -371,19 +381,21 @@ const Hero: React.FC = () => {
           style={{ animationDelay: "0.4s" }}
         >
           Elite competition, amazing prizes, and unforgettable moments await!
-          Join us for the most exciting tournament yet.
+          Get ready for the most exciting season yet.
         </p>
 
-        {/* Countdown Timer */}
+        {/* Coming Soon Section */}
         <div
           className="mb-10 sm:mb-12 animate-slide-up"
           style={{ animationDelay: "0.5s" }}
         >
-          <h3 className="text-xl sm:text-2xl md:text-3xl font-semibold text-white mb-6 animate-flash-text">
-            Tournament Starts In:
-          </h3>
-          <div className="animate-countdown-pulse">
-            <CountdownTimer targetDate={tournamentDate} />
+          <div className="animate-coming-soon">
+            <h3 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 text-transparent bg-clip-text mb-4">
+              COMING SOON
+            </h3>
+            <p className="text-lg sm:text-xl text-cyan-300 font-medium">
+              Registration will open soon. Stay tuned for updates!
+            </p>
           </div>
         </div>
 
@@ -418,7 +430,7 @@ const Hero: React.FC = () => {
               Want to see our champions?
             </p>
             <a
-              href="#rules"
+              href="#tournament-results"
               className="group flex flex-col items-center min-h-[44px] justify-center"
               onClick={handleGalleryClick}
             >
