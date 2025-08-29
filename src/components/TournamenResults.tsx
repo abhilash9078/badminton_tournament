@@ -7,6 +7,7 @@ import winner2Image from "../../images/winner.jpeg";
 import runner2Image from "../../images/runner.jpeg";
 import semis1Image from "../../images/semis1.jpeg";
 import semis2Image from "../../images/semis2.jpeg";
+import secondSeasonImage from "../../images/season2_all.jpeg";
 
 const TournamentResults: React.FC = () => {
   return (
@@ -121,7 +122,7 @@ const TournamentResults: React.FC = () => {
 
                   <div className="mt-8 text-center">
                     <img
-                      src="/images/season2_all.jpeg"
+                      src={secondSeasonImage}
                       alt="Second tournament finalists"
                       className="max-w-full h-auto rounded-lg shadow-md mx-auto"
                     />
