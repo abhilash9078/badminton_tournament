@@ -1,13 +1,12 @@
 import React from "react";
-import SectionTitle from "./SectionTitle";
-import allFinalistsImage from "../../images/image_4.jpeg";
 import tournamentOfficialsImage from "../../images/hostandref.jpeg";
-// Import new images for the second tournament
-import winner2Image from "../../images/winner.jpeg";
+import allFinalistsImage from "../../images/image_4.jpeg";
 import runner2Image from "../../images/runner.jpeg";
+import secondSeasonImage from "../../images/season2_all.jpeg";
 import semis1Image from "../../images/semis1.jpeg";
 import semis2Image from "../../images/semis2.jpeg";
-import secondSeasonImage from "../../images/season2_all.jpeg";
+import winner2Image from "../../images/winner.jpeg";
+import SectionTitle from "./SectionTitle";
 
 const TournamentResults: React.FC = () => {
   return (
