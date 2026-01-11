@@ -52,6 +52,86 @@ const customAnimations = `
     }
   }
 
+  @keyframes wait-over-explosion {
+    0% { 
+      transform: scale(0.8) rotate(-5deg); 
+      opacity: 0;
+      text-shadow: 0 0 10px rgba(34, 211, 238, 0.3);
+    }
+    20% { 
+      transform: scale(1.1) rotate(2deg); 
+      opacity: 1;
+      text-shadow: 0 0 30px rgba(34, 211, 238, 0.8), 0 0 60px rgba(59, 130, 246, 0.6);
+    }
+    40% { 
+      transform: scale(0.95) rotate(-1deg); 
+      text-shadow: 0 0 40px rgba(34, 211, 238, 1), 0 0 80px rgba(59, 130, 246, 0.8);
+    }
+    60% { 
+      transform: scale(1.05) rotate(1deg); 
+      text-shadow: 0 0 50px rgba(34, 211, 238, 1), 0 0 100px rgba(59, 130, 246, 1);
+    }
+    100% { 
+      transform: scale(1) rotate(0deg); 
+      text-shadow: 0 0 30px rgba(34, 211, 238, 0.8), 0 0 60px rgba(59, 130, 246, 0.6);
+    }
+  }
+
+  @keyframes date-reveal {
+    0% { 
+      transform: translateY(50px) scale(0.5); 
+      opacity: 0;
+      filter: blur(10px);
+    }
+    50% { 
+      transform: translateY(-10px) scale(1.1); 
+      opacity: 0.8;
+      filter: blur(2px);
+    }
+    100% { 
+      transform: translateY(0) scale(1); 
+      opacity: 1;
+      filter: blur(0px);
+    }
+  }
+
+  @keyframes sparkle {
+    0%, 100% { 
+      opacity: 0; 
+      transform: scale(0) rotate(0deg);
+    }
+    50% { 
+      opacity: 1; 
+      transform: scale(1) rotate(180deg);
+    }
+  }
+
+  @keyframes fireworks {
+    0% { 
+      transform: scale(0); 
+      opacity: 1;
+    }
+    50% { 
+      transform: scale(1.5); 
+      opacity: 0.8;
+    }
+    100% { 
+      transform: scale(3); 
+      opacity: 0;
+    }
+  }
+
+  @keyframes date-pulse {
+    0%, 100% { 
+      transform: scale(1); 
+      box-shadow: 0 0 20px rgba(34, 211, 238, 0.4), 0 0 40px rgba(59, 130, 246, 0.3);
+    }
+    50% { 
+      transform: scale(1.02); 
+      box-shadow: 0 0 40px rgba(34, 211, 238, 0.8), 0 0 80px rgba(59, 130, 246, 0.6);
+    }
+  }
+
   /* New Click Animations */
   @keyframes click-ripple {
     0% { transform: scale(0); opacity: 1; }
@@ -120,6 +200,26 @@ const customAnimations = `
 
   .animate-coming-soon {
     animation: coming-soon-glow 3s ease-in-out infinite;
+  }
+
+  .animate-wait-over {
+    animation: wait-over-explosion 2s ease-out;
+  }
+
+  .animate-date-reveal {
+    animation: date-reveal 1.5s ease-out 0.5s both;
+  }
+
+  .animate-sparkle {
+    animation: sparkle 2s ease-in-out infinite;
+  }
+
+  .animate-fireworks {
+    animation: fireworks 3s ease-out infinite;
+  }
+
+  .animate-date-pulse {
+    animation: date-pulse 2.5s ease-in-out infinite;
   }
 
   /* Click Animation Classes */
@@ -290,20 +390,73 @@ const Hero: React.FC = () => {
 
       {/* Main Content */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 z-10 text-center max-w-6xl">
-        {/* Tournament Badge */}
-        <div className="mb-6 sm:mb-8 inline-block animate-slide-up">
-          <div className="bg-gradient-to-r from-cyan-400/20 to-blue-500/20 backdrop-blur-sm border border-cyan-400/30 rounded-full px-4 py-2 sm:px-6 sm:py-3 animate-badge-bounce">
-            <div className="flex items-center justify-center space-x-2">
-              <Trophy className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-400" />
-              <span className="bg-gradient-to-r from-cyan-400 to-blue-400 text-transparent bg-clip-text text-sm sm:text-base font-semibold">
-                Season 4 Coming Soon
-              </span>
+        {/* The Wait is Over Section - Moved to Top */}
+        <div className="mb-8 sm:mb-10 animate-slide-up relative">
+          {/* Sparkle effects */}
+          <div className="absolute inset-0 pointer-events-none">
+            <div className="absolute top-0 left-1/4 w-2 h-2 bg-cyan-400 rounded-full animate-sparkle" style={{ animationDelay: "0s" }}></div>
+            <div className="absolute top-1/4 right-1/4 w-1.5 h-1.5 bg-blue-400 rounded-full animate-sparkle" style={{ animationDelay: "0.5s" }}></div>
+            <div className="absolute bottom-1/4 left-1/3 w-2.5 h-2.5 bg-cyan-300 rounded-full animate-sparkle" style={{ animationDelay: "1s" }}></div>
+            <div className="absolute top-1/3 right-1/3 w-1 h-1 bg-blue-300 rounded-full animate-sparkle" style={{ animationDelay: "1.5s" }}></div>
+            <div className="absolute bottom-0 right-1/5 w-2 h-2 bg-cyan-500 rounded-full animate-sparkle" style={{ animationDelay: "2s" }}></div>
+          </div>
+
+          {/* Fireworks effects */}
+          <div className="absolute inset-0 pointer-events-none overflow-hidden">
+            <div className="absolute top-10 left-10 w-4 h-4 rounded-full bg-gradient-to-r from-cyan-400 to-blue-500 opacity-60 animate-fireworks" style={{ animationDelay: "0s" }}></div>
+            <div className="absolute top-20 right-16 w-3 h-3 rounded-full bg-gradient-to-r from-blue-400 to-purple-500 opacity-60 animate-fireworks" style={{ animationDelay: "1s" }}></div>
+            <div className="absolute bottom-16 left-20 w-5 h-5 rounded-full bg-gradient-to-r from-cyan-300 to-blue-400 opacity-60 animate-fireworks" style={{ animationDelay: "2s" }}></div>
+          </div>
+
+          <div className="relative z-10">
+            {/* Main announcement */}
+            <div className="animate-wait-over mb-6">
+              <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-red-400 via-yellow-400 to-orange-500 text-transparent bg-clip-text mb-2 tracking-wide">
+                🎉 THE WAIT IS OVER! 🎉
+              </h3>
+              <div className="w-24 h-1 bg-gradient-to-r from-yellow-400 to-orange-500 mx-auto rounded-full mb-4"></div>
+            </div>
+
+            {/* Date announcement */}
+            <div className="animate-date-reveal">
+              <div className="bg-gradient-to-br from-cyan-400/15 via-blue-500/15 to-purple-500/15 backdrop-blur-sm border-2 border-cyan-400/40 rounded-2xl p-6 sm:p-8 mx-auto max-w-lg animate-date-pulse shadow-2xl">
+                <div className="text-center">
+                  <p className="text-lg sm:text-xl text-cyan-200 font-semibold mb-2">
+                    🗓️ TOURNAMENT DATE ANNOUNCED
+                  </p>
+                  <div className="text-4xl sm:text-5xl md:text-6xl font-black bg-gradient-to-r from-white via-cyan-200 to-blue-300 text-transparent bg-clip-text mb-2 drop-shadow-lg">
+                    JAN 31
+                  </div>
+                  <div className="text-2xl sm:text-3xl font-bold text-white mb-2 drop-shadow-md">
+                    2026
+                  </div>
+                  <div className="text-lg sm:text-xl text-cyan-200 font-medium">
+                    SATURDAY
+                  </div>
+                  <div className="mt-4 text-base sm:text-lg text-white/95 font-medium">
+                    ⚡ Registration Open Now ⚡
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Excitement text */}
+            <div className="mt-6 animate-slide-up" style={{ animationDelay: "1s" }}>
+              <p className="text-lg sm:text-xl text-cyan-200 font-medium mb-2">
+                🏆 Get Ready for Epic Battles! 🏆
+              </p>
+              <p className="text-base sm:text-lg text-white/90">
+                Mark your calendars and prepare for the ultimate showdown!
+              </p>
             </div>
           </div>
         </div>
 
         {/* Main Title */}
-        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-4 sm:mb-6 tracking-tight leading-[0.9] animate-slide-up">
+        <h1 
+          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-4 sm:mb-6 tracking-tight leading-[0.9] animate-slide-up"
+          style={{ animationDelay: "0.2s" }}
+        >
           <span className="bg-gradient-to-r from-white via-cyan-100 to-blue-200 text-transparent bg-clip-text animate-flash-text">
             Shuttle Showdown
           </span>
@@ -316,7 +469,7 @@ const Hero: React.FC = () => {
         {/* Quick Info Cards */}
         <div
           className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-8 sm:mb-10 max-w-4xl mx-auto animate-slide-up"
-          style={{ animationDelay: "0.2s" }}
+          style={{ animationDelay: "0.3s" }}
         >
           {/* Date Card */}
           <div
@@ -329,8 +482,8 @@ const Hero: React.FC = () => {
                 Date
               </span>
             </div>
-            <p className="text-white text-sm sm:text-base font-medium">TBA</p>
-            <p className="text-white/70 text-xs sm:text-sm">Stay Tuned</p>
+            <p className="text-white text-sm sm:text-base font-medium">Jan 31, 2026</p>
+            <p className="text-white/70 text-xs sm:text-sm">Saturday</p>
           </div>
 
           {/* Teams Card */}
@@ -370,7 +523,7 @@ const Hero: React.FC = () => {
         {/* Subtitle */}
         <h2
           className="text-xl sm:text-2xl md:text-3xl font-medium text-cyan-300 mb-6 sm:mb-8 animate-slide-up"
-          style={{ animationDelay: "0.3s" }}
+          style={{ animationDelay: "0.4s" }}
         >
           The Ultimate Badminton Championship
         </h2>
@@ -378,26 +531,12 @@ const Hero: React.FC = () => {
         {/* Description */}
         <p
           className="text-base sm:text-lg md:text-xl text-white/90 mb-10 sm:mb-12 max-w-2xl mx-auto leading-relaxed animate-slide-up"
-          style={{ animationDelay: "0.4s" }}
-        >
-          Elite competition, amazing prizes, and unforgettable moments await!
-          Get ready for the most exciting season yet.
-        </p>
-
-        {/* Coming Soon Section */}
-        <div
-          className="mb-10 sm:mb-12 animate-slide-up"
           style={{ animationDelay: "0.5s" }}
         >
-          <div className="animate-coming-soon">
-            <h3 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 text-transparent bg-clip-text mb-4">
-              COMING SOON
-            </h3>
-            <p className="text-lg sm:text-xl text-cyan-300 font-medium">
-              Registration will open soon. Stay tuned for updates!
-            </p>
-          </div>
-        </div>
+          🔥 Elite competition, amazing prizes, and unforgettable moments await! 
+          The countdown to glory begins now! 🔥
+        </p>
+
 
         {/* CTA Section */}
         <div
@@ -405,18 +544,11 @@ const Hero: React.FC = () => {
           style={{ animationDelay: "0.6s" }}
         >
           <a
-            href="#rules"
-            className="btn-primary group bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl min-w-[200px]"
-            onClick={handleButtonClick}
-          >
-            View Tournament Rules
-          </a>
-          <a
             href="#about"
-            className="btn-secondary group border-2 border-white/30 hover:border-white/50 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 transform hover:scale-105 backdrop-blur-sm hover:bg-white/10 min-w-[200px]"
+            className="btn-secondary group border-2 border-yellow-400/50 hover:border-yellow-400/70 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 transform hover:scale-105 backdrop-blur-sm hover:bg-yellow-400/10 min-w-[220px]"
             onClick={handleButtonClick}
           >
-            Learn More
+            📋 View Tournament Details
           </a>
         </div>
 

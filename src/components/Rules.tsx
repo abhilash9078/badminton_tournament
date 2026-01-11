@@ -110,7 +110,7 @@ const Rules: React.FC = () => {
               <li className="flex items-start">
                 <div className="flex-shrink-0 w-5 h-5 rounded-full bg-orange-500 mt-1"></div>
                 <p className="ml-3 text-gray-700">
-                  Partners selected via chit draw
+                You can bring your own partner (partner must be pre-approved by organizers)
                 </p>
               </li>
               <li className="flex items-start">

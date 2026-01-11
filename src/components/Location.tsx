@@ -29,7 +29,7 @@ const Location: React.FC = () => {
                       <Calendar className="w-5 h-5 text-blue-600 mt-1 flex-shrink-0" />
                       <div className="ml-3">
                         <div className="font-medium">Date</div>
-                        <div className="text-gray-600">20th July 2025, Sunday</div>
+                        <div className="text-gray-600"> Jan 31, 2026, Saturday</div>
                       </div>
                     </div>
                     
