@@ -27,7 +27,7 @@ const About: React.FC = () => {
                 <div className="uppercase tracking-wide text-sm text-blue-600 font-semibold">Tournament Format</div>
                 <p className="mt-2 text-gray-600">
                   The tournament follows a Regular Doubles format with a maximum of 48 players (24 teams). Teams will be 
-                  divided into 8 pools with 3 teams each. The top teams from each pool will advance to the knockout stage 
+                  divided into 8 pools with 3 teams each. The top two teams from each pool will advance to the knockout stage 
                   starting from quarter-finals.
                 </p>
                 <div className="mt-6">
@@ -49,7 +49,7 @@ const About: React.FC = () => {
                     <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold">QF</div>
                     <div className="ml-4">
                       <div className="font-medium">Knockout Stage</div>
-                      <div className="text-sm text-gray-500">From quarter-finals onwards</div>
+                      <div className="text-sm text-gray-500">From pre quarters</div>
                     </div>
                   </div>
                 </div>

@@ -28,7 +28,7 @@ const Rules: React.FC = () => {
               <li className="flex items-start">
                 <div className="flex-shrink-0 w-5 h-5 rounded-full bg-blue-500 mt-1"></div>
                 <p className="ml-3 text-gray-700">
-                  QF and SF: One set of 21 points with deuce till 30
+                  QF and SF: One set of 21 points (golden point)
                 </p>
               </li>
               <li className="flex items-start">
@@ -104,7 +104,7 @@ const Rules: React.FC = () => {
               <li className="flex items-start">
                 <div className="flex-shrink-0 w-5 h-5 rounded-full bg-orange-500 mt-1"></div>
                 <p className="ml-3 text-gray-700">
-                  Knockout stage from quarter-finals
+                  Knockout stage from pre quarters
                 </p>
               </li>
               <li className="flex items-start">
