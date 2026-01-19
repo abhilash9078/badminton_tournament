@@ -41,6 +41,18 @@ export default async function handler(req, res) {
         case 'poolD':
           tableName = 'pool_d_teams';
           break;
+        case 'poolE':
+          tableName = 'pool_e_teams';
+          break;
+        case 'poolF':
+          tableName = 'pool_f_teams';
+          break;
+        case 'poolG':
+          tableName = 'pool_g_teams';
+          break;
+        case 'poolH':
+          tableName = 'pool_h_teams';
+          break;
         default:
           return res.status(400).json({ error: 'Invalid pool key' });
       }

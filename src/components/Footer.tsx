@@ -49,7 +49,7 @@ const Footer: React.FC = () => {
               <h4 className="text-lg font-semibold mb-4">Tournament Details</h4>
               <ul className="space-y-2 text-gray-400">
                 <li>Date: Jan 31, 2026, Saturday</li>
-                <li>Time: 9:00 AM - 01:00PM</li>
+                <li>Time: 9:00 AM - 02:00PM</li>
                 <li>Location: RAMs Sports Arena</li>
                 <li>Format: Regular Doubles</li>
               </ul>

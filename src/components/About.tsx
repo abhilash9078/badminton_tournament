@@ -26,23 +26,23 @@ const About: React.FC = () => {
               <div className="p-8">
                 <div className="uppercase tracking-wide text-sm text-blue-600 font-semibold">Tournament Format</div>
                 <p className="mt-2 text-gray-600">
-                  The tournament follows a Regular Doubles format with a maximum of 32 players (16 teams). Teams will be 
-                  divided into 4 pools with 4 teams each. The top teams from each pool will advance to the knockout stage 
+                  The tournament follows a Regular Doubles format with a maximum of 48 players (24 teams). Teams will be 
+                  divided into 8 pools with 3 teams each. The top teams from each pool will advance to the knockout stage 
                   starting from quarter-finals.
                 </p>
                 <div className="mt-6">
                   <div className="flex items-center mb-3">
-                    <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold">16</div>
+                    <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold">24</div>
                     <div className="ml-4">
                       <div className="font-medium">Teams</div>
                       <div className="text-sm text-gray-500">Competing in the tournament</div>
                     </div>
                   </div>
                   <div className="flex items-center mb-3">
-                    <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold">4</div>
+                    <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold">8</div>
                     <div className="ml-4">
                       <div className="font-medium">Pools</div>
-                      <div className="text-sm text-gray-500">Round-robin league matches</div>
+                      <div className="text-sm text-gray-500">Round-robin league matches (3 teams each)</div>
                     </div>
                   </div>
                   <div className="flex items-center">

@@ -17,18 +17,26 @@ const sql = neon(process.env.DATABASE_URL);
 // Get all teams
 app.get('/api/teams', async (req, res) => {
   try {
-    // Fetch all teams from the database
+    // Fetch all teams from the database (8 pools now)
     const poolATeams = await sql`SELECT * FROM pool_a_teams ORDER BY id`;
     const poolBTeams = await sql`SELECT * FROM pool_b_teams ORDER BY id`;
     const poolCTeams = await sql`SELECT * FROM pool_c_teams ORDER BY id`;
     const poolDTeams = await sql`SELECT * FROM pool_d_teams ORDER BY id`;
+    const poolETeams = await sql`SELECT * FROM pool_e_teams ORDER BY id`;
+    const poolFTeams = await sql`SELECT * FROM pool_f_teams ORDER BY id`;
+    const poolGTeams = await sql`SELECT * FROM pool_g_teams ORDER BY id`;
+    const poolHTeams = await sql`SELECT * FROM pool_h_teams ORDER BY id`;
     
     // Return the data
     res.status(200).json({
       poolATeams,
       poolBTeams,
       poolCTeams,
-      poolDTeams
+      poolDTeams,
+      poolETeams,
+      poolFTeams,
+      poolGTeams,
+      poolHTeams
     });
   } catch (error) {
     console.error('Error fetching teams:', error);
@@ -60,6 +68,18 @@ app.post('/api/teams/update', async (req, res) => {
       case 'poolD':
         tableName = 'pool_d_teams';
         break;
+      case 'poolE':
+        tableName = 'pool_e_teams';
+        break;
+      case 'poolF':
+        tableName = 'pool_f_teams';
+        break;
+      case 'poolG':
+        tableName = 'pool_g_teams';
+        break;
+      case 'poolH':
+        tableName = 'pool_h_teams';
+        break;
       default:
         return res.status(400).json({ error: 'Invalid pool key' });
     }
@@ -81,7 +101,8 @@ app.post('/api/teams/update', async (req, res) => {
         played = ${team.played},
         won = ${team.won},
         lost = ${team.lost},
-        points = ${team.points}
+        points = ${team.points},
+        qualified = ${team.qualified || false}
       WHERE id = ${teamId}
     `;
     

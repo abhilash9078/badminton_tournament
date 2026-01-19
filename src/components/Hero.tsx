@@ -496,10 +496,10 @@ const Hero: React.FC = () => {
               <span className="text-cyan-400 font-semibold text-sm">Teams</span>
             </div>
             <p className="text-white text-sm sm:text-base font-medium">
-              16 Teams
+              24 Teams
             </p>
-            <p className="text-white/70 text-xs sm:text-sm">32 Players</p>
-            <p className="text-white/50 text-xs sm:text-sm">4 Hours</p>
+            <p className="text-white/70 text-xs sm:text-sm">48 Players</p>
+            <p className="text-white/50 text-xs sm:text-sm">5 Hours</p>
           </div>
 
           {/* Format Card */}
