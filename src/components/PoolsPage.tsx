@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 // Define the team data structure with player names
 interface TeamData {
@@ -16,6 +17,7 @@ const ADMIN_USERNAME = "anupbhai";
 const ADMIN_PASSWORD = "nahibataunga";
 
 const PoolsPage: React.FC = () => {
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
   const [lastUpdated, setLastUpdated] = useState<Date>(new Date());
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -67,12 +69,6 @@ const PoolsPage: React.FC = () => {
     loadDefaultData();
     // Then fetch real data
     fetchTeamData();
-    // Auto-refresh every 30 seconds
-    const interval = setInterval(() => {
-      fetchTeamData();
-    }, 30000);
-
-    return () => clearInterval(interval);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -203,6 +199,11 @@ const PoolsPage: React.FC = () => {
     handleUpdateTeam(poolKey, teamIndex, "qualified", !currentValue);
   };
 
+  // Navigate to live score page
+  const startLiveScore = (poolKey: string, team1Index: number, team2Index: number) => {
+    navigate(`/live-score?pool=${poolKey}&team1=${team1Index}&team2=${team2Index}`);
+  };
+
   // Function to render an editable pool table (for admin)
   const renderEditablePoolTable = (
     poolName: string,
@@ -238,6 +239,9 @@ const PoolsPage: React.FC = () => {
               </th>
               <th className="py-2 sm:py-3 px-2 sm:px-3 text-center text-xs sm:text-sm font-semibold text-gray-700 uppercase">
                 Qualified
+              </th>
+              <th className="py-2 sm:py-3 px-2 sm:px-3 text-center text-xs sm:text-sm font-semibold text-gray-700 uppercase">
+                Live Score
               </th>
             </tr>
           </thead>
@@ -315,10 +319,28 @@ const PoolsPage: React.FC = () => {
                     {team.qualified ? "Unqualify" : "Qualify"}
                   </button>
                 </td>
+                <td className="py-3 sm:py-4 px-2 sm:px-3 text-center">
+                  <div className="flex flex-col gap-1 sm:gap-2">
+                    {teams.map((opponent, oppIndex) => {
+                      if (oppIndex === index) return null;
+                      return (
+                        <button
+                          key={oppIndex}
+                          onClick={() => startLiveScore(poolKey, index, oppIndex)}
+                          className="bg-blue-500 hover:bg-blue-600 active:bg-blue-700 text-white text-xs sm:text-sm font-bold px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg transition-all active:scale-95 min-h-[36px] sm:min-h-[44px] whitespace-nowrap"
+                          title={`Score: ${team.name} vs ${opponent.name}`}
+                        >
+                          <span className="hidden sm:inline">vs </span>
+                          {opponent.name.length > 8 ? `${opponent.name.substring(0, 6)}...` : opponent.name}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </td>
               </tr>
             )) : (
               <tr>
-                <td colSpan={7} className="py-8 text-center text-gray-500">
+                <td colSpan={8} className="py-8 text-center text-gray-500">
                   No teams data available
                 </td>
               </tr>
@@ -365,6 +387,9 @@ const PoolsPage: React.FC = () => {
               <th className="py-2 sm:py-3 px-2 sm:px-3 text-center text-xs sm:text-sm font-semibold text-gray-700 uppercase">
                 Status
               </th>
+              <th className="py-2 sm:py-3 px-2 sm:px-3 text-center text-xs sm:text-sm font-semibold text-gray-700 uppercase">
+                Live Score
+              </th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
@@ -402,10 +427,28 @@ const PoolsPage: React.FC = () => {
                     </span>
                   ) : null}
                 </td>
+                <td className="py-3 sm:py-4 px-2 sm:px-3 text-center">
+                  <div className="flex flex-col gap-1 sm:gap-2">
+                    {teams.map((opponent, oppIndex) => {
+                      if (oppIndex === index) return null;
+                      return (
+                        <button
+                          key={oppIndex}
+                          onClick={() => startLiveScore(poolKey, index, oppIndex)}
+                          className="bg-blue-500 hover:bg-blue-600 active:bg-blue-700 text-white text-xs sm:text-sm font-bold px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg transition-all active:scale-95 min-h-[36px] sm:min-h-[44px] whitespace-nowrap"
+                          title={`Score: ${team.name} vs ${opponent.name}`}
+                        >
+                          <span className="hidden sm:inline">vs </span>
+                          {opponent.name.length > 8 ? `${opponent.name.substring(0, 6)}...` : opponent.name}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </td>
               </tr>
             )) : (
               <tr>
-                <td colSpan={7} className="py-8 text-center text-gray-500">
+                <td colSpan={8} className="py-8 text-center text-gray-500">
                   No teams data available
                 </td>
               </tr>
@@ -525,14 +568,6 @@ const PoolsPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Auto-refresh notice */}
-        {!isAuthenticated && (
-          <div className="text-center mt-4 sm:mt-6 text-gray-600 text-xs sm:text-sm px-2">
-            <p className="bg-yellow-50 border border-yellow-200 rounded-lg px-3 sm:px-4 py-2 sm:py-3 inline-block">
-              ⚡ <span className="hidden xs:inline">This page</span> Auto-refreshes every 30s
-            </p>
-          </div>
-        )}
         {isAuthenticated && (
           <div className="text-center mt-4 sm:mt-6 text-blue-600 text-xs sm:text-sm px-2">
             <p className="bg-blue-50 border border-blue-200 rounded-lg px-3 sm:px-4 py-2 sm:py-3 inline-block font-semibold">
