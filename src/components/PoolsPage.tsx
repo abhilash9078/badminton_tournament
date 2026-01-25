@@ -36,6 +36,32 @@ const PoolsPage: React.FC = () => {
   const [poolGTeams, setPoolGTeams] = useState<TeamData[]>([]);
   const [poolHTeams, setPoolHTeams] = useState<TeamData[]>([]);
 
+  // Completed games state - stores game results
+  const [completedGames, setCompletedGames] = useState<Map<string, any>>(new Map());
+
+  // Fetch completed games
+  const fetchCompletedGames = async () => {
+    try {
+      const response = await fetch("/api/games/completed");
+      if (response.ok) {
+        const data = await response.json();
+        const gamesMap = new Map();
+        
+        // Create a map with key: "poolKey_team1Index_team2Index" or "poolKey_team2Index_team1Index"
+        data.completedGames?.forEach((game: any) => {
+          const key1 = `${game.pool_key}_${game.team1_index}_${game.team2_index}`;
+          const key2 = `${game.pool_key}_${game.team2_index}_${game.team1_index}`;
+          gamesMap.set(key1, game);
+          gamesMap.set(key2, game); // Store both directions for easy lookup
+        });
+        
+        setCompletedGames(gamesMap);
+      }
+    } catch (error) {
+      console.error("Error fetching completed games:", error);
+    }
+  };
+
   // Fetch team data from Neon database
   const fetchTeamData = async () => {
     try {
@@ -69,8 +95,15 @@ const PoolsPage: React.FC = () => {
     loadDefaultData();
     // Then fetch real data
     fetchTeamData();
+    fetchCompletedGames();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Check if a game is completed
+  const isGameCompleted = (poolKey: string, team1Index: number, team2Index: number): any => {
+    const key = `${poolKey}_${team1Index}_${team2Index}`;
+    return completedGames.get(key) || null;
+  };
 
   // Load default data as fallback
   const loadDefaultData = () => {
@@ -323,15 +356,41 @@ const PoolsPage: React.FC = () => {
                   <div className="flex flex-col gap-1 sm:gap-2">
                     {teams.map((opponent, oppIndex) => {
                       if (oppIndex === index) return null;
+                      const gameResult = isGameCompleted(poolKey, index, oppIndex);
+                      const isCompleted = !!gameResult;
+                      
                       return (
                         <button
                           key={oppIndex}
-                          onClick={() => startLiveScore(poolKey, index, oppIndex)}
-                          className="bg-blue-500 hover:bg-blue-600 active:bg-blue-700 text-white text-xs sm:text-sm font-bold px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg transition-all active:scale-95 min-h-[36px] sm:min-h-[44px] whitespace-nowrap"
-                          title={`Score: ${team.name} vs ${opponent.name}`}
+                          onClick={() => !isCompleted && startLiveScore(poolKey, index, oppIndex)}
+                          disabled={isCompleted}
+                          className={`text-xs sm:text-sm font-bold px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg transition-all active:scale-95 min-h-[36px] sm:min-h-[44px] whitespace-nowrap ${
+                            isCompleted
+                              ? "bg-gray-400 cursor-not-allowed text-white"
+                              : "bg-blue-500 hover:bg-blue-600 active:bg-blue-700 text-white"
+                          }`}
+                          title={
+                            isCompleted
+                              ? `Completed: ${gameResult.team1_score} - ${gameResult.team2_score} (Winner: ${gameResult.winner_name})`
+                              : `Score: ${team.name} vs ${opponent.name}`
+                          }
                         >
-                          <span className="hidden sm:inline">vs </span>
-                          {opponent.name.length > 8 ? `${opponent.name.substring(0, 6)}...` : opponent.name}
+                          {isCompleted ? (
+                            <>
+                              <span className="text-[10px] sm:text-xs">✓ </span>
+                              <span className="hidden sm:inline">vs </span>
+                              {opponent.name.length > 6 ? `${opponent.name.substring(0, 5)}...` : opponent.name}
+                              <span className="text-[10px] sm:text-xs ml-1">
+                                ({gameResult.team1_index === index ? gameResult.team1_score : gameResult.team2_score}-
+                                {gameResult.team1_index === index ? gameResult.team2_score : gameResult.team1_score})
+                              </span>
+                            </>
+                          ) : (
+                            <>
+                              <span className="hidden sm:inline">vs </span>
+                              {opponent.name.length > 8 ? `${opponent.name.substring(0, 6)}...` : opponent.name}
+                            </>
+                          )}
                         </button>
                       );
                     })}
@@ -431,15 +490,41 @@ const PoolsPage: React.FC = () => {
                   <div className="flex flex-col gap-1 sm:gap-2">
                     {teams.map((opponent, oppIndex) => {
                       if (oppIndex === index) return null;
+                      const gameResult = isGameCompleted(poolKey, index, oppIndex);
+                      const isCompleted = !!gameResult;
+                      
                       return (
                         <button
                           key={oppIndex}
-                          onClick={() => startLiveScore(poolKey, index, oppIndex)}
-                          className="bg-blue-500 hover:bg-blue-600 active:bg-blue-700 text-white text-xs sm:text-sm font-bold px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg transition-all active:scale-95 min-h-[36px] sm:min-h-[44px] whitespace-nowrap"
-                          title={`Score: ${team.name} vs ${opponent.name}`}
+                          onClick={() => !isCompleted && startLiveScore(poolKey, index, oppIndex)}
+                          disabled={isCompleted}
+                          className={`text-xs sm:text-sm font-bold px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg transition-all active:scale-95 min-h-[36px] sm:min-h-[44px] whitespace-nowrap ${
+                            isCompleted
+                              ? "bg-gray-400 cursor-not-allowed text-white"
+                              : "bg-blue-500 hover:bg-blue-600 active:bg-blue-700 text-white"
+                          }`}
+                          title={
+                            isCompleted
+                              ? `Completed: ${gameResult.team1_score} - ${gameResult.team2_score} (Winner: ${gameResult.winner_name})`
+                              : `Score: ${team.name} vs ${opponent.name}`
+                          }
                         >
-                          <span className="hidden sm:inline">vs </span>
-                          {opponent.name.length > 8 ? `${opponent.name.substring(0, 6)}...` : opponent.name}
+                          {isCompleted ? (
+                            <>
+                              <span className="text-[10px] sm:text-xs">✓ </span>
+                              <span className="hidden sm:inline">vs </span>
+                              {opponent.name.length > 6 ? `${opponent.name.substring(0, 5)}...` : opponent.name}
+                              <span className="text-[10px] sm:text-xs ml-1">
+                                ({gameResult.team1_index === index ? gameResult.team1_score : gameResult.team2_score}-
+                                {gameResult.team1_index === index ? gameResult.team2_score : gameResult.team1_score})
+                              </span>
+                            </>
+                          ) : (
+                            <>
+                              <span className="hidden sm:inline">vs </span>
+                              {opponent.name.length > 8 ? `${opponent.name.substring(0, 6)}...` : opponent.name}
+                            </>
+                          )}
                         </button>
                       );
                     })}

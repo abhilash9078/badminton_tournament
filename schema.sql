@@ -244,3 +244,27 @@ SELECT
     (SELECT COUNT(*) FROM pool_f_teams) +
     (SELECT COUNT(*) FROM pool_g_teams) +
     (SELECT COUNT(*) FROM pool_h_teams)) * 2 as total_players;
+
+
+-- ================================================================
+-- Game Results Table - Track completed games with scores
+-- ================================================================
+
+CREATE TABLE IF NOT EXISTS game_results (
+    id SERIAL PRIMARY KEY,
+    pool_key VARCHAR(20) NOT NULL,
+    team1_index INTEGER NOT NULL,
+    team2_index INTEGER NOT NULL,
+    team1_name VARCHAR(100) NOT NULL,
+    team2_name VARCHAR(100) NOT NULL,
+    team1_score INTEGER NOT NULL,
+    team2_score INTEGER NOT NULL,
+    winner_index INTEGER NOT NULL,
+    winner_name VARCHAR(100) NOT NULL,
+    completed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(pool_key, team1_index, team2_index)
+);
+
+-- Create index for faster lookups
+CREATE INDEX IF NOT EXISTS idx_game_results_pool ON game_results(pool_key);
+CREATE INDEX IF NOT EXISTS idx_game_results_teams ON game_results(pool_key, team1_index, team2_index);

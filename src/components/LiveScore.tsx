@@ -143,6 +143,8 @@ const LiveScore: React.FC = () => {
       } else {
         // Clear localStorage after successful game completion
         localStorage.removeItem(gameKey);
+        // Trigger a refresh of completed games in parent (if needed)
+        // The pools page will refresh on next visit
       }
     } catch (error) {
       console.error("Error updating game results:", error);

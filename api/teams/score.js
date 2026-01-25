@@ -69,10 +69,35 @@ export default async function handler(req, res) {
       const team1 = teams[team1Index];
       const team2 = teams[team2Index];
       
-      // If game is complete, update the statistics
+      // If game is complete, update the statistics and save game result
       if (gameComplete) {
         const team1Won = team1Score > team2Score;
         const team2Won = team2Score > team1Score;
+        const winnerIndex = team1Won ? team1Index : team2Index;
+        const winnerName = team1Won ? team1.name : team2.name;
+        
+        // Save game result to game_results table (use ON CONFLICT to handle duplicates)
+        await sql`
+          INSERT INTO game_results (
+            pool_key, team1_index, team2_index, 
+            team1_name, team2_name, 
+            team1_score, team2_score, 
+            winner_index, winner_name
+          )
+          VALUES (
+            ${poolKey}, ${team1Index}, ${team2Index},
+            ${team1.name}, ${team2.name},
+            ${team1Score}, ${team2Score},
+            ${winnerIndex}, ${winnerName}
+          )
+          ON CONFLICT (pool_key, team1_index, team2_index) 
+          DO UPDATE SET
+            team1_score = ${team1Score},
+            team2_score = ${team2Score},
+            winner_index = ${winnerIndex},
+            winner_name = ${winnerName},
+            completed_at = CURRENT_TIMESTAMP
+        `;
         
         // Update team 1
         const team1Played = parseInt(team1.played) || 0;
