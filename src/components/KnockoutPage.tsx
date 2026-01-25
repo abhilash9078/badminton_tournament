@@ -50,6 +50,10 @@ const KnockoutPage: React.FC = () => {
   
   // Completed games state
   const [completedGames, setCompletedGames] = useState<Map<string, CompletedGame>>(new Map());
+  
+  // Local edit state
+  const [editedMatches, setEditedMatches] = useState<Map<string, Partial<KnockoutMatch>>>(new Map());
+  const [isSaving, setIsSaving] = useState(false);
 
   // Fetch knockout matches
   const fetchKnockoutMatches = async () => {
@@ -124,33 +128,88 @@ const KnockoutPage: React.FC = () => {
     setPassword("");
   };
 
-  // Update match
-  const handleUpdateMatch = async (
+  // Handle local input change (doesn't call API yet)
+  const handleLocalChange = (
     stage: string,
     matchNumber: number,
     field: string,
     value: any
   ) => {
+    const key = `${stage}_${matchNumber}`;
+    
+    // Get current match to preserve other values
+    let currentMatch: KnockoutMatch | undefined;
+    if (stage === "round_of_16") currentMatch = roundOf16.find(m => m.match_number === matchNumber);
+    else if (stage === "quarter") currentMatch = quarterFinals.find(m => m.match_number === matchNumber);
+    else if (stage === "semi") currentMatch = semiFinals.find(m => m.match_number === matchNumber);
+    else if (stage === "final") currentMatch = final.find(m => m.match_number === matchNumber);
+    
+    const currentEdits = editedMatches.get(key) || { ...currentMatch };
+    const updatedEdits = new Map(editedMatches);
+    updatedEdits.set(key, { ...currentEdits, [field]: value, stage, match_number: matchNumber });
+    setEditedMatches(updatedEdits);
+  };
+
+  // Save all edited matches
+  const saveAllChanges = async () => {
+    if (editedMatches.size === 0) return;
+    
     try {
-      const response = await fetch("/api/knockout/update", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          stage,
-          matchNumber,
-          [field]: value,
-        }),
+      setIsSaving(true);
+      
+      // Save all edited matches in parallel
+      const savePromises = Array.from(editedMatches.values()).map(async (edits) => {
+        // Convert field names to camelCase for API
+        const apiData: any = {
+          stage: edits.stage,
+          matchNumber: edits.match_number,
+        };
+        
+        if ('team1_name' in edits) apiData.team1Name = edits.team1_name;
+        if ('team1_score' in edits) apiData.team1Score = edits.team1_score;
+        if ('team2_name' in edits) apiData.team2Name = edits.team2_name;
+        if ('team2_score' in edits) apiData.team2Score = edits.team2_score;
+        
+        const response = await fetch("/api/knockout/update", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(apiData),
+        });
+        
+        if (!response.ok) {
+          throw new Error(`Failed to update match ${edits.stage} ${edits.match_number}`);
+        }
       });
 
-      if (response.ok) {
-        fetchKnockoutMatches();
-        fetchCompletedGames();
-      }
+      await Promise.all(savePromises);
+      
+      // Clear edited state and refresh
+      setEditedMatches(new Map());
+      await fetchKnockoutMatches();
+      await fetchCompletedGames();
     } catch (error) {
-      console.error("Error updating match:", error);
+      console.error("Error saving changes:", error);
+      alert("Failed to save some changes. Please try again.");
+    } finally {
+      setIsSaving(false);
     }
+  };
+
+  // Discard unsaved changes
+  const discardChanges = () => {
+    setEditedMatches(new Map());
+  };
+
+  // Get display value (edited or original)
+  const getDisplayValue = (match: KnockoutMatch, field: string): any => {
+    const key = `${match.stage}_${match.match_number}`;
+    const edits = editedMatches.get(key);
+    if (edits && field in edits) {
+      return (edits as any)[field];
+    }
+    return (match as any)[field];
   };
 
   // Start live score
@@ -195,9 +254,9 @@ const KnockoutPage: React.FC = () => {
                 type="text"
                 className="flex-1 border-2 border-gray-300 rounded px-2 py-1 text-sm focus:border-blue-500 focus:outline-none"
                 placeholder="Team 1"
-                value={match.team1_name || ""}
+                value={getDisplayValue(match, "team1_name") || ""}
                 onChange={(e) =>
-                  handleUpdateMatch(match.stage, match.match_number, "team1Name", e.target.value)
+                  handleLocalChange(match.stage, match.match_number, "team1_name", e.target.value)
                 }
               />
             ) : (
@@ -210,12 +269,12 @@ const KnockoutPage: React.FC = () => {
                 type="number"
                 className="w-16 text-center border-2 border-gray-300 rounded px-1 py-1 text-sm font-bold focus:border-blue-500 focus:outline-none"
                 placeholder="0"
-                value={match.team1_score || 0}
+                value={getDisplayValue(match, "team1_score") || 0}
                 onChange={(e) =>
-                  handleUpdateMatch(
+                  handleLocalChange(
                     match.stage,
                     match.match_number,
-                    "team1Score",
+                    "team1_score",
                     parseInt(e.target.value) || 0
                   )
                 }
@@ -237,9 +296,9 @@ const KnockoutPage: React.FC = () => {
                 type="text"
                 className="flex-1 border-2 border-gray-300 rounded px-2 py-1 text-sm focus:border-blue-500 focus:outline-none"
                 placeholder="Team 2"
-                value={match.team2_name || ""}
+                value={getDisplayValue(match, "team2_name") || ""}
                 onChange={(e) =>
-                  handleUpdateMatch(match.stage, match.match_number, "team2Name", e.target.value)
+                  handleLocalChange(match.stage, match.match_number, "team2_name", e.target.value)
                 }
               />
             ) : (
@@ -252,12 +311,12 @@ const KnockoutPage: React.FC = () => {
                 type="number"
                 className="w-16 text-center border-2 border-gray-300 rounded px-1 py-1 text-sm font-bold focus:border-blue-500 focus:outline-none"
                 placeholder="0"
-                value={match.team2_score || 0}
+                value={getDisplayValue(match, "team2_score") || 0}
                 onChange={(e) =>
-                  handleUpdateMatch(
+                  handleLocalChange(
                     match.stage,
                     match.match_number,
-                    "team2Score",
+                    "team2_score",
                     parseInt(e.target.value) || 0
                   )
                 }
@@ -423,11 +482,36 @@ const KnockoutPage: React.FC = () => {
         </div>
 
         {isAuthenticated && (
-          <div className="text-center mt-6 sm:mt-8 text-blue-600 text-xs sm:text-sm px-2">
-            <p className="bg-blue-50 border border-blue-200 rounded-lg px-3 sm:px-4 py-2 sm:py-3 inline-block font-semibold">
-              ✏️ Admin Mode: Edit teams and scores directly. Click "Live Score" to start scoring!
-            </p>
-          </div>
+          <>
+            {editedMatches.size > 0 && (
+              <div className="fixed bottom-6 right-6 bg-white rounded-lg shadow-2xl p-4 border-2 border-blue-500 z-50">
+                <p className="text-sm font-semibold text-gray-700 mb-3">
+                  {editedMatches.size} unsaved change{editedMatches.size > 1 ? "s" : ""}
+                </p>
+                <div className="flex gap-2">
+                  <button
+                    onClick={discardChanges}
+                    disabled={isSaving}
+                    className="flex-1 bg-gray-500 hover:bg-gray-600 disabled:bg-gray-300 text-white font-bold py-2 px-4 rounded-lg transition-all"
+                  >
+                    Discard
+                  </button>
+                  <button
+                    onClick={saveAllChanges}
+                    disabled={isSaving}
+                    className="flex-1 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 text-white font-bold py-2 px-4 rounded-lg transition-all"
+                  >
+                    {isSaving ? "Saving..." : "Save All"}
+                  </button>
+                </div>
+              </div>
+            )}
+            <div className="text-center mt-6 sm:mt-8 text-blue-600 text-xs sm:text-sm px-2">
+              <p className="bg-blue-50 border border-blue-200 rounded-lg px-3 sm:px-4 py-2 sm:py-3 inline-block font-semibold">
+                ✏️ Admin Mode: Edit teams and scores, then click "Save All" to update!
+              </p>
+            </div>
+          </>
         )}
       </div>
 
