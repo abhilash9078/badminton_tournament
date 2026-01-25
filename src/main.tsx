@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import App from './App.tsx';
 import PoolsPage from './components/PoolsPage.tsx';
 import LiveScore from './components/LiveScore.tsx';
+import KnockoutPage from './components/KnockoutPage.tsx';
 import './index.css';
 
 createRoot(document.getElementById('root')!).render(
@@ -12,6 +13,7 @@ createRoot(document.getElementById('root')!).render(
       <Routes>
         <Route path="/" element={<App />} />
         <Route path="/pools" element={<PoolsPage />} />
+        <Route path="/knockout" element={<KnockoutPage />} />
         <Route path="/live-score" element={<LiveScore />} />
       </Routes>
     </BrowserRouter>

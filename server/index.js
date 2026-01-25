@@ -301,6 +301,291 @@ app.get('/api/games/completed', async (req, res) => {
   }
 });
 
+// ================================================================
+// Knockout Stages API Endpoints
+// ================================================================
+
+// Get all knockout matches
+app.get('/api/knockout/matches', async (req, res) => {
+  try {
+    const { stage } = req.query;
+    
+    let matches;
+    if (stage) {
+      matches = await sql`
+        SELECT * FROM knockout_matches
+        WHERE stage = ${stage}
+        ORDER BY match_number ASC
+      `;
+    } else {
+      matches = await sql`
+        SELECT * FROM knockout_matches
+        ORDER BY 
+          CASE stage
+            WHEN 'round_of_16' THEN 1
+            WHEN 'quarter' THEN 2
+            WHEN 'semi' THEN 3
+            WHEN 'final' THEN 4
+          END,
+          match_number ASC
+      `;
+    }
+    
+    return res.status(200).json({ matches });
+  } catch (error) {
+    console.error('Error fetching knockout matches:', error);
+    res.status(500).json({ error: 'Failed to fetch knockout matches' });
+  }
+});
+
+// Get completed knockout games
+app.get('/api/knockout/completed', async (req, res) => {
+  try {
+    const { stage } = req.query;
+    
+    let completedGames;
+    if (stage) {
+      completedGames = await sql`
+        SELECT * FROM knockout_game_results
+        WHERE stage = ${stage}
+        ORDER BY match_number ASC
+      `;
+    } else {
+      completedGames = await sql`
+        SELECT * FROM knockout_game_results
+        ORDER BY 
+          CASE stage
+            WHEN 'round_of_16' THEN 1
+            WHEN 'quarter' THEN 2
+            WHEN 'semi' THEN 3
+            WHEN 'final' THEN 4
+          END,
+          match_number ASC
+      `;
+    }
+    
+    return res.status(200).json({ completedGames });
+  } catch (error) {
+    console.error('Error fetching completed knockout games:', error);
+    res.status(500).json({ error: 'Failed to fetch completed knockout games' });
+  }
+});
+
+// Update knockout match (for setting teams, editing scores, etc.)
+app.post('/api/knockout/update', async (req, res) => {
+  try {
+    const { stage, matchNumber, team1Name, team1Players, team2Name, team2Players, team1Score, team2Score, isCompleted } = req.body;
+    
+    if (!stage || !matchNumber) {
+      return res.status(400).json({ error: 'Missing required data: stage and matchNumber' });
+    }
+    
+    // Check if match exists
+    const existingMatch = await sql`
+      SELECT * FROM knockout_matches
+      WHERE stage = ${stage} AND match_number = ${matchNumber}
+    `;
+    
+    if (existingMatch.length === 0) {
+      // Create new match
+      await sql`
+        INSERT INTO knockout_matches (
+          stage, match_number, 
+          team1_name, team1_players,
+          team2_name, team2_players,
+          team1_score, team2_score,
+          is_completed, updated_at
+        )
+        VALUES (
+          ${stage}, ${matchNumber},
+          ${team1Name || null}, ${team1Players ? sql.array(team1Players) : null},
+          ${team2Name || null}, ${team2Players ? sql.array(team2Players) : null},
+          ${team1Score || 0}, ${team2Score || 0},
+          ${isCompleted || false}, CURRENT_TIMESTAMP
+        )
+      `;
+    } else {
+      // Update existing match
+      const winnerName = isCompleted && team1Score > team2Score ? team1Name : 
+                        isCompleted && team2Score > team1Score ? team2Name : null;
+      
+      // Update existing match - use COALESCE to only update provided fields
+      await sql`
+        UPDATE knockout_matches
+        SET 
+          team1_name = COALESCE(${team1Name}, team1_name),
+          team1_players = COALESCE(${team1Players}, team1_players),
+          team2_name = COALESCE(${team2Name}, team2_name),
+          team2_players = COALESCE(${team2Players}, team2_players),
+          team1_score = COALESCE(${team1Score}, team1_score),
+          team2_score = COALESCE(${team2Score}, team2_score),
+          winner_name = COALESCE(${winnerName}, winner_name),
+          is_completed = COALESCE(${isCompleted}, is_completed),
+          completed_at = CASE WHEN ${isCompleted} THEN CURRENT_TIMESTAMP ELSE completed_at END,
+          updated_at = CURRENT_TIMESTAMP
+        WHERE stage = ${stage} AND match_number = ${matchNumber}
+      `;
+      
+      // If completed, save to knockout_game_results
+      if (isCompleted && winnerName) {
+        await sql`
+          INSERT INTO knockout_game_results (
+            stage, match_number,
+            team1_name, team2_name,
+            team1_score, team2_score,
+            winner_name
+          )
+          VALUES (
+            ${stage}, ${matchNumber},
+            ${team1Name}, ${team2Name},
+            ${team1Score}, ${team2Score},
+            ${winnerName}
+          )
+          ON CONFLICT (stage, match_number)
+          DO UPDATE SET
+            team1_name = ${team1Name},
+            team2_name = ${team2Name},
+            team1_score = ${team1Score},
+            team2_score = ${team2Score},
+            winner_name = ${winnerName},
+            completed_at = CURRENT_TIMESTAMP
+        `;
+      }
+    }
+    
+    return res.status(200).json({ success: true });
+  } catch (error) {
+    console.error('Error updating knockout match:', error);
+    return res.status(500).json({ error: 'Failed to update knockout match' });
+  }
+});
+
+// Update knockout score (for live scoring)
+app.post('/api/knockout/score', async (req, res) => {
+  try {
+    const { stage, matchNumber, team1Score, team2Score, gameComplete } = req.body;
+    
+    if (!stage || !matchNumber) {
+      return res.status(400).json({ error: 'Missing required data: stage and matchNumber' });
+    }
+    
+    // Get the match
+    const matches = await sql`
+      SELECT * FROM knockout_matches
+      WHERE stage = ${stage} AND match_number = ${matchNumber}
+    `;
+    
+    if (matches.length === 0) {
+      return res.status(404).json({ error: 'Match not found' });
+    }
+    
+    const match = matches[0];
+    
+    // Update scores
+    await sql`
+      UPDATE knockout_matches
+      SET 
+        team1_score = ${team1Score || 0},
+        team2_score = ${team2Score || 0},
+        updated_at = CURRENT_TIMESTAMP
+      WHERE stage = ${stage} AND match_number = ${matchNumber}
+    `;
+    
+    // If game is complete, update winner and save to results
+    if (gameComplete) {
+      const winnerName = team1Score > team2Score ? match.team1_name : match.team2_name;
+      
+      await sql`
+        UPDATE knockout_matches
+        SET 
+          winner_name = ${winnerName},
+          is_completed = true,
+          completed_at = CURRENT_TIMESTAMP,
+          updated_at = CURRENT_TIMESTAMP
+        WHERE stage = ${stage} AND match_number = ${matchNumber}
+      `;
+      
+      // Save to knockout_game_results
+      await sql`
+        INSERT INTO knockout_game_results (
+          stage, match_number,
+          team1_name, team2_name,
+          team1_score, team2_score,
+          winner_name
+        )
+        VALUES (
+          ${stage}, ${matchNumber},
+          ${match.team1_name}, ${match.team2_name},
+          ${team1Score}, ${team2Score},
+          ${winnerName}
+        )
+        ON CONFLICT (stage, match_number)
+        DO UPDATE SET
+          team1_name = ${match.team1_name},
+          team2_name = ${match.team2_name},
+          team1_score = ${team1Score},
+          team2_score = ${team2Score},
+          winner_name = ${winnerName},
+          completed_at = CURRENT_TIMESTAMP
+      `;
+    }
+    
+    return res.status(200).json({ 
+      success: true,
+      team1Score,
+      team2Score,
+      gameComplete 
+    });
+  } catch (error) {
+    console.error('Error updating knockout score:', error);
+    return res.status(500).json({ error: 'Failed to update knockout score' });
+  }
+});
+
+// Initialize knockout stages (create all matches)
+app.post('/api/knockout/initialize', async (req, res) => {
+  try {
+    // Round of 16: 8 matches
+    for (let i = 1; i <= 8; i++) {
+      await sql`
+        INSERT INTO knockout_matches (stage, match_number)
+        VALUES ('round_of_16', ${i})
+        ON CONFLICT (stage, match_number) DO NOTHING
+      `;
+    }
+    
+    // Quarter-finals: 4 matches
+    for (let i = 1; i <= 4; i++) {
+      await sql`
+        INSERT INTO knockout_matches (stage, match_number)
+        VALUES ('quarter', ${i})
+        ON CONFLICT (stage, match_number) DO NOTHING
+      `;
+    }
+    
+    // Semi-finals: 2 matches
+    for (let i = 1; i <= 2; i++) {
+      await sql`
+        INSERT INTO knockout_matches (stage, match_number)
+        VALUES ('semi', ${i})
+        ON CONFLICT (stage, match_number) DO NOTHING
+      `;
+    }
+    
+    // Final: 1 match
+    await sql`
+      INSERT INTO knockout_matches (stage, match_number)
+      VALUES ('final', 1)
+      ON CONFLICT (stage, match_number) DO NOTHING
+    `;
+    
+    return res.status(200).json({ success: true, message: 'Knockout stages initialized' });
+  } catch (error) {
+    console.error('Error initializing knockout stages:', error);
+    return res.status(500).json({ error: 'Failed to initialize knockout stages' });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

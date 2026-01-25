@@ -497,16 +497,16 @@ const PoolsPage: React.FC = () => {
                         <button
                           key={oppIndex}
                           onClick={() => !isCompleted && startLiveScore(poolKey, index, oppIndex)}
-                          disabled={isCompleted}
-                          className={`text-xs sm:text-sm font-bold px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg transition-all active:scale-95 min-h-[36px] sm:min-h-[44px] whitespace-nowrap ${
+                          disabled={true}
+                          className={`text-xs sm:text-sm font-bold px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg transition-all min-h-[36px] sm:min-h-[44px] whitespace-nowrap ${
                             isCompleted
                               ? "bg-gray-400 cursor-not-allowed text-white"
-                              : "bg-blue-500 hover:bg-blue-600 active:bg-blue-700 text-white"
+                              : "bg-gray-300 cursor-not-allowed text-gray-600"
                           }`}
                           title={
                             isCompleted
                               ? `Completed: ${gameResult.team1_score} - ${gameResult.team2_score} (Winner: ${gameResult.winner_name})`
-                              : `Score: ${team.name} vs ${opponent.name}`
+                              : `Admin login required to start live scoring: ${team.name} vs ${opponent.name}`
                           }
                         >
                           {isCompleted ? (
@@ -563,12 +563,21 @@ const PoolsPage: React.FC = () => {
             </div>
             {!isAuthenticated && (
               <button
-                onClick={fetchTeamData}
+                onClick={() => {
+                  fetchTeamData();
+                  fetchCompletedGames();
+                }}
                 className="bg-white/30 hover:bg-white/40 active:bg-white/50 backdrop-blur-sm px-4 sm:px-5 py-2 rounded-full font-semibold transition-all duration-200 hover:scale-105 active:scale-95 min-h-[44px] text-sm sm:text-base"
               >
                 🔄 <span className="hidden sm:inline">Refresh</span>
               </button>
             )}
+            <button
+              onClick={() => navigate("/knockout")}
+              className="bg-white/30 hover:bg-white/40 active:bg-white/50 backdrop-blur-sm px-4 sm:px-5 py-2 rounded-full font-semibold transition-all duration-200 hover:scale-105 active:scale-95 min-h-[44px] text-sm sm:text-base"
+            >
+              🏆 <span className="hidden sm:inline">Knockout</span>
+            </button>
             {!isAuthenticated ? (
               <button
                 onClick={() => setShowLoginModal(true)}

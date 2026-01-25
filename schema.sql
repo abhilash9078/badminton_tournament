@@ -268,3 +268,51 @@ CREATE TABLE IF NOT EXISTS game_results (
 -- Create index for faster lookups
 CREATE INDEX IF NOT EXISTS idx_game_results_pool ON game_results(pool_key);
 CREATE INDEX IF NOT EXISTS idx_game_results_teams ON game_results(pool_key, team1_index, team2_index);
+
+-- ================================================================
+-- Knockout Stages Table - Shuttle Showdown 4.0
+-- ================================================================
+
+-- Create knockout_matches table
+CREATE TABLE IF NOT EXISTS knockout_matches (
+    id SERIAL PRIMARY KEY,
+    stage VARCHAR(50) NOT NULL, -- 'round_of_16', 'quarter', 'semi', 'final'
+    match_number INTEGER NOT NULL, -- Match number within the stage (1-8 for round of 16, 1-4 for quarter, 1-2 for semi, 1 for final)
+    team1_id INTEGER, -- Reference to qualified team (can be null if not set yet)
+    team1_name VARCHAR(100),
+    team1_players TEXT[],
+    team1_score INTEGER DEFAULT 0,
+    team2_id INTEGER, -- Reference to qualified team (can be null if not set yet)
+    team2_name VARCHAR(100),
+    team2_players TEXT[],
+    team2_score INTEGER DEFAULT 0,
+    winner_id INTEGER,
+    winner_name VARCHAR(100),
+    is_completed BOOLEAN DEFAULT false,
+    completed_at TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(stage, match_number)
+);
+
+-- Create index for faster lookups
+CREATE INDEX IF NOT EXISTS idx_knockout_stage ON knockout_matches(stage);
+CREATE INDEX IF NOT EXISTS idx_knockout_match ON knockout_matches(stage, match_number);
+
+-- Create knockout_game_results table (similar to pool game_results)
+CREATE TABLE IF NOT EXISTS knockout_game_results (
+    id SERIAL PRIMARY KEY,
+    stage VARCHAR(50) NOT NULL,
+    match_number INTEGER NOT NULL,
+    team1_name VARCHAR(100) NOT NULL,
+    team2_name VARCHAR(100) NOT NULL,
+    team1_score INTEGER NOT NULL,
+    team2_score INTEGER NOT NULL,
+    winner_name VARCHAR(100) NOT NULL,
+    completed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(stage, match_number)
+);
+
+-- Create index for faster lookups
+CREATE INDEX IF NOT EXISTS idx_knockout_results_stage ON knockout_game_results(stage);
+CREATE INDEX IF NOT EXISTS idx_knockout_results_match ON knockout_game_results(stage, match_number);

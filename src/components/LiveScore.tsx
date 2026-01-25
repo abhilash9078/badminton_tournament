@@ -17,9 +17,14 @@ const LiveScore: React.FC = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   
+  // Check if this is a knockout match or pool match
+  const stage = searchParams.get("stage") || "";
+  const matchNumber = parseInt(searchParams.get("match") || "0");
   const poolKey = searchParams.get("pool") || "";
   const team1Index = parseInt(searchParams.get("team1") || "0");
   const team2Index = parseInt(searchParams.get("team2") || "1");
+  
+  const isKnockout = !!stage && matchNumber > 0;
   
   const [team1, setTeam1] = useState<TeamData | null>(null);
   const [team2, setTeam2] = useState<TeamData | null>(null);
@@ -29,9 +34,12 @@ const LiveScore: React.FC = () => {
   const [gameComplete, setGameComplete] = useState(false);
   const [winner, setWinner] = useState<string | null>(null);
   const [isUpdating, setIsUpdating] = useState(false);
+  const [stageName, setStageName] = useState("");
 
   // Generate unique game key for localStorage
-  const gameKey = `liveScore_${poolKey}_${team1Index}_${team2Index}`;
+  const gameKey = isKnockout 
+    ? `liveScore_knockout_${stage}_${matchNumber}`
+    : `liveScore_${poolKey}_${team1Index}_${team2Index}`;
 
   // Load persisted score from localStorage
   useEffect(() => {
@@ -54,24 +62,65 @@ const LiveScore: React.FC = () => {
     const fetchTeams = async () => {
       try {
         setIsLoading(true);
-        const response = await fetch("/api/teams");
-        if (response.ok) {
-          const data = await response.json();
-          const poolKeyMap: { [key: string]: string } = {
-            poolA: "poolATeams",
-            poolB: "poolBTeams",
-            poolC: "poolCTeams",
-            poolD: "poolDTeams",
-            poolE: "poolETeams",
-            poolF: "poolFTeams",
-            poolG: "poolGTeams",
-            poolH: "poolHTeams",
-          };
-          
-          const teams = data[poolKeyMap[poolKey]] || [];
-          if (teams[team1Index] && teams[team2Index]) {
-            setTeam1(teams[team1Index]);
-            setTeam2(teams[team2Index]);
+        
+        if (isKnockout) {
+          // Fetch knockout match data
+          const response = await fetch(`/api/knockout/matches?stage=${stage}`);
+          if (response.ok) {
+            const data = await response.json();
+            const match = data.matches?.find((m: any) => m.match_number === matchNumber);
+            
+            if (match && match.team1_name && match.team2_name) {
+              setTeam1({
+                name: match.team1_name,
+                players: match.team1_players || [],
+                played: "-",
+                won: "-",
+                lost: "-",
+                points: "-",
+              });
+              setTeam2({
+                name: match.team2_name,
+                players: match.team2_players || [],
+                played: "-",
+                won: "-",
+                lost: "-",
+                points: "-",
+              });
+              setTeam1Score(match.team1_score || 0);
+              setTeam2Score(match.team2_score || 0);
+              
+              // Set stage name
+              const stageNames: { [key: string]: string } = {
+                round_of_16: "Round of 16",
+                quarter: "Quarter-Finals",
+                semi: "Semi-Finals",
+                final: "Final",
+              };
+              setStageName(stageNames[stage] || stage);
+            }
+          }
+        } else {
+          // Fetch pool team data
+          const response = await fetch("/api/teams");
+          if (response.ok) {
+            const data = await response.json();
+            const poolKeyMap: { [key: string]: string } = {
+              poolA: "poolATeams",
+              poolB: "poolBTeams",
+              poolC: "poolCTeams",
+              poolD: "poolDTeams",
+              poolE: "poolETeams",
+              poolF: "poolFTeams",
+              poolG: "poolGTeams",
+              poolH: "poolHTeams",
+            };
+            
+            const teams = data[poolKeyMap[poolKey]] || [];
+            if (teams[team1Index] && teams[team2Index]) {
+              setTeam1(teams[team1Index]);
+              setTeam2(teams[team2Index]);
+            }
           }
         }
       } catch (error) {
@@ -81,10 +130,12 @@ const LiveScore: React.FC = () => {
       }
     };
 
-    if (poolKey && team1Index !== null && team2Index !== null) {
+    if (isKnockout && stage && matchNumber) {
+      fetchTeams();
+    } else if (poolKey && team1Index !== null && team2Index !== null) {
       fetchTeams();
     }
-  }, [poolKey, team1Index, team2Index]);
+  }, [isKnockout, stage, matchNumber, poolKey, team1Index, team2Index]);
 
   // Check for winner
   useEffect(() => {
@@ -123,28 +174,50 @@ const LiveScore: React.FC = () => {
     
     try {
       setIsUpdating(true);
-      const response = await fetch("/api/teams/score", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          poolKey,
-          team1Index,
-          team2Index,
-          team1Score,
-          team2Score,
-          gameComplete: true,
-        }),
-      });
+      
+      if (isKnockout) {
+        // Update knockout match
+        const response = await fetch("/api/knockout/score", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            stage,
+            matchNumber,
+            team1Score,
+            team2Score,
+            gameComplete: true,
+          }),
+        });
 
-      if (!response.ok) {
-        console.error("Failed to update game results");
+        if (!response.ok) {
+          console.error("Failed to update knockout game results");
+        } else {
+          localStorage.removeItem(gameKey);
+        }
       } else {
-        // Clear localStorage after successful game completion
-        localStorage.removeItem(gameKey);
-        // Trigger a refresh of completed games in parent (if needed)
-        // The pools page will refresh on next visit
+        // Update pool match
+        const response = await fetch("/api/teams/score", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            poolKey,
+            team1Index,
+            team2Index,
+            team1Score,
+            team2Score,
+            gameComplete: true,
+          }),
+        });
+
+        if (!response.ok) {
+          console.error("Failed to update game results");
+        } else {
+          localStorage.removeItem(gameKey);
+        }
       }
     } catch (error) {
       console.error("Error updating game results:", error);
@@ -166,6 +239,21 @@ const LiveScore: React.FC = () => {
         gameComplete: false,
         winner: null
       }));
+      
+      // Update knockout match score in real-time
+      if (isKnockout) {
+        fetch("/api/knockout/score", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            stage,
+            matchNumber,
+            team1Score: newScore,
+            team2Score,
+            gameComplete: false,
+          }),
+        }).catch(console.error);
+      }
     } else {
       const newScore = Math.max(0, team2Score + delta);
       setTeam2Score(newScore);
@@ -176,6 +264,21 @@ const LiveScore: React.FC = () => {
         gameComplete: false,
         winner: null
       }));
+      
+      // Update knockout match score in real-time
+      if (isKnockout) {
+        fetch("/api/knockout/score", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            stage,
+            matchNumber,
+            team1Score,
+            team2Score: newScore,
+            gameComplete: false,
+          }),
+        }).catch(console.error);
+      }
     }
   };
 
@@ -220,10 +323,10 @@ const LiveScore: React.FC = () => {
           <h2 className="text-2xl font-bold text-gray-800 mb-4">Game Not Found</h2>
           <p className="text-gray-600 mb-6">Unable to load team data.</p>
           <button
-            onClick={() => navigate("/pools")}
+            onClick={() => navigate(isKnockout ? "/knockout" : "/pools")}
             className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition-all"
           >
-            Back to Pools
+            Back {isKnockout ? "to Knockout" : "to Pools"}
           </button>
         </div>
       </div>
@@ -237,7 +340,7 @@ const LiveScore: React.FC = () => {
         <div className="container mx-auto">
           <div className="flex items-center justify-between mb-4">
             <button
-              onClick={() => navigate("/pools")}
+              onClick={() => navigate(isKnockout ? "/knockout" : "/pools")}
               className="bg-white/20 hover:bg-white/30 backdrop-blur-sm px-4 py-2 rounded-lg font-semibold transition-all active:scale-95 min-h-[44px] flex items-center gap-2"
             >
               <span>←</span>
@@ -250,7 +353,7 @@ const LiveScore: React.FC = () => {
           </div>
           <div className="text-center">
             <p className="text-sm sm:text-base md:text-lg font-bold bg-white/20 backdrop-blur-sm px-4 py-2 rounded-lg inline-block">
-              {getPoolName(poolKey)}
+              {isKnockout ? stageName : getPoolName(poolKey)}
             </p>
           </div>
         </div>
@@ -393,18 +496,18 @@ const LiveScore: React.FC = () => {
                   🔄 New Game
                 </button>
                 <button
-                  onClick={() => navigate("/pools")}
+                  onClick={() => navigate(isKnockout ? "/knockout" : "/pools")}
                   className="flex-1 bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 sm:py-4 rounded-lg transition-all active:scale-95 min-h-[50px] sm:min-h-[60px] text-base sm:text-lg"
                 >
-                  ← Back to Pools
+                  ← Back {isKnockout ? "to Knockout" : "to Pools"}
                 </button>
               </>
             ) : (
               <button
-                onClick={() => navigate("/pools")}
+                onClick={() => navigate(isKnockout ? "/knockout" : "/pools")}
                 className="w-full bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 sm:py-4 rounded-lg transition-all active:scale-95 min-h-[50px] sm:min-h-[60px] text-base sm:text-lg"
               >
-                ← Back to Pools (Game will continue)
+                ← Back {isKnockout ? "to Knockout" : "to Pools"} (Game will continue)
               </button>
             )}
           </div>
