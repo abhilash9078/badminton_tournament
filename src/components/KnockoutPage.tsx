@@ -248,23 +248,23 @@ const KnockoutPage: React.FC = () => {
     return (
       <div
         key={`${match.stage}-${match.match_number}`}
-        className={`bg-white rounded-lg shadow-md p-4 border-2 ${
+        className={`bg-white rounded-lg shadow-md p-3 sm:p-4 border-2 ${
           isCompleted ? "border-green-500" : "border-gray-200"
         }`}
       >
-        <div className="text-center mb-3">
-          <h4 className="font-bold text-gray-700 text-sm">
+        <div className="text-center mb-2 sm:mb-3">
+          <h4 className="font-bold text-gray-700 text-sm sm:text-base">
             Match {match.match_number}
           </h4>
         </div>
         
-        <div className="space-y-3">
+        <div className="space-y-2 sm:space-y-3">
           {/* Team 1 */}
           <div className="flex items-center gap-2">
             {isEditable ? (
               <input
                 type="text"
-                className="flex-1 border-2 border-gray-300 rounded px-2 py-1 text-sm focus:border-blue-500 focus:outline-none"
+                className="flex-1 min-w-0 border-2 border-gray-300 rounded px-2 py-2 text-sm sm:text-base focus:border-blue-500 focus:outline-none"
                 placeholder="Team 1"
                 value={getDisplayValue(match, "team1_name") || ""}
                 onChange={(e) =>
@@ -272,14 +272,14 @@ const KnockoutPage: React.FC = () => {
                 }
               />
             ) : (
-              <div className="flex-1 font-semibold text-gray-800 text-sm">
+              <div className="flex-1 min-w-0 font-semibold text-gray-800 text-sm sm:text-base truncate">
                 {match.team1_name || "TBD"}
               </div>
             )}
             {isEditable && (
               <input
                 type="number"
-                className="w-16 text-center border-2 border-gray-300 rounded px-1 py-1 text-sm font-bold focus:border-blue-500 focus:outline-none"
+                className="w-14 sm:w-16 text-center border-2 border-gray-300 rounded px-1 py-2 text-sm sm:text-base font-bold focus:border-blue-500 focus:outline-none"
                 placeholder="0"
                 value={getDisplayValue(match, "team1_score") || 0}
                 onChange={(e) =>
@@ -293,20 +293,20 @@ const KnockoutPage: React.FC = () => {
               />
             )}
             {!isEditable && isCompleted && (
-              <div className="w-16 text-center font-bold text-blue-600 text-sm">
+              <div className="w-14 sm:w-16 text-center font-bold text-blue-600 text-sm sm:text-base">
                 {gameResult?.team1_score ?? match.team1_score ?? 0}
               </div>
             )}
           </div>
 
-          <div className="text-center text-gray-400 text-xs">VS</div>
+          <div className="text-center text-gray-400 text-xs font-semibold">VS</div>
 
           {/* Team 2 */}
           <div className="flex items-center gap-2">
             {isEditable ? (
               <input
                 type="text"
-                className="flex-1 border-2 border-gray-300 rounded px-2 py-1 text-sm focus:border-blue-500 focus:outline-none"
+                className="flex-1 min-w-0 border-2 border-gray-300 rounded px-2 py-2 text-sm sm:text-base focus:border-blue-500 focus:outline-none"
                 placeholder="Team 2"
                 value={getDisplayValue(match, "team2_name") || ""}
                 onChange={(e) =>
@@ -314,14 +314,14 @@ const KnockoutPage: React.FC = () => {
                 }
               />
             ) : (
-              <div className="flex-1 font-semibold text-gray-800 text-sm">
+              <div className="flex-1 min-w-0 font-semibold text-gray-800 text-sm sm:text-base truncate">
                 {match.team2_name || "TBD"}
               </div>
             )}
             {isEditable && (
               <input
                 type="number"
-                className="w-16 text-center border-2 border-gray-300 rounded px-1 py-1 text-sm font-bold focus:border-blue-500 focus:outline-none"
+                className="w-14 sm:w-16 text-center border-2 border-gray-300 rounded px-1 py-2 text-sm sm:text-base font-bold focus:border-blue-500 focus:outline-none"
                 placeholder="0"
                 value={getDisplayValue(match, "team2_score") || 0}
                 onChange={(e) =>
@@ -335,7 +335,7 @@ const KnockoutPage: React.FC = () => {
               />
             )}
             {!isEditable && isCompleted && (
-              <div className="w-16 text-center font-bold text-blue-600 text-sm">
+              <div className="w-14 sm:w-16 text-center font-bold text-blue-600 text-sm sm:text-base">
                 {gameResult?.team2_score ?? match.team2_score ?? 0}
               </div>
             )}
@@ -343,19 +343,19 @@ const KnockoutPage: React.FC = () => {
 
           {/* Winner display */}
           {isCompleted && (
-            <div className="text-center mt-2">
-              <span className="text-xs font-bold text-green-600">
-                🏆 Winner: {gameResult?.winner_name ?? match.winner_name ?? "N/A"}
+            <div className="text-center mt-1 sm:mt-2">
+              <span className="text-xs sm:text-sm font-bold text-green-600 break-words">
+                🏆 {gameResult?.winner_name ?? match.winner_name ?? "N/A"}
               </span>
             </div>
           )}
 
           {/* Live Score Button */}
-          <div className="mt-3">
+          <div className="mt-2 sm:mt-3">
             <button
               onClick={() => startLiveScore(match.stage, match.match_number)}
               disabled={isCompleted || !match.team1_name || !match.team2_name || !isAuthenticated}
-              className={`w-full py-2 rounded-lg font-bold text-xs transition-all ${
+              className={`w-full py-2.5 sm:py-2 rounded-lg font-bold text-xs sm:text-sm transition-all min-h-[44px] sm:min-h-0 ${
                 isCompleted || !match.team1_name || !match.team2_name || !isAuthenticated
                   ? "bg-gray-300 cursor-not-allowed text-gray-600"
                   : "bg-blue-500 hover:bg-blue-600 active:bg-blue-700 text-white"
@@ -413,9 +413,9 @@ const KnockoutPage: React.FC = () => {
           <div
             className={`grid gap-3 sm:gap-4 ${
               stage === "round_of_16"
-                ? "grid-cols-2 sm:grid-cols-4"
+                ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4"
                 : stage === "quarter"
-                ? "grid-cols-2"
+                ? "grid-cols-1 sm:grid-cols-2"
                 : "grid-cols-1"
             }`}
           >
@@ -496,22 +496,22 @@ const KnockoutPage: React.FC = () => {
         {isAuthenticated && (
           <>
             {editedMatches.size > 0 && (
-              <div className="fixed bottom-6 right-6 bg-white rounded-lg shadow-2xl p-4 border-2 border-blue-500 z-50">
-                <p className="text-sm font-semibold text-gray-700 mb-3">
+              <div className="fixed bottom-4 left-4 right-4 sm:bottom-6 sm:left-auto sm:right-6 sm:max-w-sm bg-white rounded-lg shadow-2xl p-3 sm:p-4 border-2 border-blue-500 z-50">
+                <p className="text-xs sm:text-sm font-semibold text-gray-700 mb-2 sm:mb-3">
                   {editedMatches.size} unsaved change{editedMatches.size > 1 ? "s" : ""}
                 </p>
                 <div className="flex gap-2">
                   <button
                     onClick={discardChanges}
                     disabled={isSaving}
-                    className="flex-1 bg-gray-500 hover:bg-gray-600 disabled:bg-gray-300 text-white font-bold py-2 px-4 rounded-lg transition-all"
+                    className="flex-1 bg-gray-500 hover:bg-gray-600 disabled:bg-gray-300 text-white font-bold py-2.5 sm:py-2 px-3 sm:px-4 rounded-lg transition-all text-sm min-h-[44px] sm:min-h-0"
                   >
                     Discard
                   </button>
                   <button
                     onClick={saveAllChanges}
                     disabled={isSaving}
-                    className="flex-1 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 text-white font-bold py-2 px-4 rounded-lg transition-all"
+                    className="flex-1 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 text-white font-bold py-2.5 sm:py-2 px-3 sm:px-4 rounded-lg transition-all text-sm min-h-[44px] sm:min-h-0"
                   >
                     {isSaving ? "Saving..." : "Save All"}
                   </button>
