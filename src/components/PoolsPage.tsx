@@ -26,6 +26,14 @@ const PoolsPage: React.FC = () => {
   const [loginError, setLoginError] = useState("");
   const [showLoginModal, setShowLoginModal] = useState(false);
 
+  // Check for existing session on mount
+  useEffect(() => {
+    const savedAuth = localStorage.getItem("adminAuthenticated");
+    if (savedAuth === "true") {
+      setIsAuthenticated(true);
+    }
+  }, []);
+
   // Team data state for all 8 pools
   const [poolATeams, setPoolATeams] = useState<TeamData[]>([]);
   const [poolBTeams, setPoolBTeams] = useState<TeamData[]>([]);
@@ -152,8 +160,11 @@ const PoolsPage: React.FC = () => {
     e.preventDefault();
     if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
       setIsAuthenticated(true);
+      localStorage.setItem("adminAuthenticated", "true");
       setLoginError("");
       setShowLoginModal(false);
+      setUsername("");
+      setPassword("");
     } else {
       setLoginError("Invalid username or password");
     }
@@ -162,6 +173,7 @@ const PoolsPage: React.FC = () => {
   // Handle logout
   const handleLogout = () => {
     setIsAuthenticated(false);
+    localStorage.removeItem("adminAuthenticated");
     setUsername("");
     setPassword("");
   };

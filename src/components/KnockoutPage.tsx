@@ -41,6 +41,14 @@ const KnockoutPage: React.FC = () => {
   const [password, setPassword] = useState("");
   const [loginError, setLoginError] = useState("");
   const [showLoginModal, setShowLoginModal] = useState(false);
+
+  // Check for existing session on mount
+  useEffect(() => {
+    const savedAuth = localStorage.getItem("adminAuthenticated");
+    if (savedAuth === "true") {
+      setIsAuthenticated(true);
+    }
+  }, []);
   
   // Knockout matches state
   const [roundOf16, setRoundOf16] = useState<KnockoutMatch[]>([]);
@@ -114,8 +122,11 @@ const KnockoutPage: React.FC = () => {
     e.preventDefault();
     if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
       setIsAuthenticated(true);
+      localStorage.setItem("adminAuthenticated", "true");
       setLoginError("");
       setShowLoginModal(false);
+      setUsername("");
+      setPassword("");
     } else {
       setLoginError("Invalid username or password");
     }
@@ -124,6 +135,7 @@ const KnockoutPage: React.FC = () => {
   // Handle logout
   const handleLogout = () => {
     setIsAuthenticated(false);
+    localStorage.removeItem("adminAuthenticated");
     setUsername("");
     setPassword("");
   };

@@ -145,35 +145,35 @@ const PoolsAndPoints: React.FC = () => {
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                   <div className="bg-indigo-100 p-2 rounded-lg">
                     <p className="font-medium text-indigo-800 text-sm">R16-1</p>
-                    <p className="text-xs text-indigo-600">A1 vs H2</p>
+                    <p className="text-xs text-indigo-600">A1 vs E2</p>
                   </div>
                   <div className="bg-indigo-100 p-2 rounded-lg">
                     <p className="font-medium text-indigo-800 text-sm">R16-2</p>
-                    <p className="text-xs text-indigo-600">B1 vs G2</p>
+                    <p className="text-xs text-indigo-600">B1 vs F2</p>
                   </div>
                   <div className="bg-indigo-100 p-2 rounded-lg">
                     <p className="font-medium text-indigo-800 text-sm">R16-3</p>
-                    <p className="text-xs text-indigo-600">C1 vs F2</p>
+                    <p className="text-xs text-indigo-600">C1 vs G2</p>
                   </div>
                   <div className="bg-indigo-100 p-2 rounded-lg">
                     <p className="font-medium text-indigo-800 text-sm">R16-4</p>
-                    <p className="text-xs text-indigo-600">D1 vs E2</p>
+                    <p className="text-xs text-indigo-600">D1 vs H2</p>
                   </div>
                   <div className="bg-indigo-100 p-2 rounded-lg">
                     <p className="font-medium text-indigo-800 text-sm">R16-5</p>
-                    <p className="text-xs text-indigo-600">E1 vs D2</p>
+                    <p className="text-xs text-indigo-600">E1 vs A2</p>
                   </div>
                   <div className="bg-indigo-100 p-2 rounded-lg">
                     <p className="font-medium text-indigo-800 text-sm">R16-6</p>
-                    <p className="text-xs text-indigo-600">F1 vs C2</p>
+                    <p className="text-xs text-indigo-600">F1 vs B2</p>
                   </div>
                   <div className="bg-indigo-100 p-2 rounded-lg">
                     <p className="font-medium text-indigo-800 text-sm">R16-7</p>
-                    <p className="text-xs text-indigo-600">G1 vs B2</p>
+                    <p className="text-xs text-indigo-600">G1 vs C2</p>
                   </div>
                   <div className="bg-indigo-100 p-2 rounded-lg">
                     <p className="font-medium text-indigo-800 text-sm">R16-8</p>
-                    <p className="text-xs text-indigo-600">H1 vs A2</p>
+                    <p className="text-xs text-indigo-600">H1 vs D2</p>
                   </div>
                 </div>
                 <p className="mt-3 text-sm text-gray-600">
@@ -228,13 +228,13 @@ const PoolsAndPoints: React.FC = () => {
                   <div className="bg-purple-100 p-3 rounded-lg">
                     <p className="font-medium text-purple-800">SF 1</p>
                     <p className="text-xs text-purple-600">
-                      Winner QF1 vs Winner QF3
+                      Winner QF1 vs Winner QF2
                     </p>
                   </div>
                   <div className="bg-purple-100 p-3 rounded-lg">
                     <p className="font-medium text-purple-800">SF 2</p>
                     <p className="text-xs text-purple-600">
-                      Winner QF2 vs Winner QF4
+                      Winner QF3 vs Winner QF4
                     </p>
                   </div>
                 </div>
