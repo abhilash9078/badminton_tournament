@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Trophy, Calendar, Users } from "lucide-react";
 
 // Define enhanced animations with click effects
@@ -323,6 +323,53 @@ const customAnimations = `
 `;
 
 const Hero: React.FC = () => {
+  // Tournament date: January 31st, 2026 at 8:30 AM
+  const tournamentDate = new Date("2026-01-31T08:30:00").getTime();
+  
+  // Countdown timer state
+  const [timeRemaining, setTimeRemaining] = useState({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+    isLive: false
+  });
+
+  // Update countdown every second
+  useEffect(() => {
+    const updateCountdown = () => {
+      const now = new Date().getTime();
+      const distance = tournamentDate - now;
+
+      if (distance < 0) {
+        setTimeRemaining({
+          days: 0,
+          hours: 0,
+          minutes: 0,
+          seconds: 0,
+          isLive: true
+        });
+      } else {
+        setTimeRemaining({
+          days: Math.floor(distance / (1000 * 60 * 60 * 24)),
+          hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+          minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
+          seconds: Math.floor((distance % (1000 * 60)) / 1000),
+          isLive: false
+        });
+      }
+    };
+
+    // Initial update
+    updateCountdown();
+
+    // Update every second
+    const interval = setInterval(updateCountdown, 1000);
+
+    // Cleanup
+    return () => clearInterval(interval);
+  }, [tournamentDate]);
+
   // Click handlers for animations
   const handleButtonClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     const button = e.currentTarget;
@@ -433,15 +480,102 @@ const Hero: React.FC = () => {
                   <div className="text-lg sm:text-xl text-cyan-200 font-medium">
                     SATURDAY
                   </div>
-                  <div className="mt-4 text-base sm:text-lg text-white/95 font-medium">
-                    ⚡ Registration Open Now ⚡
+                  <div className="mt-4 text-base sm:text-lg text-red-400 font-bold">
+                    🔒 Registration Closed 🔒
                   </div>
+                  <a
+                    href="/pools"
+                    className="inline-block mt-4 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white font-bold px-6 py-2.5 rounded-full transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-lg hover:shadow-xl min-h-[44px] flex items-center justify-center"
+                    onClick={(e) => {
+                      e.currentTarget.classList.add("click-scale");
+                      setTimeout(() => e.currentTarget.classList.remove("click-scale"), 150);
+                    }}
+                  >
+                    🏆 View Pools & Matches
+                  </a>
                 </div>
               </div>
             </div>
 
-            {/* Excitement text */}
+            {/* Countdown Timer or Live Status */}
             <div className="mt-6 animate-slide-up" style={{ animationDelay: "1s" }}>
+              {timeRemaining.isLive ? (
+                // Matches are Live
+                <div className="bg-gradient-to-br from-red-500/20 via-orange-500/20 to-yellow-500/20 backdrop-blur-sm border-2 border-red-400/60 rounded-2xl p-6 sm:p-8 mx-auto max-w-2xl animate-pulse-glow shadow-2xl">
+                  <div className="flex items-center justify-center mb-4">
+                    <div className="w-4 h-4 bg-red-500 rounded-full animate-pulse mr-3"></div>
+                    <h3 className="text-2xl sm:text-3xl md:text-4xl font-black bg-gradient-to-r from-red-400 via-orange-400 to-yellow-400 text-transparent bg-clip-text animate-flash-text">
+                      🔴 MATCHES ARE LIVE! 🔴
+                    </h3>
+                    <div className="w-4 h-4 bg-red-500 rounded-full animate-pulse ml-3"></div>
+                  </div>
+                  <p className="text-lg sm:text-xl text-white font-semibold mb-4">
+                    The tournament is happening right now!
+                  </p>
+                  <a
+                    href="/pools"
+                    className="inline-block bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 text-white font-bold px-8 py-3 rounded-full transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-lg hover:shadow-xl text-lg min-h-[44px] flex items-center justify-center mx-auto max-w-xs"
+                    onClick={(e) => {
+                      e.currentTarget.classList.add("click-scale");
+                      setTimeout(() => e.currentTarget.classList.remove("click-scale"), 150);
+                    }}
+                  >
+                    📺 Watch Matches Live
+                  </a>
+                </div>
+              ) : (
+                // Countdown Timer
+                <div className="bg-gradient-to-br from-purple-500/15 via-pink-500/15 to-red-500/15 backdrop-blur-sm border-2 border-purple-400/40 rounded-2xl p-6 sm:p-8 mx-auto max-w-2xl animate-countdown-pulse shadow-2xl">
+                  <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-4">
+                    ⏰ Tournament Starts In:
+                  </h3>
+                  <div className="grid grid-cols-4 gap-2 sm:gap-4">
+                    {/* Days */}
+                    <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 sm:p-4 border border-white/20">
+                      <div className="text-3xl sm:text-4xl md:text-5xl font-black bg-gradient-to-r from-cyan-400 to-blue-400 text-transparent bg-clip-text">
+                        {timeRemaining.days}
+                      </div>
+                      <div className="text-xs sm:text-sm text-cyan-300 font-semibold mt-1">
+                        Days
+                      </div>
+                    </div>
+                    {/* Hours */}
+                    <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 sm:p-4 border border-white/20">
+                      <div className="text-3xl sm:text-4xl md:text-5xl font-black bg-gradient-to-r from-purple-400 to-pink-400 text-transparent bg-clip-text">
+                        {timeRemaining.hours}
+                      </div>
+                      <div className="text-xs sm:text-sm text-purple-300 font-semibold mt-1">
+                        Hours
+                      </div>
+                    </div>
+                    {/* Minutes */}
+                    <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 sm:p-4 border border-white/20">
+                      <div className="text-3xl sm:text-4xl md:text-5xl font-black bg-gradient-to-r from-pink-400 to-red-400 text-transparent bg-clip-text">
+                        {timeRemaining.minutes}
+                      </div>
+                      <div className="text-xs sm:text-sm text-pink-300 font-semibold mt-1">
+                        Minutes
+                      </div>
+                    </div>
+                    {/* Seconds */}
+                    <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 sm:p-4 border border-white/20">
+                      <div className="text-3xl sm:text-4xl md:text-5xl font-black bg-gradient-to-r from-orange-400 to-yellow-400 text-transparent bg-clip-text">
+                        {timeRemaining.seconds}
+                      </div>
+                      <div className="text-xs sm:text-sm text-orange-300 font-semibold mt-1">
+                        Seconds
+                      </div>
+                    </div>
+                  </div>
+                  <p className="text-sm sm:text-base text-white/80 mt-4 font-medium">
+                    Tournament begins at 8:30 AM on Saturday, January 31st
+                  </p>
+                </div>
+              )}
+            </div>
+
+            {/* Excitement text */}
+            <div className="mt-6 animate-slide-up" style={{ animationDelay: "1.2s" }}>
               <p className="text-lg sm:text-xl text-cyan-200 font-medium mb-2">
                 🏆 Get Ready for Epic Battles! 🏆
               </p>
