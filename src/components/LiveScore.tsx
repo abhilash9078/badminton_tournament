@@ -119,24 +119,24 @@ const LiveScore: React.FC = () => {
           }
         } else {
           // Fetch pool team data
-          const response = await fetch("/api/teams");
-          if (response.ok) {
-            const data = await response.json();
-            const poolKeyMap: { [key: string]: string } = {
-              poolA: "poolATeams",
-              poolB: "poolBTeams",
-              poolC: "poolCTeams",
-              poolD: "poolDTeams",
-              poolE: "poolETeams",
-              poolF: "poolFTeams",
-              poolG: "poolGTeams",
-              poolH: "poolHTeams",
-            };
-            
-            const teams = data[poolKeyMap[poolKey]] || [];
-            if (teams[team1Index] && teams[team2Index]) {
-              setTeam1(teams[team1Index]);
-              setTeam2(teams[team2Index]);
+        const response = await fetch("/api/teams");
+        if (response.ok) {
+          const data = await response.json();
+          const poolKeyMap: { [key: string]: string } = {
+            poolA: "poolATeams",
+            poolB: "poolBTeams",
+            poolC: "poolCTeams",
+            poolD: "poolDTeams",
+            poolE: "poolETeams",
+            poolF: "poolFTeams",
+            poolG: "poolGTeams",
+            poolH: "poolHTeams",
+          };
+          
+          const teams = data[poolKeyMap[poolKey]] || [];
+          if (teams[team1Index] && teams[team2Index]) {
+            setTeam1(teams[team1Index]);
+            setTeam2(teams[team2Index]);
             }
           }
         }
@@ -181,7 +181,7 @@ const LiveScore: React.FC = () => {
         }
       } else {
         // Normal rules: first to 21
-        if (team1Score >= WINNING_SCORE && team1Score > team2Score) {
+    if (team1Score >= WINNING_SCORE && team1Score > team2Score) {
           setWinner = team1?.name || "Team 1";
         } else if (team2Score >= WINNING_SCORE && team2Score > team1Score) {
           setWinner = team2?.name || "Team 2";
@@ -208,11 +208,14 @@ const LiveScore: React.FC = () => {
       const newSetScores = [...setScores, { set: currentSet, team1: team1Score, team2: team2Score }];
       setSetScores(newSetScores);
       
-      // Check if match is complete (best of 3)
+      // Check if match is complete (best of 3 - first to win 2 sets)
       if (newTeam1Sets === 2 || newTeam2Sets === 2) {
+        // Match is complete - someone won 2 sets
         const matchWinner = newTeam1Sets === 2 ? team1?.name || "Team 1" : team2?.name || "Team 2";
         setGameComplete(true);
         setWinner(matchWinner);
+        setTeam1SetsWon(newTeam1Sets);
+        setTeam2SetsWon(newTeam2Sets);
         localStorage.setItem(gameKey, JSON.stringify({
           team1Score,
           team2Score,
@@ -224,11 +227,31 @@ const LiveScore: React.FC = () => {
           setScores: newSetScores
         }));
         handleGameComplete();
-      } else {
-        // Move to next set
+      } else if (currentSet >= 3) {
+        // Safety check: If we somehow reach set 4, end the match
+        // (This shouldn't happen, but just in case)
+        const matchWinner = newTeam1Sets > newTeam2Sets ? team1?.name || "Team 1" : team2?.name || "Team 2";
+        setGameComplete(true);
+        setWinner(matchWinner);
         setTeam1SetsWon(newTeam1Sets);
         setTeam2SetsWon(newTeam2Sets);
-        setCurrentSet(currentSet + 1);
+        localStorage.setItem(gameKey, JSON.stringify({
+          team1Score,
+          team2Score,
+          gameComplete: true,
+          winner: matchWinner,
+          currentSet: 3,
+          team1SetsWon: newTeam1Sets,
+          team2SetsWon: newTeam2Sets,
+          setScores: newSetScores
+        }));
+        handleGameComplete();
+      } else {
+        // Move to next set (Set 2 or Set 3)
+        setTeam1SetsWon(newTeam1Sets);
+        setTeam2SetsWon(newTeam2Sets);
+        const nextSet = currentSet + 1;
+        setCurrentSet(nextSet);
         setTeam1Score(0);
         setTeam2Score(0);
         localStorage.setItem(gameKey, JSON.stringify({
@@ -236,7 +259,7 @@ const LiveScore: React.FC = () => {
           team2Score: 0,
           gameComplete: false,
           winner: null,
-          currentSet: currentSet + 1,
+          currentSet: nextSet,
           team1SetsWon: newTeam1Sets,
           team2SetsWon: newTeam2Sets,
           setScores: newSetScores
@@ -285,25 +308,25 @@ const LiveScore: React.FC = () => {
         }
       } else {
         // Update pool match
-        const response = await fetch("/api/teams/score", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            poolKey,
-            team1Index,
-            team2Index,
-            team1Score,
-            team2Score,
-            gameComplete: true,
-          }),
-        });
+      const response = await fetch("/api/teams/score", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          poolKey,
+          team1Index,
+          team2Index,
+          team1Score,
+          team2Score,
+          gameComplete: true,
+        }),
+      });
 
-        if (!response.ok) {
-          console.error("Failed to update game results");
-        } else {
-          localStorage.removeItem(gameKey);
+      if (!response.ok) {
+        console.error("Failed to update game results");
+      } else {
+        localStorage.removeItem(gameKey);
         }
       }
     } catch (error) {
@@ -381,21 +404,6 @@ const LiveScore: React.FC = () => {
         }).catch(console.error);
       }
     }
-  };
-
-  const resetGame = () => {
-    setTeam1Score(0);
-    setTeam2Score(0);
-    setGameComplete(false);
-    setWinner(null);
-    if (isFinal) {
-      setCurrentSet(1);
-      setTeam1SetsWon(0);
-      setTeam2SetsWon(0);
-      setSetScores([]);
-    }
-    // Clear localStorage
-    localStorage.removeItem(gameKey);
   };
 
   const getPoolName = (key: string) => {
@@ -492,9 +500,9 @@ const LiveScore: React.FC = () => {
                   </div>
                 </div>
               ) : (
-                <p className="text-lg sm:text-xl font-semibold">
-                  Final Score: {team1Score} - {team2Score}
-                </p>
+              <p className="text-lg sm:text-xl font-semibold">
+                Final Score: {team1Score} - {team2Score}
+              </p>
               )}
             </div>
           )}
@@ -532,7 +540,7 @@ const LiveScore: React.FC = () => {
                       <p className="text-green-600 font-bold text-sm sm:text-base">Winner!</p>
                     )
                   ) : (
-                    <p className="text-green-600 font-bold text-sm sm:text-base">Winner!</p>
+                  <p className="text-green-600 font-bold text-sm sm:text-base">Winner!</p>
                   )
                 )}
               </div>
@@ -586,7 +594,7 @@ const LiveScore: React.FC = () => {
                       <p className="text-green-600 font-bold text-sm sm:text-base">Winner!</p>
                     )
                   ) : (
-                    <p className="text-green-600 font-bold text-sm sm:text-base">Winner!</p>
+                  <p className="text-green-600 font-bold text-sm sm:text-base">Winner!</p>
                   )
                 )}
               </div>
@@ -676,29 +684,12 @@ const LiveScore: React.FC = () => {
 
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-            {gameComplete ? (
-              <>
-                <button
-                  onClick={resetGame}
-                  className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 sm:py-4 rounded-lg transition-all active:scale-95 min-h-[50px] sm:min-h-[60px] text-base sm:text-lg"
-                >
-                  🔄 New Game
-                </button>
-                <button
-                  onClick={() => navigate(isKnockout ? "/knockout" : "/pools")}
-                  className="flex-1 bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 sm:py-4 rounded-lg transition-all active:scale-95 min-h-[50px] sm:min-h-[60px] text-base sm:text-lg"
-                >
-                  ← Back {isKnockout ? "to Knockout" : "to Pools"}
-                </button>
-              </>
-            ) : (
-              <button
-                onClick={() => navigate(isKnockout ? "/knockout" : "/pools")}
-                className="w-full bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 sm:py-4 rounded-lg transition-all active:scale-95 min-h-[50px] sm:min-h-[60px] text-base sm:text-lg"
-              >
-                ← Back {isKnockout ? "to Knockout" : "to Pools"} (Game will continue)
-              </button>
-            )}
+            <button
+              onClick={() => navigate(isKnockout ? "/knockout" : "/pools")}
+              className="w-full bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 sm:py-4 rounded-lg transition-all active:scale-95 min-h-[50px] sm:min-h-[60px] text-base sm:text-lg"
+            >
+              ← Back {isKnockout ? "to Knockout" : "to Pools"}
+            </button>
           </div>
 
           {/* Info Notice */}

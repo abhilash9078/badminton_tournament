@@ -172,15 +172,16 @@ const KnockoutPage: React.FC = () => {
       // Save all edited matches in parallel
       const savePromises = Array.from(editedMatches.values()).map(async (edits) => {
         // Convert field names to camelCase for API
+        // Note: Scores are read-only and can only be updated via live scoring
         const apiData: any = {
           stage: edits.stage,
           matchNumber: edits.match_number,
         };
         
+        // Only allow editing team names, not scores
         if ('team1_name' in edits) apiData.team1Name = edits.team1_name;
-        if ('team1_score' in edits) apiData.team1Score = edits.team1_score;
         if ('team2_name' in edits) apiData.team2Name = edits.team2_name;
-        if ('team2_score' in edits) apiData.team2Score = edits.team2_score;
+        // Scores are intentionally excluded - they can only be updated via live scoring
         
         const response = await fetch("/api/knockout/update", {
           method: "POST",
@@ -276,23 +277,8 @@ const KnockoutPage: React.FC = () => {
                 {match.team1_name || "TBD"}
               </div>
             )}
-            {isEditable && (
-              <input
-                type="number"
-                className="w-14 sm:w-16 text-center border-2 border-gray-300 rounded px-1 py-2 text-sm sm:text-base font-bold focus:border-blue-500 focus:outline-none"
-                placeholder="0"
-                value={getDisplayValue(match, "team1_score") || 0}
-                onChange={(e) =>
-                  handleLocalChange(
-                    match.stage,
-                    match.match_number,
-                    "team1_score",
-                    parseInt(e.target.value) || 0
-                  )
-                }
-              />
-            )}
-            {!isEditable && isCompleted && (
+            {/* Score display - always read-only, even in admin mode */}
+            {(isCompleted || match.team1_score !== undefined) && (
               <div className="w-14 sm:w-16 text-center font-bold text-blue-600 text-sm sm:text-base">
                 {gameResult?.team1_score ?? match.team1_score ?? 0}
               </div>
@@ -318,23 +304,8 @@ const KnockoutPage: React.FC = () => {
                 {match.team2_name || "TBD"}
               </div>
             )}
-            {isEditable && (
-              <input
-                type="number"
-                className="w-14 sm:w-16 text-center border-2 border-gray-300 rounded px-1 py-2 text-sm sm:text-base font-bold focus:border-blue-500 focus:outline-none"
-                placeholder="0"
-                value={getDisplayValue(match, "team2_score") || 0}
-                onChange={(e) =>
-                  handleLocalChange(
-                    match.stage,
-                    match.match_number,
-                    "team2_score",
-                    parseInt(e.target.value) || 0
-                  )
-                }
-              />
-            )}
-            {!isEditable && isCompleted && (
+            {/* Score display - always read-only, even in admin mode */}
+            {(isCompleted || match.team2_score !== undefined) && (
               <div className="w-14 sm:w-16 text-center font-bold text-blue-600 text-sm sm:text-base">
                 {gameResult?.team2_score ?? match.team2_score ?? 0}
               </div>
