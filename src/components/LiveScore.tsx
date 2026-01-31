@@ -231,21 +231,21 @@ const LiveScore: React.FC = () => {
         // Safety check: If we somehow reach set 4, end the match
         // (This shouldn't happen, but just in case)
         const matchWinner = newTeam1Sets > newTeam2Sets ? team1?.name || "Team 1" : team2?.name || "Team 2";
-        setGameComplete(true);
+      setGameComplete(true);
         setWinner(matchWinner);
         setTeam1SetsWon(newTeam1Sets);
         setTeam2SetsWon(newTeam2Sets);
-        localStorage.setItem(gameKey, JSON.stringify({
-          team1Score,
-          team2Score,
-          gameComplete: true,
+      localStorage.setItem(gameKey, JSON.stringify({
+        team1Score,
+        team2Score,
+        gameComplete: true,
           winner: matchWinner,
           currentSet: 3,
           team1SetsWon: newTeam1Sets,
           team2SetsWon: newTeam2Sets,
           setScores: newSetScores
-        }));
-        handleGameComplete();
+      }));
+      handleGameComplete();
       } else {
         // Move to next set (Set 2 or Set 3)
         setTeam1SetsWon(newTeam1Sets);
@@ -684,12 +684,12 @@ const LiveScore: React.FC = () => {
 
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-            <button
+                <button
               onClick={() => navigate(isKnockout ? "/knockout" : "/pools")}
-              className="w-full bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 sm:py-4 rounded-lg transition-all active:scale-95 min-h-[50px] sm:min-h-[60px] text-base sm:text-lg"
-            >
+                className="w-full bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 sm:py-4 rounded-lg transition-all active:scale-95 min-h-[50px] sm:min-h-[60px] text-base sm:text-lg"
+              >
               ← Back {isKnockout ? "to Knockout" : "to Pools"}
-            </button>
+              </button>
           </div>
 
           {/* Info Notice */}

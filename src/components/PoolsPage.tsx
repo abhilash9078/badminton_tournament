@@ -99,11 +99,10 @@ const PoolsPage: React.FC = () => {
   };
 
   useEffect(() => {
-    // Load default data immediately to prevent undefined errors
-    loadDefaultData();
-    // Then fetch real data
+    // Fetch real data first
     fetchTeamData();
     fetchCompletedGames();
+    // Load default data only as fallback if fetch fails (handled in fetchTeamData catch block)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -588,7 +587,8 @@ const PoolsPage: React.FC = () => {
               onClick={() => navigate("/knockout")}
               className="bg-white/30 hover:bg-white/40 active:bg-white/50 backdrop-blur-sm px-4 sm:px-5 py-2 rounded-full font-semibold transition-all duration-200 hover:scale-105 active:scale-95 min-h-[44px] text-sm sm:text-base"
             >
-              🏆 <span className="hidden sm:inline">Knockout</span>
+              <span className="sm:hidden">Knockout</span>
+              <span className="hidden sm:inline">🏆 Knockout</span>
             </button>
             {!isAuthenticated ? (
               <button
