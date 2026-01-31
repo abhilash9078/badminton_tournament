@@ -79,11 +79,14 @@ const TournamentResults: React.FC = () => {
                         </h4>
                       </div>
                       <div className="p-5">
-                        <img
-                          src={winnerS4Image}
-                          alt="Tournament Winners - Gopichand and Vishesh"
-                          className="w-full h-64 object-cover rounded-lg shadow-md mb-4"
-                        />
+                        <div className="w-full h-64 overflow-hidden rounded-lg shadow-md mb-4">
+                          <img
+                            src={winnerS4Image}
+                            alt="Tournament Winners - Gopichand and Vishesh"
+                            className="w-full h-full object-cover"
+                            style={{ objectPosition: 'center 30%' }}
+                          />
+                        </div>
                         <h5 className="text-lg font-semibold text-center mb-2">
                           Gopichand & Vishesh
                         </h5>
