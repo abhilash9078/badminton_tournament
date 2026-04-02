@@ -1,5 +1,5 @@
-import React from "react";
-import { Trophy, Calendar, Users } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { Trophy, Calendar, Users, Clock } from "lucide-react";
 
 // Define enhanced animations with click effects
 const customAnimations = `
@@ -445,6 +445,38 @@ const customAnimations = `
 `;
 
 const Hero: React.FC = () => {
+  // Countdown timer state
+  const [timeLeft, setTimeLeft] = useState({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  });
+
+  useEffect(() => {
+    const targetDate = new Date("2026-04-26T08:30:00").getTime();
+
+    const updateCountdown = () => {
+      const now = new Date().getTime();
+      const difference = targetDate - now;
+
+      if (difference > 0) {
+        setTimeLeft({
+          days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+          hours: Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+          minutes: Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)),
+          seconds: Math.floor((difference % (1000 * 60)) / 1000),
+        });
+      } else {
+        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+      }
+    };
+
+    updateCountdown();
+    const interval = setInterval(updateCountdown, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   // Click handlers for animations
   const handleCardClick = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -460,43 +492,25 @@ const Hero: React.FC = () => {
     >
       <style dangerouslySetInnerHTML={{ __html: customAnimations }} />
 
-      {/* Enhanced Background - Elegant Theme */}
+      {/* Enhanced Background - Energetic Theme */}
       <div className="absolute inset-0 bg-gradient-to-br from-indigo-900 via-purple-900 to-blue-900 z-0">
         {/* Mesh gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/10 via-transparent to-blue-500/10"></div>
         {/* Pattern backgrounds */}
         <div className="absolute inset-0 bg-[radial-gradient(#ffffff12_1px,transparent_1px)] [background-size:20px_20px] opacity-70"></div>
         <div className="hidden sm:block absolute inset-0 bg-[linear-gradient(45deg,#ffffff05_1px,transparent_1px)] bg-[size:40px_40px]"></div>
-        {/* Subtle golden accent overlay for celebration */}
-        <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/5 via-transparent to-amber-500/5"></div>
       </div>
 
-      {/* Subtle Confetti Effect */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none z-5 opacity-40">
-        {[...Array(15)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full animate-confetti"
-            style={{
-              left: `${Math.random() * 100}%`,
-              backgroundColor: ['#fbbf24', '#f59e0b', '#f97316', '#34d399', '#60a5fa', '#a78bfa'][Math.floor(Math.random() * 6)],
-              animationDelay: `${Math.random() * 5}s`,
-              animationDuration: `${4 + Math.random() * 5}s`,
-            }}
-          />
-        ))}
-      </div>
-
-      {/* Optimized animated elements - Mixed theme */}
+      {/* Optimized animated elements */}
       <div className="absolute w-full h-full overflow-hidden pointer-events-none opacity-60 sm:opacity-80">
         {/* Main orbital element - Cyan/Blue */}
         <div className="absolute top-1/4 left-1/4 w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 opacity-20 animate-orbit">
           <div className="w-full h-full rounded-full bg-gradient-to-br from-cyan-400 to-blue-500 blur-sm"></div>
         </div>
 
-        {/* Golden celebration element */}
+        {/* Cyan element */}
         <div className="hidden sm:block absolute bottom-1/3 right-1/6 w-14 h-14 md:w-18 md:h-18 opacity-30 animate-float1">
-          <div className="w-full h-full rounded-full bg-gradient-to-br from-yellow-400 to-amber-500 blur-md animate-pulse"></div>
+          <div className="w-full h-full rounded-full bg-gradient-to-br from-cyan-400 to-blue-500 blur-md animate-pulse"></div>
         </div>
 
         {/* Purple element */}
@@ -504,185 +518,206 @@ const Hero: React.FC = () => {
           <div className="w-full h-full rounded-full bg-gradient-to-br from-pink-400 to-purple-500 blur-sm"></div>
         </div>
 
-        {/* Background glow circles - Mixed */}
+        {/* Background glow circles */}
         <div className="absolute top-1/2 left-1/6 w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 rounded-full bg-cyan-500/5 animate-pulse-glow"></div>
         <div
           className="absolute bottom-1/4 right-1/4 w-28 h-28 sm:w-36 sm:h-36 md:w-44 md:h-44 rounded-full bg-blue-500/5 animate-pulse-glow"
           style={{ animationDelay: "1s" }}
         ></div>
-        {/* Golden accent glow */}
-        <div
-          className="absolute top-1/3 right-1/3 w-20 h-20 sm:w-28 sm:h-28 md:w-36 md:h-36 rounded-full bg-yellow-500/8 animate-celebration-glow"
-          style={{ animationDelay: "0.5s" }}
-        ></div>
       </div>
 
       {/* Main Content */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 z-10 text-center max-w-6xl">
-        {/* Thank You Section */}
-        <div className="mb-8 sm:mb-10 animate-thank-you relative">
-          {/* Golden sparkle effects */}
-          <div className="absolute inset-0 pointer-events-none">
-            <div className="absolute top-0 left-1/4 w-3 h-3 bg-yellow-400 rounded-full animate-sparkle" style={{ animationDelay: "0s" }}></div>
-            <div className="absolute top-1/4 right-1/4 w-2 h-2 bg-amber-400 rounded-full animate-sparkle" style={{ animationDelay: "0.5s" }}></div>
-            <div className="absolute bottom-1/4 left-1/3 w-3 h-3 bg-orange-400 rounded-full animate-sparkle" style={{ animationDelay: "1s" }}></div>
-            <div className="absolute top-1/3 right-1/3 w-2 h-2 bg-yellow-300 rounded-full animate-sparkle" style={{ animationDelay: "1.5s" }}></div>
-            <div className="absolute bottom-0 right-1/5 w-3 h-3 bg-amber-500 rounded-full animate-sparkle" style={{ animationDelay: "2s" }}></div>
-          </div>
-
-          {/* Celebration fireworks */}
-          <div className="absolute inset-0 pointer-events-none overflow-hidden">
-            <div className="absolute top-10 left-10 w-5 h-5 rounded-full bg-gradient-to-r from-yellow-400 to-amber-500 opacity-70 animate-fireworks" style={{ animationDelay: "0s" }}></div>
-            <div className="absolute top-20 right-16 w-4 h-4 rounded-full bg-gradient-to-r from-amber-400 to-orange-500 opacity-70 animate-fireworks" style={{ animationDelay: "1s" }}></div>
-            <div className="absolute bottom-16 left-20 w-6 h-6 rounded-full bg-gradient-to-r from-yellow-300 to-amber-400 opacity-70 animate-fireworks" style={{ animationDelay: "2s" }}></div>
-            <div className="absolute top-1/2 left-1/2 w-5 h-5 rounded-full bg-gradient-to-r from-orange-400 to-red-500 opacity-70 animate-fireworks" style={{ animationDelay: "1.5s" }}></div>
-          </div>
-
-          <div className="relative z-10">
-            {/* Trophy Icon */}
-            <div className="mb-6 flex justify-center animate-trophy-shine">
-              <div className="text-8xl sm:text-9xl md:text-[12rem]">🏆</div>
-            </div>
-
-            {/* Main Thank You Message */}
-            <div className="mb-8 animate-slide-up" style={{ animationDelay: "0.3s" }}>
-              <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black mb-4 bg-gradient-to-r from-yellow-300 via-amber-400 to-orange-500 text-transparent bg-clip-text animate-golden-pulse">
-                Thank You!
-              </h2>
-              <div className="w-32 h-1.5 bg-gradient-to-r from-yellow-400 via-amber-500 to-orange-500 mx-auto rounded-full mb-6"></div>
-              <p className="text-xl sm:text-2xl md:text-3xl text-white font-bold mb-2">
-                Tournament Completed Successfully
-              </p>
-              <p className="text-lg sm:text-xl md:text-2xl text-yellow-200 font-semibold">
-                January 31, 2026
-              </p>
-            </div>
-
-            {/* Celebration Card */}
-            <div className="animate-slide-up" style={{ animationDelay: "0.5s" }}>
-              <div className="bg-gradient-to-br from-yellow-500/20 via-amber-500/20 to-orange-500/20 backdrop-blur-md border-2 border-yellow-400/50 rounded-3xl p-8 sm:p-10 md:p-12 mx-auto max-w-3xl animate-celebration-glow shadow-2xl">
-                <div className="text-center space-y-6">
-                  <p className="text-lg sm:text-xl md:text-2xl text-white font-medium leading-relaxed">
-                    🎉 We extend our heartfelt gratitude to all participants, supporters, and organizers who made this tournament a grand success! 🎉
-                  </p>
-                  <p className="text-base sm:text-lg md:text-xl text-yellow-100 font-normal">
-                    Your passion, sportsmanship, and dedication made this event truly memorable.
-                  </p>
-                  
-                  {/* View Score Cards Button */}
-                  <div className="pt-6">
-                    <a
-                      href="/pools"
-                      className="inline-block bg-gradient-to-r from-yellow-500 via-amber-500 to-orange-500 hover:from-yellow-600 hover:via-amber-600 hover:to-orange-600 text-white font-bold px-10 py-4 rounded-full transition-all duration-300 transform hover:scale-110 active:scale-95 shadow-2xl hover:shadow-yellow-500/50 text-lg sm:text-xl min-h-[56px] flex items-center justify-center animate-golden-pulse"
-                      style={{
-                        backgroundImage: 'linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #f97316 100%)',
-                      }}
-                      onClick={(e) => {
-                        e.currentTarget.classList.add("click-scale");
-                        setTimeout(() => e.currentTarget.classList.remove("click-scale"), 150);
-                      }}
-                    >
-                      <span className="mr-2 text-2xl">📊</span>
-                      View Score Cards & Results
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Additional Thank You Message */}
-            <div className="mt-8 animate-slide-up" style={{ animationDelay: "0.7s" }}>
-              <p className="text-lg sm:text-xl text-yellow-200 font-medium mb-3">
-                🙏 Thank you for being part of this incredible journey! 🙏
-              </p>
-              <p className="text-base sm:text-lg text-white/90 max-w-2xl mx-auto">
-                We hope you enjoyed every moment of the competition. See you at the next tournament!
-              </p>
-            </div>
+        {/* Registration Badge */}
+        <div className="mb-6 sm:mb-8 animate-slide-up">
+          <div className="inline-block bg-gradient-to-r from-green-500 to-emerald-500 text-white px-6 py-3 rounded-full font-bold text-base sm:text-lg animate-pulse-glow shadow-lg">
+            <span className="mr-2">🎯</span>
+            REGISTRATION OPEN
           </div>
         </div>
 
         {/* Main Title */}
         <h1 
           className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-4 sm:mb-6 tracking-tight leading-[0.9] animate-slide-up"
-          style={{ animationDelay: "0.9s" }}
+          style={{ animationDelay: "0.2s" }}
         >
-          <span className="bg-gradient-to-r from-yellow-200 via-amber-200 to-orange-200 text-transparent bg-clip-text animate-flash-text">
+          <span className="bg-gradient-to-r from-cyan-300 via-blue-300 to-purple-300 text-transparent bg-clip-text animate-flash-text">
             Shuttle Showdown
           </span>
           <br />
-          <span className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl bg-gradient-to-r from-yellow-400 to-orange-500 text-transparent bg-clip-text font-extrabold">
-            4.0
+          <span className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl bg-gradient-to-r from-cyan-400 to-blue-500 text-transparent bg-clip-text font-extrabold">
+            5.0
           </span>
         </h1>
 
-        {/* Tournament Stats Cards */}
+        {/* Subtitle */}
+        <h2
+          className="text-xl sm:text-2xl md:text-3xl font-medium text-cyan-200 mb-8 sm:mb-10 animate-slide-up"
+          style={{ animationDelay: "0.3s" }}
+        >
+          The Ultimate Badminton Championship Returns!
+        </h2>
+
+        {/* Countdown Timer */}
+        <div
+          className="mb-8 sm:mb-10 animate-slide-up"
+          style={{ animationDelay: "0.4s" }}
+        >
+          <div className="bg-gradient-to-br from-cyan-500/20 to-blue-500/20 backdrop-blur-md border-2 border-cyan-400/50 rounded-3xl p-6 sm:p-8 md:p-10 mx-auto max-w-4xl animate-countdown-pulse shadow-2xl">
+            <div className="mb-6">
+              <Clock className="w-12 h-12 sm:w-14 sm:h-14 text-cyan-300 mx-auto mb-4 animate-pulse" />
+              <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-2">
+                Tournament Starts In
+              </h3>
+              <p className="text-lg sm:text-xl text-cyan-200 font-medium">
+                Sunday, April 26, 2026 at 8:30 AM
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-4 gap-3 sm:gap-4 md:gap-6 max-w-2xl mx-auto">
+              <div className="bg-gradient-to-br from-cyan-600/40 to-blue-600/40 rounded-xl p-4 backdrop-blur-sm border border-cyan-400/30">
+                <div className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-2">
+                  {timeLeft.days}
+                </div>
+                <div className="text-xs sm:text-sm md:text-base text-cyan-200 font-medium">
+                  Days
+                </div>
+              </div>
+              <div className="bg-gradient-to-br from-cyan-600/40 to-blue-600/40 rounded-xl p-4 backdrop-blur-sm border border-cyan-400/30">
+                <div className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-2">
+                  {timeLeft.hours}
+                </div>
+                <div className="text-xs sm:text-sm md:text-base text-cyan-200 font-medium">
+                  Hours
+                </div>
+              </div>
+              <div className="bg-gradient-to-br from-cyan-600/40 to-blue-600/40 rounded-xl p-4 backdrop-blur-sm border border-cyan-400/30">
+                <div className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-2">
+                  {timeLeft.minutes}
+                </div>
+                <div className="text-xs sm:text-sm md:text-base text-cyan-200 font-medium">
+                  Minutes
+                </div>
+              </div>
+              <div className="bg-gradient-to-br from-cyan-600/40 to-blue-600/40 rounded-xl p-4 backdrop-blur-sm border border-cyan-400/30">
+                <div className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-2">
+                  {timeLeft.seconds}
+                </div>
+                <div className="text-xs sm:text-sm md:text-base text-cyan-200 font-medium">
+                  Seconds
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Registration Info Card */}
+        <div
+          className="mb-8 sm:mb-10 animate-slide-up"
+          style={{ animationDelay: "0.5s" }}
+        >
+          <div className="bg-gradient-to-br from-purple-500/20 to-pink-500/20 backdrop-blur-md border-2 border-purple-400/50 rounded-3xl p-6 sm:p-8 md:p-10 mx-auto max-w-3xl shadow-2xl">
+            <div className="mb-6">
+              <div className="text-6xl sm:text-7xl md:text-8xl mb-4">🏸</div>
+              <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-4">
+                Secure Your Spot Now!
+              </h3>
+              <div className="inline-block bg-red-500/80 text-white px-6 py-2 rounded-full font-bold text-base sm:text-lg mb-4 animate-badge-bounce">
+                Registration Closes: April 24, 2026
+              </div>
+              <p className="text-base sm:text-lg md:text-xl text-purple-200 mb-6">
+                Don't miss out on the most anticipated badminton tournament of the year!
+              </p>
+            </div>
+            
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+              <a
+                href="https://forms.gle/nXETke3a17duhkvXA"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-primary inline-block bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-bold px-10 py-4 rounded-full transition-all duration-300 transform hover:scale-110 active:scale-95 shadow-2xl hover:shadow-cyan-500/50 text-lg sm:text-xl w-full sm:w-auto min-h-[56px] flex items-center justify-center"
+                onClick={(e) => {
+                  e.currentTarget.classList.add("click-scale");
+                  setTimeout(() => e.currentTarget.classList.remove("click-scale"), 150);
+                }}
+              >
+                <span className="mr-2 text-2xl">✨</span>
+                Register Now
+              </a>
+              <a
+                href="/pools"
+                className="btn-secondary inline-block bg-white/10 hover:bg-white/20 border-2 border-white/30 hover:border-white/50 text-white font-bold px-10 py-4 rounded-full transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-lg text-lg sm:text-xl w-full sm:w-auto min-h-[56px] flex items-center justify-center"
+                onClick={(e) => {
+                  e.currentTarget.classList.add("click-scale");
+                  setTimeout(() => e.currentTarget.classList.remove("click-scale"), 150);
+                }}
+              >
+                <span className="mr-2 text-2xl">📋</span>
+                View Details
+              </a>
+            </div>
+          </div>
+        </div>
+
+        {/* Tournament Info Cards */}
         <div
           className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mb-8 sm:mb-10 max-w-4xl mx-auto animate-slide-up"
-          style={{ animationDelay: "1.1s" }}
+          style={{ animationDelay: "0.6s" }}
         >
           {/* Date Card */}
           <div
-            className="card-clickable bg-gradient-to-br from-yellow-500/20 to-amber-500/20 backdrop-blur-sm rounded-xl p-5 border-2 border-yellow-400/40 hover:border-yellow-400/60 hover:bg-yellow-500/30 transition-all duration-300 shadow-lg"
+            className="card-clickable bg-gradient-to-br from-cyan-500/20 to-blue-500/20 backdrop-blur-sm rounded-xl p-5 border-2 border-cyan-400/40 hover:border-cyan-400/60 hover:bg-cyan-500/30 transition-all duration-300 shadow-lg"
             onClick={handleCardClick}
           >
             <div className="flex items-center justify-center space-x-2 mb-3">
-              <Calendar className="w-6 h-6 text-yellow-300" />
-              <span className="text-yellow-300 font-bold text-base">
+              <Calendar className="w-6 h-6 text-cyan-300" />
+              <span className="text-cyan-300 font-bold text-base">
                 Tournament Date
               </span>
             </div>
-            <p className="text-white text-lg sm:text-xl font-bold mb-1">Jan 31, 2026</p>
-            <p className="text-yellow-200 text-sm sm:text-base">Successfully Completed</p>
-          </div>
-
-          {/* Teams Card */}
-          <div
-            className="card-clickable bg-gradient-to-br from-amber-500/20 to-orange-500/20 backdrop-blur-sm rounded-xl p-5 border-2 border-amber-400/40 hover:border-amber-400/60 hover:bg-amber-500/30 transition-all duration-300 shadow-lg"
-            onClick={handleCardClick}
-          >
-            <div className="flex items-center justify-center space-x-2 mb-3">
-              <Users className="w-6 h-6 text-amber-300" />
-              <span className="text-amber-300 font-bold text-base">Participants</span>
-            </div>
-            <p className="text-white text-lg sm:text-xl font-bold mb-1">
-              24 Teams
-            </p>
-            <p className="text-amber-200 text-sm sm:text-base">48 Players Competed</p>
+            <p className="text-white text-lg sm:text-xl font-bold mb-1">April 26, 2026</p>
+            <p className="text-cyan-200 text-sm sm:text-base">Sunday @ 8:30 AM</p>
           </div>
 
           {/* Format Card */}
           <div
-            className="card-clickable bg-gradient-to-br from-orange-500/20 to-red-500/20 backdrop-blur-sm rounded-xl p-5 border-2 border-orange-400/40 hover:border-orange-400/60 hover:bg-orange-500/30 transition-all duration-300 shadow-lg"
+            className="card-clickable bg-gradient-to-br from-blue-500/20 to-purple-500/20 backdrop-blur-sm rounded-xl p-5 border-2 border-blue-400/40 hover:border-blue-400/60 hover:bg-blue-500/30 transition-all duration-300 shadow-lg"
             onClick={handleCardClick}
           >
             <div className="flex items-center justify-center space-x-2 mb-3">
-              <Trophy className="w-6 h-6 text-orange-300" />
-              <span className="text-orange-300 font-bold text-base">
+              <Trophy className="w-6 h-6 text-blue-300" />
+              <span className="text-blue-300 font-bold text-base">
                 Format
               </span>
             </div>
             <p className="text-white text-lg sm:text-xl font-bold mb-1">
               Doubles
             </p>
-            <p className="text-orange-200 text-sm sm:text-base">Pool + Knockout</p>
+            <p className="text-blue-200 text-sm sm:text-base">Pool + Knockout</p>
+          </div>
+
+          {/* Teams Card */}
+          <div
+            className="card-clickable bg-gradient-to-br from-purple-500/20 to-pink-500/20 backdrop-blur-sm rounded-xl p-5 border-2 border-purple-400/40 hover:border-purple-400/60 hover:bg-purple-500/30 transition-all duration-300 shadow-lg"
+            onClick={handleCardClick}
+          >
+            <div className="flex items-center justify-center space-x-2 mb-3">
+              <Users className="w-6 h-6 text-purple-300" />
+              <span className="text-purple-300 font-bold text-base">Status</span>
+            </div>
+            <p className="text-white text-lg sm:text-xl font-bold mb-1">
+              Registration Open
+            </p>
+            <p className="text-purple-200 text-sm sm:text-base">Limited Spots Available</p>
           </div>
         </div>
-
-        {/* Subtitle */}
-        <h2
-          className="text-xl sm:text-2xl md:text-3xl font-medium text-yellow-200 mb-6 sm:mb-8 animate-slide-up"
-          style={{ animationDelay: "1.2s" }}
-        >
-          The Ultimate Badminton Championship
-        </h2>
 
         {/* Final Message */}
         <p
           className="text-base sm:text-lg md:text-xl text-white/90 mb-10 sm:mb-12 max-w-2xl mx-auto leading-relaxed animate-slide-up"
-          style={{ animationDelay: "1.3s" }}
+          style={{ animationDelay: "0.7s" }}
         >
-          ✨ A celebration of skill, determination, and sportsmanship! ✨
+          ⚡ Get ready for intense matches, fierce competition, and unforgettable moments! ⚡
         </p>
       </div>
     </section>

@@ -561,7 +561,7 @@ const PoolsPage: React.FC = () => {
       <div className="bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-600 text-white py-4 sm:py-6 md:py-8 px-4 sm:px-6 shadow-xl">
         <div className="container mx-auto">
           <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-center mb-2">
-            🏸 Shuttle Showdown 4.0 🏸
+            🏸 Shuttle Showdown 5.0 🏸
           </h1>
           <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-center mb-3 sm:mb-4">
             {isAuthenticated ? "Pool Standings - Admin Mode" : "Pool Standings - Live Updates"}
@@ -771,7 +771,7 @@ const PoolsPage: React.FC = () => {
       <div className="bg-gray-800 text-white py-4 sm:py-6 mt-8 sm:mt-12">
         <div className="container mx-auto text-center px-4">
           <p className="text-sm sm:text-base md:text-lg font-semibold">
-            Shuttle Showdown 4.0 - January 31, 2026
+            Shuttle Showdown 5.0 - April 26, 2026, Sunday
           </p>
           <p className="text-gray-400 mt-1 sm:mt-2 text-xs sm:text-sm">RAMs Sports Arena</p>
         </div>

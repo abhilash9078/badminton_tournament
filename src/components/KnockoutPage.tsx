@@ -586,7 +586,7 @@ const KnockoutPage: React.FC = () => {
       <div className="bg-gray-800 text-white py-4 sm:py-6 mt-8 sm:mt-12">
         <div className="container mx-auto text-center px-4">
           <p className="text-sm sm:text-base md:text-lg font-semibold">
-            Shuttle Showdown 4.0 - January 31, 2026
+            Shuttle Showdown 5.0 - April 26, 2026, Sunday
           </p>
           <p className="text-gray-400 mt-1 sm:mt-2 text-xs sm:text-sm">RAMs Sports Arena</p>
         </div>
