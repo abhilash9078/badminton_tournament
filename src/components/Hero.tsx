@@ -632,7 +632,7 @@ const Hero: React.FC = () => {
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <a
-                href="https://forms.gle/nXETke3a17duhkvXA"
+                href="http://go.playo.app/PLAYOO/l4KbJ"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-primary inline-block bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-bold px-10 py-4 rounded-full transition-all duration-300 transform hover:scale-110 active:scale-95 shadow-2xl hover:shadow-cyan-500/50 text-lg sm:text-xl w-full sm:w-auto min-h-[56px] flex items-center justify-center"
