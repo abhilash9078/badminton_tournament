@@ -836,7 +836,7 @@ const Hero: React.FC = () => {
                   Registration Completed
                 </h3>
                 <div className="inline-block bg-orange-500/80 text-white px-6 py-2 rounded-full font-bold text-base sm:text-lg mb-4">
-                  Registration Closed
+                  Registration Is Closed For This Tournament
                 </div>
                 <p className="text-base sm:text-lg md:text-xl text-purple-200 mb-6">
                   All teams are registered and ready for the epic showdown!
