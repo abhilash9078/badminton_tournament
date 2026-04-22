@@ -1,6 +1,108 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
+// Live battle animations CSS
+const liveBattleAnimations = `
+  @keyframes battle-pulse {
+    0%, 100% { 
+      transform: scale(1);
+      opacity: 0.8;
+    }
+    50% { 
+      transform: scale(1.1);
+      opacity: 1;
+    }
+  }
+
+  @keyframes battle-glow {
+    0%, 100% { 
+      box-shadow: 0 0 20px rgba(239, 68, 68, 0.4), 0 0 40px rgba(251, 191, 36, 0.3);
+    }
+    50% { 
+      box-shadow: 0 0 40px rgba(239, 68, 68, 0.8), 0 0 80px rgba(251, 191, 36, 0.6);
+    }
+  }
+
+  @keyframes shuttlecock-battle {
+    0% { 
+      left: 10%;
+      opacity: 0;
+      transform: translateY(0) rotate(0deg) scale(0.5);
+    }
+    10% {
+      opacity: 1;
+      transform: translateY(-20px) rotate(45deg) scale(1);
+    }
+    50% { 
+      left: 50%;
+      transform: translateY(-40px) rotate(180deg) scale(1.2);
+    }
+    90% {
+      opacity: 1;
+      transform: translateY(-20px) rotate(315deg) scale(1);
+    }
+    100% { 
+      left: 90%;
+      opacity: 0;
+      transform: translateY(0) rotate(360deg) scale(0.5);
+    }
+  }
+
+  @keyframes emoji-float {
+    0%, 100% {
+      transform: translateY(0) rotate(0deg);
+      opacity: 0.9;
+    }
+    50% {
+      transform: translateY(-10px) rotate(10deg);
+      opacity: 1;
+    }
+  }
+
+  @keyframes spark-burst {
+    0% {
+      transform: scale(0) rotate(0deg);
+      opacity: 1;
+    }
+    50% {
+      transform: scale(1.5) rotate(180deg);
+      opacity: 0.8;
+    }
+    100% {
+      transform: scale(3) rotate(360deg);
+      opacity: 0;
+    }
+  }
+
+  @keyframes battle-shake {
+    0%, 100% { transform: translateX(0); }
+    10% { transform: translateX(-2px); }
+    20% { transform: translateX(2px); }
+    30% { transform: translateX(-2px); }
+    40% { transform: translateX(2px); }
+    50% { transform: translateX(0); }
+  }
+
+  @keyframes live-indicator-pulse {
+    0%, 100% {
+      box-shadow: 0 0 10px rgba(239, 68, 68, 0.8);
+      transform: scale(1);
+    }
+    50% {
+      box-shadow: 0 0 25px rgba(239, 68, 68, 1);
+      transform: scale(1.2);
+    }
+  }
+
+  .battle-active {
+    animation: battle-glow 2s ease-in-out infinite;
+  }
+
+  .live-indicator-dot {
+    animation: live-indicator-pulse 1.5s ease-in-out infinite;
+  }
+`;
+
 interface TeamData {
   name: string;
   players: string[];
@@ -450,6 +552,9 @@ const LiveScore: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
+      {/* Inject live battle animations */}
+      <style dangerouslySetInnerHTML={{ __html: liveBattleAnimations }} />
+      
       {/* Header */}
       <div className="bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-600 text-white py-4 sm:py-6 px-4 sm:px-6 shadow-xl">
         <div className="container mx-auto">
@@ -507,18 +612,40 @@ const LiveScore: React.FC = () => {
             </div>
           )}
 
-          {/* Score Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 mb-6">
+          {/* Live Battle Indicator */}
+          {!gameComplete && (
+            <div className="mb-4 flex items-center justify-center gap-3">
+              <div className="live-indicator-dot w-3 h-3 bg-red-500 rounded-full"></div>
+              <span className="text-red-600 font-black text-lg sm:text-xl uppercase tracking-wider animate-pulse">
+                Live Battle in Progress
+              </span>
+              <div className="live-indicator-dot w-3 h-3 bg-red-500 rounded-full"></div>
+            </div>
+          )}
+
+          {/* Score Cards Container with Battle Animation */}
+          <div className="relative grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 mb-6">
+
             {/* Team 1 Card */}
             <div
-              className={`bg-white rounded-xl shadow-2xl p-4 sm:p-6 transition-all ${
+              className={`bg-white rounded-xl shadow-2xl p-4 sm:p-6 transition-all relative z-10 ${
+                !gameComplete ? "battle-active" : ""
+              } ${
                 gameComplete && winner === team1.name
                   ? "ring-4 ring-green-500 scale-105"
                   : gameComplete && winner !== team1.name
                   ? "opacity-75"
                   : ""
               }`}
+              style={!gameComplete ? { animation: 'battle-shake 4s ease-in-out infinite' } : {}}
             >
+              {!gameComplete && (
+                <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-red-50 border border-red-200 px-3 py-1">
+                  <span className="live-indicator-dot w-2 h-2 bg-red-500 rounded-full"></span>
+                  <span className="text-xs font-bold text-red-600 tracking-wide">LIVE BATTLE</span>
+                  <span style={{ animation: "emoji-float 1.8s ease-in-out infinite" }}>⚔️</span>
+                </div>
+              )}
               <div className="text-center mb-4">
                 <h3 className="text-lg sm:text-xl font-bold text-gray-800 mb-2">
                   {team1.name}
@@ -565,14 +692,24 @@ const LiveScore: React.FC = () => {
 
             {/* Team 2 Card */}
             <div
-              className={`bg-white rounded-xl shadow-2xl p-4 sm:p-6 transition-all ${
+              className={`bg-white rounded-xl shadow-2xl p-4 sm:p-6 transition-all relative z-10 ${
+                !gameComplete ? "battle-active" : ""
+              } ${
                 gameComplete && winner === team2.name
                   ? "ring-4 ring-green-500 scale-105"
                   : gameComplete && winner !== team2.name
                   ? "opacity-75"
                   : ""
               }`}
+              style={!gameComplete ? { animation: 'battle-shake 4s ease-in-out infinite', animationDelay: '0.4s' } : {}}
             >
+              {!gameComplete && (
+                <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-red-50 border border-red-200 px-3 py-1">
+                  <span className="live-indicator-dot w-2 h-2 bg-red-500 rounded-full"></span>
+                  <span className="text-xs font-bold text-red-600 tracking-wide">LIVE BATTLE</span>
+                  <span style={{ animation: "emoji-float 2s ease-in-out infinite", animationDelay: "0.3s" }}>🔥</span>
+                </div>
+              )}
               <div className="text-center mb-4">
                 <h3 className="text-lg sm:text-xl font-bold text-gray-800 mb-2">
                   {team2.name}
