@@ -681,12 +681,14 @@ const Hero: React.FC = () => {
         </h1>
 
         {/* Subtitle */}
-        <h2
-          className="text-xl sm:text-2xl md:text-3xl font-medium text-cyan-200 mb-8 sm:mb-10 animate-slide-up"
-          style={{ animationDelay: "0.3s" }}
-        >
-          The Ultimate Badminton Championship Returns!
-        </h2>
+        {!isTournamentLive && (
+          <h2
+            className="text-xl sm:text-2xl md:text-3xl font-medium text-cyan-200 mb-8 sm:mb-10 animate-slide-up"
+            style={{ animationDelay: "0.3s" }}
+          >
+            The Ultimate Badminton Championship Returns!
+          </h2>
+        )}
 
         {/* Countdown Timer or Live Tournament */}
         <div
@@ -798,7 +800,7 @@ const Hero: React.FC = () => {
                     TOURNAMENT IS LIVE!
                   </h3>
                   <p className="text-xl sm:text-2xl md:text-3xl text-red-100 font-bold mb-6">
-                    Matches are happening NOW!
+                    Watch matches and scores in real-time
                   </p>
                 </div>
                 
@@ -811,13 +813,9 @@ const Hero: React.FC = () => {
                   }}
                 >
                   <span className="mr-3 text-3xl">⚡</span>
-                  See the Live Action
+                  See Live Action
                   <span className="ml-3 text-3xl">⚡</span>
                 </a>
-                
-                <p className="text-base sm:text-lg text-red-100 font-medium mt-6">
-                  Watch all matches and live scores in real-time!
-                </p>
               </div>
             </div>
           )}
@@ -833,13 +831,10 @@ const Hero: React.FC = () => {
               <div className="mb-6">
                 <div className="text-6xl sm:text-7xl md:text-8xl mb-4">🏸</div>
                 <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-4">
-                  Registration Completed
+                  Get Ready for Action!
                 </h3>
-                <div className="inline-block bg-orange-500/80 text-white px-6 py-2 rounded-full font-bold text-base sm:text-lg mb-4">
-                  Registration Is Closed For This Tournament
-                </div>
                 <p className="text-base sm:text-lg md:text-xl text-purple-200 mb-6">
-                  All teams are registered and ready for the epic showdown!
+                  All teams registered and ready. Tournament begins soon!
                 </p>
               </div>
               
@@ -920,12 +915,14 @@ const Hero: React.FC = () => {
         </div>
 
         {/* Final Message */}
-        <p
-          className="text-base sm:text-lg md:text-xl text-white/90 mb-10 sm:mb-12 max-w-2xl mx-auto leading-relaxed animate-slide-up"
-          style={{ animationDelay: "0.7s" }}
-        >
-          ⚡ Get ready for intense matches, fierce competition, and unforgettable moments! ⚡
-        </p>
+        {!isTournamentLive && (
+          <p
+            className="text-base sm:text-lg md:text-xl text-white/90 mb-10 sm:mb-12 max-w-2xl mx-auto leading-relaxed animate-slide-up"
+            style={{ animationDelay: "0.7s" }}
+          >
+            ⚡ The countdown is on! ⚡
+          </p>
+        )}
       </div>
     </section>
   );
