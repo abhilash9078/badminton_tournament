@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Trophy, Calendar, Users, Clock } from "lucide-react";
+import React from "react";
+import { Trophy, Calendar, Users, Camera, BarChart3 } from "lucide-react";
 
 // Define enhanced animations with click effects
 const customAnimations = `
@@ -262,123 +262,63 @@ const customAnimations = `
     100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(34, 211, 238, 0); }
   }
 
-  /* Badminton Action Animations */
-  @keyframes shuttlecock-fly {
-    0% { 
-      transform: translate(0, 0) rotate(0deg);
-      opacity: 0;
+  /* Season finale — thank you & gallery */
+  @keyframes gold-shimmer {
+    0% { background-position: -200% center; }
+    100% { background-position: 200% center; }
+  }
+
+  @keyframes trophy-float {
+    0%, 100% { transform: translateY(0) rotate(-3deg); }
+    50% { transform: translateY(-14px) rotate(3deg); }
+  }
+
+  @keyframes frame-glow {
+    0%, 100% {
+      box-shadow: 0 0 24px rgba(250, 204, 21, 0.35), 0 0 48px rgba(245, 158, 11, 0.2), inset 0 0 36px rgba(255,255,255,0.06);
     }
-    10% { 
-      opacity: 1;
-    }
-    50% { 
-      transform: translate(50vw, -30vh) rotate(180deg);
-      opacity: 1;
-    }
-    90% {
-      opacity: 1;
-    }
-    100% { 
-      transform: translate(100vw, 0) rotate(360deg);
-      opacity: 0;
+    50% {
+      box-shadow: 0 0 48px rgba(250, 204, 21, 0.7), 0 0 80px rgba(217, 119, 6, 0.35), inset 0 0 56px rgba(255,255,255,0.1);
     }
   }
 
-  @keyframes shuttlecock-smash {
-    0% { 
-      transform: translate(-50px, -100px) scale(0.5);
-      opacity: 0;
-    }
-    20% { 
-      transform: translate(0, 0) scale(1);
-      opacity: 1;
-    }
-    80% { 
-      transform: translate(100vw, 80vh) scale(1.2);
-      opacity: 1;
-    }
-    100% { 
-      transform: translate(100vw, 100vh) scale(1.2);
-      opacity: 0;
-    }
+  @keyframes aurora-shift {
+    0%, 100% { opacity: 0.5; transform: translateX(-5%) scale(1); }
+    50% { opacity: 0.85; transform: translateX(5%) scale(1.05); }
   }
 
-  @keyframes live-pulse {
-    0%, 100% { 
-      transform: scale(1);
-      box-shadow: 0 0 30px rgba(239, 68, 68, 0.6), 0 0 60px rgba(220, 38, 38, 0.4);
-    }
-    50% { 
-      transform: scale(1.05);
-      box-shadow: 0 0 50px rgba(239, 68, 68, 0.9), 0 0 100px rgba(220, 38, 38, 0.6);
-    }
+  @keyframes soft-breathe {
+    0%, 100% { transform: scale(1); opacity: 0.9; }
+    50% { transform: scale(1.03); opacity: 1; }
   }
 
-  @keyframes tournament-start {
-    0% { 
-      transform: scale(0.5) rotate(-10deg);
-      opacity: 0;
-      filter: blur(20px);
-    }
-    50% { 
-      transform: scale(1.2) rotate(5deg);
-      opacity: 1;
-      filter: blur(0px);
-    }
-    100% { 
-      transform: scale(1) rotate(0deg);
-      opacity: 1;
-      filter: blur(0px);
-    }
+  .animate-gold-shimmer {
+    background: linear-gradient(
+      105deg,
+      rgba(254, 243, 199, 0.12) 0%,
+      rgba(251, 191, 36, 0.35) 45%,
+      rgba(253, 230, 138, 0.2) 50%,
+      rgba(251, 191, 36, 0.35) 55%,
+      rgba(254, 243, 199, 0.12) 100%
+    );
+    background-size: 220% 100%;
+    animation: gold-shimmer 5s linear infinite;
   }
 
-  @keyframes energy-burst {
-    0% { 
-      transform: scale(0);
-      opacity: 1;
-    }
-    50% { 
-      transform: scale(2);
-      opacity: 0.6;
-    }
-    100% { 
-      transform: scale(4);
-      opacity: 0;
-    }
+  .animate-trophy-float {
+    animation: trophy-float 5s ease-in-out infinite;
   }
 
-  @keyframes match-happening {
-    0%, 100% { 
-      text-shadow: 0 0 20px rgba(239, 68, 68, 0.8), 0 0 40px rgba(239, 68, 68, 0.6), 0 0 60px rgba(220, 38, 38, 0.4);
-    }
-    50% { 
-      text-shadow: 0 0 40px rgba(239, 68, 68, 1), 0 0 80px rgba(239, 68, 68, 0.8), 0 0 120px rgba(220, 38, 38, 0.6);
-    }
+  .animate-frame-glow {
+    animation: frame-glow 3.2s ease-in-out infinite;
   }
 
-  /* Animation Classes for Badminton */
-  .animate-shuttlecock-fly {
-    animation: shuttlecock-fly 4s ease-in-out infinite;
+  .animate-aurora {
+    animation: aurora-shift 14s ease-in-out infinite;
   }
 
-  .animate-shuttlecock-smash {
-    animation: shuttlecock-smash 2.5s ease-in infinite;
-  }
-
-  .animate-live-pulse {
-    animation: live-pulse 2s ease-in-out infinite;
-  }
-
-  .animate-tournament-start {
-    animation: tournament-start 1.5s ease-out forwards;
-  }
-
-  .animate-energy-burst {
-    animation: energy-burst 2s ease-out infinite;
-  }
-
-  .animate-match-happening {
-    animation: match-happening 2s ease-in-out infinite;
+  .animate-soft-breathe {
+    animation: soft-breathe 4s ease-in-out infinite;
   }
 
   /* Animation Classes */
@@ -564,365 +504,204 @@ const customAnimations = `
 `;
 
 const Hero: React.FC = () => {
-  // Countdown timer state
-  const [timeLeft, setTimeLeft] = useState({
-    days: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0,
-  });
-  
-  const [isTournamentLive, setIsTournamentLive] = useState(false);
-
-  useEffect(() => {
-    const targetDate = new Date("2026-04-26T08:30:00").getTime();
-
-    const updateCountdown = () => {
-      const now = new Date().getTime();
-      const difference = targetDate - now;
-
-      if (difference > 0) {
-        setTimeLeft({
-          days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-          hours: Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-          minutes: Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)),
-          seconds: Math.floor((difference % (1000 * 60)) / 1000),
-        });
-        setIsTournamentLive(false);
-      } else {
-        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-        setIsTournamentLive(true);
-      }
-    };
-
-    updateCountdown();
-    const interval = setInterval(updateCountdown, 1000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  // Click handlers for animations
   const handleCardClick = (e: React.MouseEvent<HTMLDivElement>) => {
     const card = e.currentTarget;
     card.classList.add("click-pulse-card");
     setTimeout(() => card.classList.remove("click-pulse-card"), 400);
   };
 
+  const handleGalleryClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.currentTarget.classList.add("click-scale");
+    setTimeout(() => e.currentTarget.classList.remove("click-scale"), 150);
+  };
+
   return (
     <section
       id="home"
-      className="mt-5 relative min-h-screen flex items-center justify-center pt-16 pb-8 overflow-hidden"
+      className="mt-5 relative min-h-screen flex items-center justify-center pt-16 pb-12 sm:pb-16 overflow-hidden scroll-mt-20"
     >
       <style dangerouslySetInnerHTML={{ __html: customAnimations }} />
 
-      {/* Enhanced Background - Energetic Theme */}
-      <div className="absolute inset-0 bg-gradient-to-br from-indigo-900 via-purple-900 to-blue-900 z-0">
-        {/* Mesh gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/10 via-transparent to-blue-500/10"></div>
-        {/* Pattern backgrounds */}
-        <div className="absolute inset-0 bg-[radial-gradient(#ffffff12_1px,transparent_1px)] [background-size:20px_20px] opacity-70"></div>
-        <div className="hidden sm:block absolute inset-0 bg-[linear-gradient(45deg,#ffffff05_1px,transparent_1px)] bg-[size:40px_40px]"></div>
+      {/* Deep celebration backdrop */}
+      <div className="absolute inset-0 z-0 bg-gradient-to-br from-slate-950 via-indigo-950 to-purple-950">
+        <div className="absolute inset-0 bg-gradient-to-tr from-amber-500/15 via-fuchsia-600/10 to-cyan-500/15 animate-aurora" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(251,191,36,0.18),transparent_55%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(#ffffff10_1px,transparent_1px)] [background-size:22px_22px] opacity-60" />
+        <div className="hidden sm:block absolute inset-0 bg-[linear-gradient(135deg,#ffffff06_1px,transparent_1px)] bg-[size:48px_48px]" />
       </div>
 
-      {/* Optimized animated elements */}
-      <div className="absolute w-full h-full overflow-hidden pointer-events-none opacity-60 sm:opacity-80">
-        {/* Main orbital element - Cyan/Blue */}
-        <div className="absolute top-1/4 left-1/4 w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 opacity-20 animate-orbit">
-          <div className="w-full h-full rounded-full bg-gradient-to-br from-cyan-400 to-blue-500 blur-sm"></div>
-        </div>
-
-        {/* Cyan element */}
-        <div className="hidden sm:block absolute bottom-1/3 right-1/6 w-14 h-14 md:w-18 md:h-18 opacity-30 animate-float1">
-          <div className="w-full h-full rounded-full bg-gradient-to-br from-cyan-400 to-blue-500 blur-md animate-pulse"></div>
-        </div>
-
-        {/* Purple element */}
-        <div className="hidden md:block absolute top-1/5 right-1/5 w-14 h-14 md:w-18 md:h-18 opacity-25 animate-float2">
-          <div className="w-full h-full rounded-full bg-gradient-to-br from-pink-400 to-purple-500 blur-sm"></div>
-        </div>
-
-        {/* Background glow circles */}
-        <div className="absolute top-1/2 left-1/6 w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 rounded-full bg-cyan-500/5 animate-pulse-glow"></div>
+      {/* Floating orbs */}
+      <div className="absolute w-full h-full overflow-hidden pointer-events-none opacity-50 sm:opacity-70 z-[1]">
+        <div className="absolute top-[18%] left-[12%] w-28 h-28 sm:w-36 sm:h-36 rounded-full bg-amber-400/20 blur-2xl animate-soft-breathe" />
         <div
-          className="absolute bottom-1/4 right-1/4 w-28 h-28 sm:w-36 sm:h-36 md:w-44 md:h-44 rounded-full bg-blue-500/5 animate-pulse-glow"
-          style={{ animationDelay: "1s" }}
-        ></div>
+          className="absolute bottom-[22%] right-[10%] w-32 h-32 sm:w-44 sm:h-44 rounded-full bg-fuchsia-500/15 blur-3xl animate-soft-breathe"
+          style={{ animationDelay: "1.2s" }}
+        />
+        <div className="absolute top-1/3 right-1/4 w-20 h-20 opacity-30 animate-orbit hidden md:block">
+          <div className="w-full h-full rounded-full bg-gradient-to-br from-amber-300/40 to-orange-500/30 blur-md" />
+        </div>
       </div>
 
-      {/* Main Content */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 z-10 text-center max-w-6xl">
-        {/* Status Badge */}
-        <div className="mb-6 sm:mb-8 animate-slide-up">
-          {isTournamentLive ? (
-            <div className="inline-block bg-gradient-to-r from-red-500 to-red-600 text-white px-6 py-3 rounded-full font-bold text-base sm:text-lg animate-live-pulse shadow-lg">
-              <span className="mr-2">🔴</span>
-              LIVE NOW
-            </div>
-          ) : (
-            <div className="inline-block bg-gradient-to-r from-orange-500 to-red-500 text-white px-6 py-3 rounded-full font-bold text-base sm:text-lg shadow-lg">
-              <span className="mr-2">🔒</span>
-              REGISTRATION CLOSED
-            </div>
-          )}
+      {/* Light confetti */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none z-[2] opacity-35 sm:opacity-45">
+        {[...Array(12)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full animate-confetti"
+            style={{
+              left: `${(i * 7.3) % 100}%`,
+              backgroundColor: [
+                "#fbbf24",
+                "#f472b6",
+                "#34d399",
+                "#60a5fa",
+                "#c084fc",
+              ][i % 5],
+              animationDelay: `${(i % 5) * 0.7}s`,
+              animationDuration: `${4.5 + (i % 3) * 0.8}s`,
+            }}
+          />
+        ))}
+      </div>
+
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 z-10 text-center max-w-6xl relative">
+        <div className="mb-6 sm:mb-8 animate-thank-you">
+          <div className="inline-flex items-center gap-2 rounded-full border border-amber-400/50 bg-amber-500/15 px-4 py-2 sm:px-5 sm:py-2.5 backdrop-blur-md shadow-lg animate-badge-bounce">
+            <span className="text-lg" aria-hidden>
+              ✨
+            </span>
+            <span className="text-amber-100 font-bold text-xs sm:text-sm tracking-[0.2em] uppercase">
+              Season 5.0 wrapped
+            </span>
+          </div>
         </div>
 
-        {/* Main Title */}
-        <h1 
-          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-4 sm:mb-6 tracking-tight leading-[0.9] animate-slide-up"
-          style={{ animationDelay: "0.2s" }}
+        <div
+          className="mb-6 flex justify-center animate-slide-up"
+          style={{ animationDelay: "0.1s" }}
         >
-          <span className="bg-gradient-to-r from-cyan-300 via-blue-300 to-purple-300 text-transparent bg-clip-text animate-flash-text">
-            Shuttle Showdown
-          </span>
-          <br />
-          <span className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl bg-gradient-to-r from-cyan-400 to-blue-500 text-transparent bg-clip-text font-extrabold">
-            5.0
+          <div className="relative inline-block animate-trophy-float">
+            <div className="text-7xl sm:text-8xl md:text-9xl drop-shadow-[0_0_35px_rgba(251,191,36,0.45)]">
+              🏆
+            </div>
+            <div className="absolute -inset-4 rounded-full bg-amber-400/20 blur-2xl -z-10 animate-pulse-glow" />
+          </div>
+        </div>
+
+        <h1
+          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white mb-3 sm:mb-4 tracking-tight leading-tight animate-slide-up"
+          style={{ animationDelay: "0.15s" }}
+        >
+          <span className="bg-gradient-to-r from-amber-200 via-yellow-300 to-orange-300 text-transparent bg-clip-text animate-flash-text">
+            Thank you, everyone
           </span>
         </h1>
 
-        {/* Subtitle */}
-        {!isTournamentLive && (
-          <h2
-            className="text-xl sm:text-2xl md:text-3xl font-medium text-cyan-200 mb-8 sm:mb-10 animate-slide-up"
-            style={{ animationDelay: "0.3s" }}
-          >
-            The Ultimate Badminton Championship Returns!
-          </h2>
-        )}
-
-        {/* Countdown Timer or Live Tournament */}
-        <div
-          className="mb-8 sm:mb-10 animate-slide-up"
-          style={{ animationDelay: "0.4s" }}
+        <p
+          className="text-lg sm:text-xl md:text-2xl text-amber-100/95 font-semibold mb-2 animate-slide-up"
+          style={{ animationDelay: "0.2s" }}
         >
-          {!isTournamentLive ? (
-            <div className="bg-gradient-to-br from-cyan-500/20 to-blue-500/20 backdrop-blur-md border-2 border-cyan-400/50 rounded-3xl p-6 sm:p-8 md:p-10 mx-auto max-w-4xl animate-countdown-pulse shadow-2xl">
-              <div className="mb-6">
-                <Clock className="w-12 h-12 sm:w-14 sm:h-14 text-cyan-300 mx-auto mb-4 animate-pulse" />
-                <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-2">
-                  Tournament Starts In
-                </h3>
-                <p className="text-lg sm:text-xl text-cyan-200 font-medium">
-                  Sunday, April 26, 2026 at 8:30 AM
-                </p>
-              </div>
-              
-              <div className="grid grid-cols-4 gap-3 sm:gap-4 md:gap-6 max-w-2xl mx-auto">
-                <div className="bg-gradient-to-br from-cyan-600/40 to-blue-600/40 rounded-xl p-4 backdrop-blur-sm border border-cyan-400/30">
-                  <div className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-2">
-                    {timeLeft.days}
-                  </div>
-                  <div className="text-xs sm:text-sm md:text-base text-cyan-200 font-medium">
-                    Days
-                  </div>
-                </div>
-                <div className="bg-gradient-to-br from-cyan-600/40 to-blue-600/40 rounded-xl p-4 backdrop-blur-sm border border-cyan-400/30">
-                  <div className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-2">
-                    {timeLeft.hours}
-                  </div>
-                  <div className="text-xs sm:text-sm md:text-base text-cyan-200 font-medium">
-                    Hours
-                  </div>
-                </div>
-                <div className="bg-gradient-to-br from-cyan-600/40 to-blue-600/40 rounded-xl p-4 backdrop-blur-sm border border-cyan-400/30">
-                  <div className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-2">
-                    {timeLeft.minutes}
-                  </div>
-                  <div className="text-xs sm:text-sm md:text-base text-cyan-200 font-medium">
-                    Minutes
-                  </div>
-                </div>
-                <div className="bg-gradient-to-br from-cyan-600/40 to-blue-600/40 rounded-xl p-4 backdrop-blur-sm border border-cyan-400/30">
-                  <div className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-2">
-                    {timeLeft.seconds}
-                  </div>
-                  <div className="text-xs sm:text-sm md:text-base text-cyan-200 font-medium">
-                    Seconds
-                  </div>
-                </div>
-              </div>
-            </div>
-          ) : (
-            <div className="relative">
-              {/* Flying Shuttlecocks Animation */}
-              <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                {[...Array(6)].map((_, i) => (
-                  <div
-                    key={i}
-                    className="absolute text-4xl sm:text-5xl md:text-6xl animate-shuttlecock-fly"
-                    style={{
-                      left: '-50px',
-                      top: `${20 + (i * 15)}%`,
-                      animationDelay: `${i * 0.8}s`,
-                    }}
-                  >
-                    🏸
-                  </div>
-                ))}
-              </div>
+          Shuttle Showdown <span className="text-white">5.0</span> is complete
+        </p>
 
-              {/* Smashing Shuttlecocks */}
-              <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                {[...Array(3)].map((_, i) => (
-                  <div
-                    key={`smash-${i}`}
-                    className="absolute text-3xl sm:text-4xl md:text-5xl animate-shuttlecock-smash"
-                    style={{
-                      left: `${10 + (i * 30)}%`,
-                      top: '0',
-                      animationDelay: `${i * 1.5}s`,
-                    }}
-                  >
-                    🏸
-                  </div>
-                ))}
-              </div>
+        <p
+          className="max-w-2xl mx-auto text-base sm:text-lg text-white/85 mb-8 sm:mb-10 leading-relaxed animate-slide-up"
+          style={{ animationDelay: "0.28s" }}
+        >
+          Your dedication, energy, and sportsmanship made this season
+          unforgettable. We are deeply grateful to every player, partner,
+          volunteer, and fan who showed up and gave their best.
+        </p>
 
-              {/* Energy Bursts */}
-              <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                {[...Array(4)].map((_, i) => (
-                  <div
-                    key={`burst-${i}`}
-                    className="absolute w-20 h-20 sm:w-32 sm:h-32 rounded-full bg-gradient-to-r from-red-500/30 to-orange-500/30 animate-energy-burst"
-                    style={{
-                      left: `${Math.random() * 80 + 10}%`,
-                      top: `${Math.random() * 80 + 10}%`,
-                      animationDelay: `${i * 0.6}s`,
-                    }}
-                  />
-                ))}
-              </div>
+        <div
+          className="mx-auto max-w-3xl rounded-3xl border border-amber-400/35 bg-white/5 backdrop-blur-xl p-6 sm:p-8 md:p-10 shadow-2xl mb-8 sm:mb-10 animate-slide-up animate-frame-glow"
+          style={{ animationDelay: "0.35s" }}
+        >
+          <p className="text-white text-base sm:text-lg md:text-xl font-medium mb-2">
+            Stay tuned for the next season
+          </p>
+          <p className="text-amber-100/80 text-sm sm:text-base mb-6">
+            We will be back with more rallies, rivalries, and memories. Until
+            then, relive the results and the winner moments below.
+          </p>
 
-              <div className="bg-gradient-to-br from-red-500/30 to-orange-500/30 backdrop-blur-md border-2 border-red-400/60 rounded-3xl p-8 sm:p-10 md:p-12 mx-auto max-w-4xl animate-tournament-start shadow-2xl relative z-10">
-                <div className="mb-6">
-                  <div className="text-7xl sm:text-8xl md:text-9xl mb-6 animate-trophy-shine">🏆</div>
-                  <h3 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-4 animate-match-happening">
-                    TOURNAMENT IS LIVE!
-                  </h3>
-                  <p className="text-xl sm:text-2xl md:text-3xl text-red-100 font-bold mb-6">
-                    Watch matches and scores in real-time
-                  </p>
-                </div>
-                
-                <a
-                  href="/pools"
-                  className="btn-primary inline-block bg-gradient-to-r from-red-500 via-orange-500 to-red-600 hover:from-red-600 hover:via-orange-600 hover:to-red-700 text-white font-bold px-12 py-5 rounded-full transition-all duration-300 transform hover:scale-110 active:scale-95 shadow-2xl hover:shadow-red-500/50 text-xl sm:text-2xl animate-live-pulse"
-                  onClick={(e) => {
-                    e.currentTarget.classList.add("click-scale");
-                    setTimeout(() => e.currentTarget.classList.remove("click-scale"), 150);
-                  }}
-                >
-                  <span className="mr-3 text-3xl">⚡</span>
-                  See Live Action
-                  <span className="ml-3 text-3xl">⚡</span>
-                </a>
-              </div>
-            </div>
-          )}
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-stretch sm:items-center">
+            <a
+              href="/#gallery"
+              onClick={handleGalleryClick}
+              className="btn-primary group relative inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-amber-500 via-yellow-500 to-orange-500 px-8 py-4 text-base sm:text-lg font-bold text-slate-900 shadow-xl transition hover:scale-[1.03] active:scale-95 min-h-[52px] w-full sm:w-auto overflow-hidden"
+            >
+              <span className="absolute inset-0 animate-gold-shimmer opacity-60 pointer-events-none" />
+              <Camera className="relative z-10 w-5 h-5 sm:w-6 sm:h-6" />
+              <span className="relative z-10">Winner gallery</span>
+            </a>
+            <a
+              href="/pools"
+              onClick={handleGalleryClick}
+              className="btn-secondary inline-flex items-center justify-center gap-2 rounded-full border-2 border-white/35 bg-white/10 px-8 py-4 text-base sm:text-lg font-bold text-white backdrop-blur-sm transition hover:bg-white/20 hover:border-white/50 hover:scale-[1.02] active:scale-95 min-h-[52px] w-full sm:w-auto"
+            >
+              <BarChart3 className="w-5 h-5 sm:w-6 sm:h-6" />
+              Scores &amp; pools
+            </a>
+          </div>
         </div>
 
-        {/* Info Card */}
-        {!isTournamentLive && (
-          <div
-            className="mb-8 sm:mb-10 animate-slide-up"
-            style={{ animationDelay: "0.5s" }}
-          >
-            <div className="bg-gradient-to-br from-purple-500/20 to-pink-500/20 backdrop-blur-md border-2 border-purple-400/50 rounded-3xl p-6 sm:p-8 md:p-10 mx-auto max-w-3xl shadow-2xl">
-              <div className="mb-6">
-                <div className="text-6xl sm:text-7xl md:text-8xl mb-4">🏸</div>
-                <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-4">
-                  Get Ready for Action!
-                </h3>
-                <p className="text-base sm:text-lg md:text-xl text-purple-200 mb-6">
-                  All teams registered and ready. Tournament begins soon!
-                </p>
-              </div>
-              
-              <div className="flex justify-center">
-                <a
-                  href="/pools"
-                  className="btn-secondary inline-block bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 border-2 border-cyan-400/50 hover:border-cyan-400/70 text-white font-bold px-10 py-4 rounded-full transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-lg text-lg sm:text-xl w-full sm:w-auto min-h-[56px] flex items-center justify-center"
-                  onClick={(e) => {
-                    e.currentTarget.classList.add("click-scale");
-                    setTimeout(() => e.currentTarget.classList.remove("click-scale"), 150);
-                  }}
-                >
-                  <span className="mr-2 text-2xl">📋</span>
-                  View Tournament Details
-                </a>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Tournament Info Cards */}
         <div
-          className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mb-8 sm:mb-10 max-w-4xl mx-auto animate-slide-up"
-          style={{ animationDelay: "0.6s" }}
+          className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mb-10 max-w-4xl mx-auto animate-slide-up"
+          style={{ animationDelay: "0.55s" }}
         >
-          {/* Date Card */}
           <div
-            className="card-clickable bg-gradient-to-br from-cyan-500/20 to-blue-500/20 backdrop-blur-sm rounded-xl p-5 border-2 border-cyan-400/40 hover:border-cyan-400/60 hover:bg-cyan-500/30 transition-all duration-300 shadow-lg"
+            className="card-clickable rounded-xl border border-amber-400/35 bg-white/5 p-5 backdrop-blur-sm transition hover:bg-white/10"
             onClick={handleCardClick}
           >
-            <div className="flex items-center justify-center space-x-2 mb-3">
-              <Calendar className="w-6 h-6 text-cyan-300" />
-              <span className="text-cyan-300 font-bold text-base">
-                Tournament Date
+            <div className="flex items-center justify-center gap-2 mb-2">
+              <Calendar className="w-6 h-6 text-amber-300" />
+              <span className="font-bold text-amber-200 text-sm sm:text-base">
+                Season 5.0
               </span>
             </div>
-            <p className="text-white text-lg sm:text-xl font-bold mb-1">April 26, 2026</p>
-            <p className="text-cyan-200 text-sm sm:text-base">Sunday @ 8:30 AM</p>
+            <p className="text-white font-semibold">April 26, 2026</p>
+            <p className="text-white/70 text-sm mt-1">
+              Thank you for being there
+            </p>
           </div>
-
-          {/* Format Card */}
           <div
-            className="card-clickable bg-gradient-to-br from-blue-500/20 to-purple-500/20 backdrop-blur-sm rounded-xl p-5 border-2 border-blue-400/40 hover:border-blue-400/60 hover:bg-blue-500/30 transition-all duration-300 shadow-lg"
+            className="card-clickable rounded-xl border border-white/20 bg-white/5 p-5 backdrop-blur-sm transition hover:bg-white/10"
             onClick={handleCardClick}
           >
-            <div className="flex items-center justify-center space-x-2 mb-3">
-              <Trophy className="w-6 h-6 text-blue-300" />
-              <span className="text-blue-300 font-bold text-base">
+            <div className="flex items-center justify-center gap-2 mb-2">
+              <Trophy className="w-6 h-6 text-yellow-300" />
+              <span className="font-bold text-yellow-100 text-sm sm:text-base">
                 Format
               </span>
             </div>
-            <p className="text-white text-lg sm:text-xl font-bold mb-1">
-              Doubles
-            </p>
-            <p className="text-blue-200 text-sm sm:text-base">Pool + Knockout</p>
+            <p className="text-white font-semibold">Doubles</p>
+            <p className="text-white/70 text-sm mt-1">Pools + knockout</p>
           </div>
-
-          {/* Status Card */}
           <div
-            className={`card-clickable backdrop-blur-sm rounded-xl p-5 border-2 transition-all duration-300 shadow-lg ${
-              isTournamentLive 
-                ? 'bg-gradient-to-br from-red-500/20 to-orange-500/20 border-red-400/40 hover:border-red-400/60 hover:bg-red-500/30 animate-live-pulse' 
-                : 'bg-gradient-to-br from-purple-500/20 to-pink-500/20 border-purple-400/40 hover:border-purple-400/60 hover:bg-purple-500/30'
-            }`}
+            className="card-clickable rounded-xl border border-emerald-400/35 bg-emerald-500/10 p-5 backdrop-blur-sm transition hover:bg-emerald-500/20"
             onClick={handleCardClick}
           >
-            <div className="flex items-center justify-center space-x-2 mb-3">
-              <Users className={`w-6 h-6 ${isTournamentLive ? 'text-red-300' : 'text-purple-300'}`} />
-              <span className={`font-bold text-base ${isTournamentLive ? 'text-red-300' : 'text-purple-300'}`}>Status</span>
+            <div className="flex items-center justify-center gap-2 mb-2">
+              <Users className="w-6 h-6 text-emerald-300" />
+              <span className="font-bold text-emerald-200 text-sm sm:text-base">
+                Status
+              </span>
             </div>
-            <p className="text-white text-lg sm:text-xl font-bold mb-1">
-              {isTournamentLive ? 'Tournament Live' : 'Registration Closed'}
-            </p>
-            <p className={`text-sm sm:text-base ${isTournamentLive ? 'text-red-200' : 'text-purple-200'}`}>
-              {isTournamentLive ? 'Matches in Progress' : 'All Spots Filled'}
+            <p className="text-white font-semibold">Tournament complete</p>
+            <p className="text-emerald-100/90 text-sm mt-1">
+              See you next season
             </p>
           </div>
         </div>
 
-        {/* Final Message */}
-        {!isTournamentLive && (
-          <p
-            className="text-base sm:text-lg md:text-xl text-white/90 mb-10 sm:mb-12 max-w-2xl mx-auto leading-relaxed animate-slide-up"
-            style={{ animationDelay: "0.7s" }}
-          >
-            ⚡ The countdown is on! ⚡
-          </p>
-        )}
+        <p
+          className="text-sm sm:text-base text-white/70 max-w-xl mx-auto animate-slide-up"
+          style={{ animationDelay: "0.65s" }}
+        >
+          Tip: open the gallery for official winner photos (Season 5.0 first),
+          then browse scores anytime from Pools.
+        </p>
       </div>
     </section>
   );

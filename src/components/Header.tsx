@@ -24,7 +24,7 @@ const Header: React.FC = () => {
     { href: "#home", label: "Home" },
     { href: "#about", label: "About" },
     { href: "#rules", label: "Rules" },
-    { href: "#tournament-results", label: "Tournament Results" },
+    { href: "#gallery", label: "Winner gallery" },
     { href: "#location", label: "Location" },
     { href: "#contact", label: "Contact" },
   ];
